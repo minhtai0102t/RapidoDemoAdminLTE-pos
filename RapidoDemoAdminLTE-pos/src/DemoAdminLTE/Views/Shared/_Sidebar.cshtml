@@ -1,0 +1,172 @@
+﻿@using WebHelpers.Mvc5
+@using DemoAdminLTE.Extensions.Helpers
+
+<aside class="main-sidebar">
+    <section class="sidebar">
+        @* BEGIN Search *@
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="@Strings.Search...">
+                <span class="input-group-btn">
+                    <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+            </div>
+        </form>
+        @* END Search *@
+        @* BEGIN Menu *@
+        <ul class="sidebar-menu" data-widget="tree">
+
+
+            <!-- DASHBOARD -->
+            <li class="header">@Strings.Dashboard</li>
+            <!-- DASHBOARD -->
+
+
+            <!-- Home -->
+            @*@if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Home/Index"))
+            {
+            <li class="@Url.IsLinkActiveController(new List<string>() { "Home" })">
+                <a href="@Url.Action("Index", "Home")"><i class="ion ion-map"></i> <span>@Strings.Map</span></a>
+            </li>
+            }*@
+
+
+
+            <!-- Station -->
+            @*@if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Station/List"))
+            {
+            <li class="treeview @Url.IsLinkActiveController(new List<string>() { "Station", "Value" })">
+              <a href="#">
+                <i class="ion ion-ios-location-outline"></i>
+                <span>@Strings.Station</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="@Url.IsLinkActive("Index", "Station")">
+                      <a href="@Url.Action("Index", "Station")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.List</a>
+                  </li>
+                  <li class="@Url.IsLinkActive("Index", "Value")">
+                      <a href="@Url.Action("Index", "Value")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.Data</a>
+                  </li>
+              </ul>
+            </li>
+            }*@
+
+
+
+            <!-- Sensor -->
+            @*@if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Sensor/List"))
+            {
+            <li class="@Url.IsLinkActiveController(new List<string>() { "Sensor" })">
+                <a href="@Url.Action("Index", "Sensor")"><i class="ion ion-thermometer"></i> <span>@Strings.Sensor</span></a>
+            </li>
+            }*@
+
+
+
+            <!-- Transaction -->
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Transaction/List"))
+            {
+            <li class="treeview @Url.IsLinkActiveController(new List<string>() { "Transaction" })">
+              <a href="#">
+                <i class="ion ion-social-usd-outline"></i>
+                <span>@Strings.Transaction</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="@Url.IsLinkActive("Index", "Transaction")">
+                      <a href="@Url.Action("Index", "Transaction")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.TransactionList</a>
+                  </li>
+              </ul>
+            </li>
+            }
+
+
+
+            <!-- Product -->
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Product/List"))
+            {
+            <li class="treeview @Url.IsLinkActiveController(new List<string>() { "Product", "Category" })">
+              <a href="#">
+                <i class="ion ion-ios-nutrition-outline"></i>
+                <span>@Strings.Product</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="@Url.IsLinkActive("Index", "Product")">
+                      <a href="@Url.Action("Index", "Product")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.ProductList</a>
+                  </li>
+                  <li class="@Url.IsLinkActive("Index", "Category")">
+                      <a href="@Url.Action("Index", "Category")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.CategoryList</a>
+                  </li>
+              </ul>
+            </li>
+            }
+
+
+
+            <!-- Device -->
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Device/List"))
+            {
+            <li class="treeview @Url.IsLinkActiveController(new List<string>() { "Device", "DeviceType" })">
+              <a href="#">
+                <i class="ion ion-ios-monitor-outline"></i>
+                <span>@Strings.Device</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                  <li class="@Url.IsLinkActive("Index", "Device")">
+                      <a href="@Url.Action("Index", "Device")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.DeviceList</a>
+                  </li>
+                  <li class="@Url.IsLinkActive("Index", "DeviceType")">
+                      <a href="@Url.Action("Index", "DeviceType")"><i class="ion ion-ios-arrow-thin-right menu-sub"></i> @Strings.DeviceTypeList</a>
+                  </li>
+              </ul>
+            </li>
+            }
+
+
+
+            <!-- SYSTEM -->
+            <li class="header">@Strings.System</li>
+            <!-- SYSTEM -->
+
+
+            <!-- User -->
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("User/List"))
+            {
+            <li class="@Url.IsLinkActiveController(new List<string>() { "User" })">
+                <a href="@Url.Action("Index", "User")"><i class="ion ion-ios-person-outline"></i> <span>@Strings.User</span></a>
+            </li>
+            }
+
+            <!-- Role -->
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Role/List"))
+            {
+            <li class="@Url.IsLinkActiveController(new List<string>() { "Role" })">
+                <a href="@Url.Action("Index", "Role")"><i class="ion ion-android-done-all"></i> <span>@Strings.Role</span></a>
+            </li>
+            }
+
+            <!-- ActivityLog -->
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("ActivityLog/List"))
+            {
+            <li class="@Url.IsLinkActiveController(new List<string>() { "ActivityLog" })">
+                <a href="@Url.Action("Index", "ActivityLog")"><i class="ion ion-ios-glasses-outline"></i> <span>@Strings.ActivityLog</span></a>
+            </li>
+            }
+
+        </ul>
+        @* END Menu *@
+    </section>
+</aside>

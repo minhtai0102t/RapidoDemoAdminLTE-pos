@@ -1,0 +1,49 @@
+﻿@model DemoAdminLTE.ViewModels.StationValueCreateViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">@Strings.ValueInfo</h3>
+            </div>
+
+            @using (Html.BeginForm("Create", "Value", new { stationid = Model.StationId }, FormMethod.Post, new { role = "form" }))
+            {
+        <div class="box-body">
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.FormDropDownList(model => model.StationId, "StationId", false, "apply_select2")
+
+            @*@Html.FormEditorFor(model => model.Time)*@
+
+            <div class="form-group has-feedback">
+                @Html.LabelFor(model => model.Time)
+                @Html.TextBoxFor(model => model.Time, "{0:dd/MM/yyyy HH:mm:ss}", new { @class = "form-control", type = "datetime" })
+                @Html.ValidationMessageFor(model => model.Time)
+                <span class="form-control-feedback"></span>
+            </div>
+
+            @for (int i = 0; i < Model.Sensors.Count; i++)
+            {
+                @Html.HiddenFor(model => model.Sensors[i].SensorName)
+                @Html.DisplayFor(model => model.Sensors[i].SensorName)
+                @Html.HiddenFor(model => model.Sensors[i].SensorId)
+                @Html.FormEditorFor(model => model.Sensors[i].SensorValue)
+
+            }
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary"><span class="ion-ios-plus-outline"></span> @Actions.Save</button>
+                <a href="@Url.Action("Data", "Value", new { stationid = Model.StationId })" class="btn btn-link pull-right"><span class="ion-ios-close-outline"></span> @Actions.Cancel</a>
+            </div>
+        </div>
+            }
+        </div>
+    </div>
+</div>

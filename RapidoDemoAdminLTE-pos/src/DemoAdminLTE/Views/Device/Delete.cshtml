@@ -1,0 +1,12 @@
+﻿@model DemoAdminLTE.Models.Device
+
+@{
+    ViewBag.Title = Pages.DeviceDelete;
+}
+
+<div class="alert alert-danger" role="alert">
+    <strong>@Strings.Warning </strong>
+    @Strings.WarningDelete
+</div>
+
+@Html.Partial("_form", Model)

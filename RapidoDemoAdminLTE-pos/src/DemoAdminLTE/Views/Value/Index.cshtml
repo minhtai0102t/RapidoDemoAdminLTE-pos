@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = Pages.ValueIndex;
+
+    int StationId = ViewBag.StationId;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <a href="@Url.Action("Create", new { stationid = StationId } )" class="btn btn-primary hidden-xs button-addnew">
+                    <span class="ion-plus"></span>
+                    @Actions.AddData
+                </a>
+                <a href="@Url.Action("Chart", "Station", new { id = StationId } )" class="btn btn-success hidden-xs button-addnew">
+                    <span class="ion-arrow-graph-up-right"></span>
+                    @Actions.Chart
+                </a>
+                <a href="@Url.Action("Export", new { stationid = StationId } )" class="btn btn-success hidden-xs button-addnew">
+                    <span class="ion-archive"></span>
+                    @Actions.Export
+                </a>
+                <form id="form-search" class="form-main form-inline nofloat-xs pull-right pull-left-sm">
+                    <div class="form-group">
+                        <a href="@Url.Action("Create", new { stationid = StationId } )" class="btn btn-primary form-control visible-xs button-addnew">
+                            <span class="ion-plus"></span>
+                            @Actions.Create
+                        </a>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="sr-only" for="grid-search">@Strings.Search</label>
+                        <div class="input-group">
+                            <span class="input-group-addon text-bold bg-blue">
+                                @Strings.Station
+                            </span>
+                            @Html.DropDownList("Stations", null, new { @class = "form-control apply_select2" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="sr-only" for="grid-search">@Strings.Search</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </span>
+                            <input type="text" class="form-control input-search" name="search" id="grid-search" placeholder="@Strings.Search">
+                            <span class="input-group-addon text-blue text-bold" id="data-total">
+                                @ViewBag.DataTotal
+                            </span>
+                            <input type="submit" disabled="disabled" style="display:none">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="box-body">
+                @Html.AjaxGrid(Url.Action("GridSearch", new { stationid = StationId }))
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section ViewSpecificJs {
+    <script>
+
+        document.getElementById('grid-search').addEventListener('input', function () {
+            var grid = new MvcGrid(document.querySelector('.mvc-grid'));
+            grid.query.set('search', this.value);
+            grid.query.set('stationid', @StationId);
+            grid.reload();
+        });
+
+        document.addEventListener('reloadend', function (e) {
+            document.getElementById('data-total').innerText = document.getElementById('totalRows').innerText;
+        });
+
+        $('select.apply_select2').on('select2:select', function (e) {
+            var station_id = e.params.data.id;
+            window.location.href = "@Html.Raw(Url.Action("Index", "Value", new { stationid = "Station-Id" }))".replace("Station-Id", station_id);
+        });
+
+    </script>
+}

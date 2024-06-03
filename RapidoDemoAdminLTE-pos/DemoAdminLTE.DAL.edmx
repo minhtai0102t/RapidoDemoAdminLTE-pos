@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="3.0"
+  xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels>
+      <Schema Namespace="DemoAdminLTE.DAL" Alias="Self" annotation:UseStrongSpatialTypes="false"
+        xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation"
+        xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+        xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ActivityLog" customannotation:ClrType="DemoAdminLTE.Models.ActivityLog, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Context" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permission" customannotation:ClrType="DemoAdminLTE.Models.Permission, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Group" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.Role_Permissions" FromRole="Role_Permissions_Target" ToRole="Role_Permissions_Source" />
+        </EntityType>
+        <EntityType Name="Role" customannotation:ClrType="DemoAdminLTE.Models.Role, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Permissions" Relationship="Self.Role_Permissions" FromRole="Role_Permissions_Source" ToRole="Role_Permissions_Target" />
+          <NavigationProperty Name="Users" Relationship="Self.User_Role" FromRole="User_Role_Target" ToRole="User_Role_Source" />
+        </EntityType>
+        <EntityType Name="User" customannotation:ClrType="DemoAdminLTE.Models.User, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActivationCode" Type="Guid" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="DateTime" />
+          <Property Name="LastActivityDate" Type="DateTime" />
+          <Property Name="LastLoginDate" Type="DateTime" />
+          <Property Name="LastLockoutDate" Type="DateTime" />
+          <Property Name="IsLockedOut" Type="Boolean" Nullable="false" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.User_Role" FromRole="User_Role_Source" ToRole="User_Role_Target" />
+        </EntityType>
+        <EntityType Name="Sensor" customannotation:ClrType="DemoAdminLTE.Models.Sensor, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UpperBound" Type="Double" />
+          <Property Name="LowerBound" Type="Double" />
+          <Property Name="DifferBound" Type="Double" />
+          <Property Name="UnitSymbol" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Params" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="SensorValues" Relationship="Self.SensorValue_Sensor" FromRole="SensorValue_Sensor_Target" ToRole="SensorValue_Sensor_Source" />
+          <NavigationProperty Name="Stations" Relationship="Self.Station_Sensors" FromRole="Station_Sensors_Target" ToRole="Station_Sensors_Source" />
+        </EntityType>
+        <EntityType Name="SensorValue" customannotation:ClrType="DemoAdminLTE.Models.SensorValue, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="Double" Nullable="false" />
+          <Property Name="SensorId" Type="Int32" Nullable="false" />
+          <Property Name="ValueTimeId" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Sensor" Relationship="Self.SensorValue_Sensor" FromRole="SensorValue_Sensor_Source" ToRole="SensorValue_Sensor_Target" />
+          <NavigationProperty Name="ValueTime" Relationship="Self.SensorValue_ValueTime" FromRole="SensorValue_ValueTime_Source" ToRole="SensorValue_ValueTime_Target" />
+        </EntityType>
+        <EntityType Name="ValueTime" customannotation:ClrType="DemoAdminLTE.Models.ValueTime, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Time" Type="DateTime" Nullable="false" />
+          <Property Name="StationId" Type="Int32" Nullable="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="SensorValues" Relationship="Self.SensorValue_ValueTime" FromRole="SensorValue_ValueTime_Target" ToRole="SensorValue_ValueTime_Source" />
+          <NavigationProperty Name="Station" Relationship="Self.ValueTime_Station" FromRole="ValueTime_Station_Source" ToRole="ValueTime_Station_Target" />
+        </EntityType>
+        <EntityType Name="Station" customannotation:ClrType="DemoAdminLTE.Models.Station, DemoAdminLTE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
+          <Property Name="Longitude" Type="Double" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsSmsAlertEnable" Type="Boolean" Nullable="false" />
+          <Property Name="SmsAlertPhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Params" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Sensors" Relationship="Self.Station_Sensors" FromRole="Station_Sensors_Source" ToRole="Station_Sensors_Target" />
+          <NavigationProperty Name="ValueTimes" Relationship="Self.ValueTime_Station" FromRole="ValueTime_Station_Target" ToRole="ValueTime_Station_Source" />
+        </EntityType>
+        <Association Name="Role_Permissions">
+          <End Role="Role_Permissions_Source" Type="Self.Role" Multiplicity="*" />
+          <End Role="Role_Permissions_Target" Type="Self.Permission" Multiplicity="*" />
+        </Association>
+        <Association Name="User_Role">
+          <End Role="User_Role_Source" Type="Self.User" Multiplicity="*" />
+          <End Role="User_Role_Target" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="User_Role_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User_Role_Source">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SensorValue_Sensor">
+          <End Role="SensorValue_Sensor_Source" Type="Self.SensorValue" Multiplicity="*" />
+          <End Role="SensorValue_Sensor_Target" Type="Self.Sensor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="SensorValue_Sensor_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SensorValue_Sensor_Source">
+              <PropertyRef Name="SensorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Station_Sensors">
+          <End Role="Station_Sensors_Source" Type="Self.Station" Multiplicity="*" />
+          <End Role="Station_Sensors_Target" Type="Self.Sensor" Multiplicity="*" />
+        </Association>
+        <Association Name="ValueTime_Station">
+          <End Role="ValueTime_Station_Source" Type="Self.ValueTime" Multiplicity="*" />
+          <End Role="ValueTime_Station_Target" Type="Self.Station" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="ValueTime_Station_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ValueTime_Station_Source">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SensorValue_ValueTime">
+          <End Role="SensorValue_ValueTime_Source" Type="Self.SensorValue" Multiplicity="*" />
+          <End Role="SensorValue_ValueTime_Target" Type="Self.ValueTime" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="SensorValue_ValueTime_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SensorValue_ValueTime_Source">
+              <PropertyRef Name="ValueTimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DemoContext" customannotation:UseClrTypes="true">
+          <EntitySet Name="ActivityLogs" EntityType="Self.ActivityLog" />
+          <EntitySet Name="Permissions" EntityType="Self.Permission" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Sensors" EntityType="Self.Sensor" />
+          <EntitySet Name="SensorValues" EntityType="Self.SensorValue" />
+          <EntitySet Name="ValueTimes" EntityType="Self.ValueTime" />
+          <EntitySet Name="Stations" EntityType="Self.Station" />
+          <AssociationSet Name="Role_Permissions" Association="Self.Role_Permissions">
+            <End Role="Role_Permissions_Source" EntitySet="Roles" />
+            <End Role="Role_Permissions_Target" EntitySet="Permissions" />
+          </AssociationSet>
+          <AssociationSet Name="User_Role" Association="Self.User_Role">
+            <End Role="User_Role_Source" EntitySet="Users" />
+            <End Role="User_Role_Target" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="SensorValue_Sensor" Association="Self.SensorValue_Sensor">
+            <End Role="SensorValue_Sensor_Source" EntitySet="SensorValues" />
+            <End Role="SensorValue_Sensor_Target" EntitySet="Sensors" />
+          </AssociationSet>
+          <AssociationSet Name="Station_Sensors" Association="Self.Station_Sensors">
+            <End Role="Station_Sensors_Source" EntitySet="Stations" />
+            <End Role="Station_Sensors_Target" EntitySet="Sensors" />
+          </AssociationSet>
+          <AssociationSet Name="ValueTime_Station" Association="Self.ValueTime_Station">
+            <End Role="ValueTime_Station_Source" EntitySet="ValueTimes" />
+            <End Role="ValueTime_Station_Target" EntitySet="Stations" />
+          </AssociationSet>
+          <AssociationSet Name="SensorValue_ValueTime" Association="Self.SensorValue_ValueTime">
+            <End Role="SensorValue_ValueTime_Source" EntitySet="SensorValues" />
+            <End Role="SensorValue_ValueTime_Target" EntitySet="ValueTimes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </ConceptualModels>
+    <Mappings>
+      <Mapping Space="C-S"
+        xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeFirstDatabase" CdmEntityContainer="DemoContext">
+          <EntitySetMapping Name="ActivityLogs">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.ActivityLog">
+              <MappingFragment StoreEntitySet="ActivityLog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Permissions">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.Permission">
+              <MappingFragment StoreEntitySet="Permission">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Group" ColumnName="Group" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ActivationCode" ColumnName="ActivationCode" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+                <ScalarProperty Name="LastLoginDate" ColumnName="LastLoginDate" />
+                <ScalarProperty Name="LastLockoutDate" ColumnName="LastLockoutDate" />
+                <ScalarProperty Name="IsLockedOut" ColumnName="IsLockedOut" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sensors">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.Sensor">
+              <MappingFragment StoreEntitySet="Sensor">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UpperBound" ColumnName="UpperBound" />
+                <ScalarProperty Name="LowerBound" ColumnName="LowerBound" />
+                <ScalarProperty Name="DifferBound" ColumnName="DifferBound" />
+                <ScalarProperty Name="UnitSymbol" ColumnName="UnitSymbol" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Params" ColumnName="Params" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorValues">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.SensorValue">
+              <MappingFragment StoreEntitySet="SensorValue">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="SensorId" ColumnName="SensorId" />
+                <ScalarProperty Name="ValueTimeId" ColumnName="ValueTimeId" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ValueTimes">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.ValueTime">
+              <MappingFragment StoreEntitySet="ValueTime">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="StationId" ColumnName="StationId" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stations">
+            <EntityTypeMapping TypeName="DemoAdminLTE.DAL.Station">
+              <MappingFragment StoreEntitySet="Station">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsSmsAlertEnable" ColumnName="IsSmsAlertEnable" />
+                <ScalarProperty Name="SmsAlertPhoneNumber" ColumnName="SmsAlertPhoneNumber" />
+                <ScalarProperty Name="Params" ColumnName="Params" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Role_Permissions" TypeName="DemoAdminLTE.DAL.Role_Permissions" StoreEntitySet="RolePermission">
+            <EndProperty Name="Role_Permissions_Source">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="Role_Permissions_Target">
+              <ScalarProperty Name="Id" ColumnName="PermissionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Station_Sensors" TypeName="DemoAdminLTE.DAL.Station_Sensors" StoreEntitySet="StationSensor">
+            <EndProperty Name="Station_Sensors_Source">
+              <ScalarProperty Name="Id" ColumnName="StationId" />
+            </EndProperty>
+            <EndProperty Name="Station_Sensors_Target">
+              <ScalarProperty Name="Id" ColumnName="SensorId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </Mappings>
+    <StorageModels>
+      <Schema Namespace="CodeFirstDatabaseSchema" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self"
+        xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation"
+        xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActivityLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Context" Type="nvarchar" MaxLength="32" Nullable="true" />
+          <Property Name="Action" Type="nvarchar" MaxLength="16" Nullable="true" />
+          <Property Name="Message" Type="nvarchar" MaxLength="128" Nullable="true" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Permission">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Group" Type="nvarchar" MaxLength="32" Nullable="true" />
+          <Property Name="Action" Type="nvarchar" MaxLength="32" Nullable="true" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Phone" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ActivationCode" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RoleId" Type="int" customannotation:Index="{ Name: IX_RoleId, Order: 0 }" Nullable="false" />
+          <Property Name="LastPasswordChangedDate" Type="datetime2" Precision="7" Nullable="true" />
+          <Property Name="LastActivityDate" Type="datetime2" Precision="7" Nullable="true" />
+          <Property Name="LastLoginDate" Type="datetime2" Precision="7" Nullable="true" />
+          <Property Name="LastLockoutDate" Type="datetime2" Precision="7" Nullable="true" />
+          <Property Name="IsLockedOut" Type="bit" Nullable="false" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sensor">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UpperBound" Type="float" Nullable="true" />
+          <Property Name="LowerBound" Type="float" Nullable="true" />
+          <Property Name="DifferBound" Type="float" Nullable="true" />
+          <Property Name="UnitSymbol" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Params" Type="nvarchar" MaxLength="256" Nullable="true" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SensorValue">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="float" Nullable="false" />
+          <Property Name="SensorId" Type="int" customannotation:Index="{ Name: IX_SensorId, Order: 0 }" Nullable="false" />
+          <Property Name="ValueTimeId" Type="int" customannotation:Index="{ Name: IX_ValueTimeId, Order: 0 }" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ValueTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Time" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="StationId" Type="int" customannotation:Index="{ Name: IX_StationId, Order: 0 }" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Station">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="256" Nullable="true" />
+          <Property Name="Latitude" Type="float" Nullable="false" />
+          <Property Name="Longitude" Type="float" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsSmsAlertEnable" Type="bit" Nullable="false" />
+          <Property Name="SmsAlertPhoneNumber" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Params" Type="nvarchar" MaxLength="256" Nullable="true" />
+          <Property Name="CreationDate" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RolePermission">
+          <Key>
+            <PropertyRef Name="RoleId" />
+            <PropertyRef Name="PermissionId" />
+          </Key>
+          <Property Name="RoleId" Type="int" customannotation:Index="{ Name: IX_RoleId, Order: 0 }" Nullable="false" />
+          <Property Name="PermissionId" Type="int" customannotation:Index="{ Name: IX_PermissionId, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StationSensor">
+          <Key>
+            <PropertyRef Name="StationId" />
+            <PropertyRef Name="SensorId" />
+          </Key>
+          <Property Name="StationId" Type="int" customannotation:Index="{ Name: IX_StationId, Order: 0 }" Nullable="false" />
+          <Property Name="SensorId" Type="int" customannotation:Index="{ Name: IX_SensorId, Order: 0 }" Nullable="false" />
+        </EntityType>
+        <Association Name="Role_Permissions_Source">
+          <End Role="Role" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermission" Type="Self.RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolePermission">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Role_Permissions_Target">
+          <End Role="Permission" Type="Self.Permission" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RolePermission" Type="Self.RolePermission" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Permission">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RolePermission">
+              <PropertyRef Name="PermissionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SensorValue_Sensor">
+          <End Role="Sensor" Type="Self.Sensor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SensorValue" Type="Self.SensorValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sensor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SensorValue">
+              <PropertyRef Name="SensorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Station_Sensors_Source">
+          <End Role="Station" Type="Self.Station" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StationSensor" Type="Self.StationSensor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StationSensor">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Station_Sensors_Target">
+          <End Role="Sensor" Type="Self.Sensor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StationSensor" Type="Self.StationSensor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sensor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StationSensor">
+              <PropertyRef Name="SensorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ValueTime_Station">
+          <End Role="Station" Type="Self.Station" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ValueTime" Type="Self.ValueTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Station">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ValueTime">
+              <PropertyRef Name="StationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SensorValue_ValueTime">
+          <End Role="ValueTime" Type="Self.ValueTime" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SensorValue" Type="Self.SensorValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ValueTime">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SensorValue">
+              <PropertyRef Name="ValueTimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeFirstDatabase">
+          <EntitySet Name="ActivityLog" EntityType="Self.ActivityLog" Schema="dbo" Table="ActivityLog" />
+          <EntitySet Name="Permission" EntityType="Self.Permission" Schema="dbo" Table="Permission" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" Table="Role" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" Table="User" />
+          <EntitySet Name="Sensor" EntityType="Self.Sensor" Schema="dbo" Table="Sensor" />
+          <EntitySet Name="SensorValue" EntityType="Self.SensorValue" Schema="dbo" Table="SensorValue" />
+          <EntitySet Name="ValueTime" EntityType="Self.ValueTime" Schema="dbo" Table="ValueTime" />
+          <EntitySet Name="Station" EntityType="Self.Station" Schema="dbo" Table="Station" />
+          <EntitySet Name="RolePermission" EntityType="Self.RolePermission" Schema="dbo" Table="RolePermissions" />
+          <EntitySet Name="StationSensor" EntityType="Self.StationSensor" Schema="dbo" Table="StationSensors" />
+          <AssociationSet Name="Role_Permissions_Source" Association="Self.Role_Permissions_Source">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RolePermission" EntitySet="RolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="Role_Permissions_Target" Association="Self.Role_Permissions_Target">
+            <End Role="Permission" EntitySet="Permission" />
+            <End Role="RolePermission" EntitySet="RolePermission" />
+          </AssociationSet>
+          <AssociationSet Name="User_Role" Association="Self.User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="SensorValue_Sensor" Association="Self.SensorValue_Sensor">
+            <End Role="Sensor" EntitySet="Sensor" />
+            <End Role="SensorValue" EntitySet="SensorValue" />
+          </AssociationSet>
+          <AssociationSet Name="Station_Sensors_Source" Association="Self.Station_Sensors_Source">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="StationSensor" EntitySet="StationSensor" />
+          </AssociationSet>
+          <AssociationSet Name="Station_Sensors_Target" Association="Self.Station_Sensors_Target">
+            <End Role="Sensor" EntitySet="Sensor" />
+            <End Role="StationSensor" EntitySet="StationSensor" />
+          </AssociationSet>
+          <AssociationSet Name="ValueTime_Station" Association="Self.ValueTime_Station">
+            <End Role="Station" EntitySet="Station" />
+            <End Role="ValueTime" EntitySet="ValueTime" />
+          </AssociationSet>
+          <AssociationSet Name="SensorValue_ValueTime" Association="Self.SensorValue_ValueTime">
+            <End Role="ValueTime" EntitySet="ValueTime" />
+            <End Role="SensorValue" EntitySet="SensorValue" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </StorageModels>
+  </Runtime>
+  <Designer>
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <Diagrams >
+      <Diagram DiagramId="6ccee740b122427eb3c59e54e4e00e18" Name="Diagram1" ZoomLevel="55">
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.ActivityLog" Width="1.5" PointX="6.125" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.Permission" Width="1.5" PointX="4.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.Role" Width="1.5" PointX="2.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.User" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.Sensor" Width="1.5" PointX="0.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.SensorValue" Width="1.5" PointX="2.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.ValueTime" Width="1.5" PointX="2.5" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="DemoAdminLTE.DAL.Station" Width="1.5" PointX="0.5" PointY="9" IsExpanded="true" />
+        <AssociationConnector Association="DemoAdminLTE.DAL.Role_Permissions" ManuallyRouted="false" />
+        <AssociationConnector Association="DemoAdminLTE.DAL.User_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="DemoAdminLTE.DAL.SensorValue_Sensor" ManuallyRouted="false" />
+        <AssociationConnector Association="DemoAdminLTE.DAL.Station_Sensors" ManuallyRouted="false" />
+        <AssociationConnector Association="DemoAdminLTE.DAL.ValueTime_Station" ManuallyRouted="false" />
+        <AssociationConnector Association="DemoAdminLTE.DAL.SensorValue_ValueTime" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</Edmx>

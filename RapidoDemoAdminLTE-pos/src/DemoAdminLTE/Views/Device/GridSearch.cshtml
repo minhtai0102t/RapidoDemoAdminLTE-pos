@@ -1,0 +1,38 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.Device>
+@using DemoAdminLTE.Resources.Views.DeviceViews
+
+@{
+    Layout = null;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Id);
+        columns.Add(model => model.Name);
+        columns.Add(model => model.SerialNumber);
+        columns.Add(model => model.Location);
+        columns.Add(model => model.Activated)
+            .RenderedAs(model => model.Activated ? "<span class=\"ion ion-checkmark-round text-primary\"></span>" : "<span class=\"ion ion-close-round text-danger\"></span>")
+            .Encoded(false);
+        columns.Add(model => model.CreationDate).RenderedAs(model => model.CreationDate.ToUniversalTime().Humanize()).Sortable(true);
+
+        columns.Add(model => "<ul style=\"margin-bottom:0;padding-left:10px;\">" + string.Join("", model.DeviceProducts.Select(m => "<li>" + m.Product.Name + " (" + m.Quantity + ")" + "</li>").ToArray()) + "</ul>").Encoded(false).Titled(Titles.Products);
+
+        columns.Add(model => "<a href='" + Url.Action("Edit", "Device", new { id = model.Id }) + "' class='label label-warning'><span class='glyphicon glyphicon-pencil'></span> " + Actions.Edit + "</a> " +
+                                "<a href='" + Url.Action("Delete", "Device", new { id = model.Id }) + "' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> " + Actions.Delete + "</a>").Encoded(false).Sortable(false);
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 20;
+    })
+    .AppendCss("table-hover")
+)

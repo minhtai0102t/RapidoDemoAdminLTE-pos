@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "71cfe0da-b958-47da-b801-9fba42d42824",
+		"name": "POS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4938416"
+	},
+	"item": [
+		{
+			"name": "transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "serial_number",
+							"value": "123456789",
+							"type": "text"
+						},
+						{
+							"key": "product_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "100",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{END_POINT_PROD}}/api/pos/transaction",
+					"host": [
+						"{{END_POINT_PROD}}"
+					],
+					"path": [
+						"api",
+						"pos",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "END_POINT",
+			"value": "http://localhost:52675"
+		},
+		{
+			"key": "END_POINT_PROD",
+			"value": "https://pos.chipfc.com"
+		}
+	]
+}

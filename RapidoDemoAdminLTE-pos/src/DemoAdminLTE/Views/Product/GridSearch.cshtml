@@ -1,0 +1,35 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.Product>
+
+@{
+    Layout = null;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Id);
+        columns.Add(model => model.Name);
+        columns.Add(model => model.SKU);
+        columns.Add(model => model.QuantityInStock);
+        columns.Add(model => model.Status)
+            .RenderedAs(model => model.Status ? "<span class=\"ion ion-checkmark-round text-primary\"></span>" : "<span class=\"ion ion-close-round text-danger\"></span>")
+            .Encoded(false);
+        columns.Add(model => model.CreationDate).RenderedAs(model => model.CreationDate.ToUniversalTime().Humanize()).Sortable(true);
+
+        columns.Add(model => "<a href='" + Url.Action("Edit", "Product", new { id = model.Id }) + "' class='label label-warning'><span class='glyphicon glyphicon-pencil'></span> " + Actions.Edit + "</a> " +
+                                "<a href='" + Url.Action("Delete", "Product", new { id = model.Id }) + "' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> " + Actions.Delete + "</a>").Encoded(false).Sortable(false);
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 20;
+    })
+    .AppendCss("table-hover")
+)

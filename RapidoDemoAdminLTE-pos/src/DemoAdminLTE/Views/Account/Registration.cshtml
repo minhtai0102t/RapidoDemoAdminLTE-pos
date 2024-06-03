@@ -1,0 +1,96 @@
+﻿@model  DemoAdminLTE.ViewModels.RegistrationView
+
+@{
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+    ViewBag.Title = Pages.AccountRegistration;
+    ViewBag.Page = "register-page";
+}
+
+<div class="register-box">
+    <div class="register-logo">
+        <a href="#"><b>RAPIDO</b>ADMIN</a>
+    </div>
+    <div class="register-box-body">
+        <p class="register-box-msg">@Strings.RegisterAccount</p>
+
+        @using (Html.BeginForm("Registration", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger form-group has-feedback" })
+
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Username).ToString()) } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                <span class="ion-person form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.FirstName).ToString()) } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                <span class="ion-code form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.LastName).ToString()) } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                <span class="ion-code form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Phone).ToString()) } })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                <span class="ion-ios-telephone form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Email).ToString()) } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                <span class="ion-at form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Password).ToString()) } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                <span class="ion-ios-keypad form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.ConfirmPassword).ToString()) } })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                <span class="ion-ios-keypad-outline form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-xs-12">
+                    <div class="checkbox icheck">
+                        <label>
+                            @Html.CheckBoxFor(model => model.AgreeTheTerms)
+                            @Html.DisplayNameFor(model => model.AgreeTheTerms)
+                            <a href="#"> @Strings.Terms </a>
+                        </label>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.AgreeTheTerms, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">@Actions.Register</button>
+                </div>
+            </div>
+        }
+
+        @*
+        <div class="social-auth-links text-center">
+            <p>- @Accounts.Or -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                <i class="fa fa-facebook"></i> @Accounts.SignupUsing
+                Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                <i class="fa fa-google-plus"></i> @Accounts.SignupUsing
+                Google+
+            </a>
+        </div>
+        *@
+        <div class="row" style="margin-top:10px; padding-top:10px; border-top:1px solid #d2d6de">
+            <div class="col-xs-12">
+                <a href="@Url.Action("Login")" class="text-center">@Strings.IAlreadyHaveAnAccount</a>
+            </div>
+        </div>
+    </div>
+    <!-- /.form-box -->
+</div>
+
+

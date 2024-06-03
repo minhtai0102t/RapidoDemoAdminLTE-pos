@@ -1,0 +1,34 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.DeviceProduct>
+@using DemoAdminLTE.Resources.Views.DeviceViews
+
+@{
+    Layout = null;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.DeviceId);
+        columns.Add(model => model.ProductId);
+        columns.Add(model => model.Quantity);
+        columns.Add(model => model.Note);
+
+        columns.Add(model => model.CreationDate).RenderedAs(model => model.CreationDate.ToUniversalTime().Humanize()).Sortable(true);
+
+        columns.Add(model => "<a href='" + Url.Action("Edit", "Device", new { id = model.DeviceId }) + "' class='label label-warning'><span class='glyphicon glyphicon-pencil'></span> " + Actions.Edit + "</a> " +
+                                "<a href='" + Url.Action("Delete", "Device", new { id = model.DeviceId }) + "' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> " + Actions.Delete + "</a>").Encoded(false).Sortable(false);
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 20;
+    })
+    .AppendCss("table-hover")
+)

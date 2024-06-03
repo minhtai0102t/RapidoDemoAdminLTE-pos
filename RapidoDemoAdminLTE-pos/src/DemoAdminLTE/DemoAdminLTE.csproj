@@ -1,0 +1,1083 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7ADB62C-448A-4767-8AD0-39E5C61E817F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DemoAdminLTE</RootNamespace>
+    <AssemblyName>DemoAdminLTE</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=5.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EPPlus.5.0.4\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="FirebaseAdmin, Version=1.17.1.0, Culture=neutral, PublicKeyToken=97c8d00c348326ed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FirebaseAdmin.1.17.1\lib\net45\FirebaseAdmin.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Api.Gax, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Api.Gax.2.7.0\lib\net45\Google.Api.Gax.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Api.Gax.Rest, Version=2.7.0.0, Culture=neutral, PublicKeyToken=3ec5ea7f18953e47, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Api.Gax.Rest.2.7.0\lib\net45\Google.Api.Gax.Rest.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Apis.1.40.0\lib\net45\Google.Apis.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Apis.Auth.1.40.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Apis.Auth.1.40.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Apis.Core.1.40.0\lib\net45\Google.Apis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Apis.1.40.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Humanizer, Version=2.7.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Humanizer.Core.2.7.9\lib\netstandard1.0\Humanizer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mvc.Grid.Core, Version=7.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NonFactors.Grid.Core.Mvc5.7.1.2\lib\net45\Mvc.Grid.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Collections.Immutable.1.5.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Interactive.Async, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Interactive.Async.3.2.0\lib\net45\System.Interactive.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="RouteJs, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RouteJs.Mvc5.2.2.0\lib\net45\RouteJs.dll</HintPath>
+    </Reference>
+    <Reference Include="RouteJs.Mvc5, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RouteJs.Mvc5.2.2.0\lib\net45\RouteJs.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebHelpers.Mvc5, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WebHelpers.Mvc5.2.1.0\lib\net45\WebHelpers.Mvc5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\AdminLTE-extension.css" />
+    <Content Include="Content\css\bootstrap-datepicker.css" />
+    <Content Include="Content\css\bootstrap-datepicker.min.css" />
+    <Content Include="Content\css\bootstrap-datepicker3.css" />
+    <Content Include="Content\css\bootstrap-datetimepicker-standalone.css" />
+    <Content Include="Content\css\bootstrap-datetimepicker.css" />
+    <Content Include="Content\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\css\bootstrap-jquery.validate.css" />
+    <Content Include="Content\css\alerts.css" />
+    <Content Include="Content\css\bootstrap-theme.css" />
+    <Content Include="Content\css\bootstrap-theme.min.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\chartjs\Chart.css" />
+    <Content Include="Content\css\chartjs\Chart.min.css" />
+    <Content Include="Content\css\icheck\all.css" />
+    <Content Include="Content\css\icheck\flat\aero.css" />
+    <Content Include="Content\css\icheck\flat\blue.css" />
+    <Content Include="Content\css\icheck\flat\flat.css" />
+    <Content Include="Content\css\icheck\flat\green.css" />
+    <Content Include="Content\css\icheck\flat\grey.css" />
+    <Content Include="Content\css\icheck\flat\orange.css" />
+    <Content Include="Content\css\icheck\flat\pink.css" />
+    <Content Include="Content\css\icheck\flat\purple.css" />
+    <Content Include="Content\css\icheck\flat\red.css" />
+    <Content Include="Content\css\icheck\flat\yellow.css" />
+    <Content Include="Content\css\icheck\flat\_all.css" />
+    <Content Include="Content\css\icheck\futurico\futurico.css" />
+    <Content Include="Content\css\icheck\line\aero.css" />
+    <Content Include="Content\css\icheck\line\blue.css" />
+    <Content Include="Content\css\icheck\line\green.css" />
+    <Content Include="Content\css\icheck\line\grey.css" />
+    <Content Include="Content\css\icheck\line\line.css" />
+    <Content Include="Content\css\icheck\line\orange.css" />
+    <Content Include="Content\css\icheck\line\pink.css" />
+    <Content Include="Content\css\icheck\line\purple.css" />
+    <Content Include="Content\css\icheck\line\red.css" />
+    <Content Include="Content\css\icheck\line\yellow.css" />
+    <Content Include="Content\css\icheck\line\_all.css" />
+    <Content Include="Content\css\icheck\minimal\aero.css" />
+    <Content Include="Content\css\icheck\minimal\blue.css" />
+    <Content Include="Content\css\icheck\minimal\green.css" />
+    <Content Include="Content\css\icheck\minimal\grey.css" />
+    <Content Include="Content\css\icheck\minimal\minimal.css" />
+    <Content Include="Content\css\icheck\minimal\orange.css" />
+    <Content Include="Content\css\icheck\minimal\pink.css" />
+    <Content Include="Content\css\icheck\minimal\purple.css" />
+    <Content Include="Content\css\icheck\minimal\red.css" />
+    <Content Include="Content\css\icheck\minimal\yellow.css" />
+    <Content Include="Content\css\icheck\minimal\_all.css" />
+    <Content Include="Content\css\icheck\polaris\polaris.css" />
+    <Content Include="Content\css\icheck\square\aero.css" />
+    <Content Include="Content\css\icheck\square\blue.css" />
+    <Content Include="Content\css\icheck\square\green.css" />
+    <Content Include="Content\css\icheck\square\grey.css" />
+    <Content Include="Content\css\icheck\square\orange.css" />
+    <Content Include="Content\css\icheck\square\pink.css" />
+    <Content Include="Content\css\icheck\square\purple.css" />
+    <Content Include="Content\css\icheck\square\red.css" />
+    <Content Include="Content\css\icheck\square\square.css" />
+    <Content Include="Content\css\icheck\square\yellow.css" />
+    <Content Include="Content\css\icheck\square\_all.css" />
+    <Content Include="Content\css\ionicons.css" />
+    <Content Include="Content\css\ionicons.min.css" />
+    <Content Include="Content\css\mvc-grid.css" />
+    <Content Include="Content\css\mvc-tree.css" />
+    <Content Include="Content\css\public.css" />
+    <Content Include="Content\css\select2.css" />
+    <Content Include="Content\css\select2.min.css" />
+    <Content Include="Content\fonts\ionicons.svg" />
+    <Content Include="Content\img\bg.jpg" />
+    <Content Include="Content\img\flag\en.png" />
+    <Content Include="Content\img\flag\vi.png" />
+    <Content Include="Content\img\icheck\flat\aero%402x.png" />
+    <Content Include="Content\img\icheck\flat\aero.png" />
+    <Content Include="Content\img\icheck\flat\blue%402x.png" />
+    <Content Include="Content\img\icheck\flat\blue.png" />
+    <Content Include="Content\img\icheck\flat\flat%402x.png" />
+    <Content Include="Content\img\icheck\flat\flat.png" />
+    <Content Include="Content\img\icheck\flat\green%402x.png" />
+    <Content Include="Content\img\icheck\flat\green.png" />
+    <Content Include="Content\img\icheck\flat\grey%402x.png" />
+    <Content Include="Content\img\icheck\flat\grey.png" />
+    <Content Include="Content\img\icheck\flat\orange%402x.png" />
+    <Content Include="Content\img\icheck\flat\orange.png" />
+    <Content Include="Content\img\icheck\flat\pink%402x.png" />
+    <Content Include="Content\img\icheck\flat\pink.png" />
+    <Content Include="Content\img\icheck\flat\purple%402x.png" />
+    <Content Include="Content\img\icheck\flat\purple.png" />
+    <Content Include="Content\img\icheck\flat\red%402x.png" />
+    <Content Include="Content\img\icheck\flat\red.png" />
+    <Content Include="Content\img\icheck\flat\yellow%402x.png" />
+    <Content Include="Content\img\icheck\flat\yellow.png" />
+    <Content Include="Content\img\icheck\futurico\futurico%402x.png" />
+    <Content Include="Content\img\icheck\futurico\futurico.png" />
+    <Content Include="Content\img\icheck\line\line%402x.png" />
+    <Content Include="Content\img\icheck\line\line.png" />
+    <Content Include="Content\img\icheck\minimal\aero%402x.png" />
+    <Content Include="Content\img\icheck\minimal\aero.png" />
+    <Content Include="Content\img\icheck\minimal\blue%402x.png" />
+    <Content Include="Content\img\icheck\minimal\blue.png" />
+    <Content Include="Content\img\icheck\minimal\green%402x.png" />
+    <Content Include="Content\img\icheck\minimal\green.png" />
+    <Content Include="Content\img\icheck\minimal\grey%402x.png" />
+    <Content Include="Content\img\icheck\minimal\grey.png" />
+    <Content Include="Content\img\icheck\minimal\minimal%402x.png" />
+    <Content Include="Content\img\icheck\minimal\minimal.png" />
+    <Content Include="Content\img\icheck\minimal\orange%402x.png" />
+    <Content Include="Content\img\icheck\minimal\orange.png" />
+    <Content Include="Content\img\icheck\minimal\pink%402x.png" />
+    <Content Include="Content\img\icheck\minimal\pink.png" />
+    <Content Include="Content\img\icheck\minimal\purple%402x.png" />
+    <Content Include="Content\img\icheck\minimal\purple.png" />
+    <Content Include="Content\img\icheck\minimal\red%402x.png" />
+    <Content Include="Content\img\icheck\minimal\red.png" />
+    <Content Include="Content\img\icheck\minimal\yellow%402x.png" />
+    <Content Include="Content\img\icheck\minimal\yellow.png" />
+    <Content Include="Content\img\icheck\polaris\polaris%402x.png" />
+    <Content Include="Content\img\icheck\polaris\polaris.png" />
+    <Content Include="Content\img\icheck\square\aero%402x.png" />
+    <Content Include="Content\img\icheck\square\aero.png" />
+    <Content Include="Content\img\icheck\square\blue%402x.png" />
+    <Content Include="Content\img\icheck\square\blue.png" />
+    <Content Include="Content\img\icheck\square\green%402x.png" />
+    <Content Include="Content\img\icheck\square\green.png" />
+    <Content Include="Content\img\icheck\square\grey%402x.png" />
+    <Content Include="Content\img\icheck\square\grey.png" />
+    <Content Include="Content\img\icheck\square\orange%402x.png" />
+    <Content Include="Content\img\icheck\square\orange.png" />
+    <Content Include="Content\img\icheck\square\pink%402x.png" />
+    <Content Include="Content\img\icheck\square\pink.png" />
+    <Content Include="Content\img\icheck\square\purple%402x.png" />
+    <Content Include="Content\img\icheck\square\purple.png" />
+    <Content Include="Content\img\icheck\square\red%402x.png" />
+    <Content Include="Content\img\icheck\square\red.png" />
+    <Content Include="Content\img\icheck\square\square%402x.png" />
+    <Content Include="Content\img\icheck\square\square.png" />
+    <Content Include="Content\img\icheck\square\yellow%402x.png" />
+    <Content Include="Content\img\icheck\square\yellow.png" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\map_maker.png" />
+    <Content Include="Content\img\MvcTree\icons.png" />
+    <Content Include="Content\img\user.png" />
+    <Content Include="Content\js\adminlte.min.js" />
+    <Content Include="Content\js\init\alerts.js" />
+    <Content Include="Content\js\init\language.js" />
+    <Content Include="Content\js\init\selectpicker.js" />
+    <Content Include="Content\js\init\datepicker.js" />
+    <Content Include="Content\js\init\inputmask.js" />
+    <Content Include="Content\js\init\admintle.js" />
+    <Content Include="Content\js\LanguageJs.js" />
+    <Content Include="Content\fonts\ionicons.eot" />
+    <Content Include="Content\fonts\ionicons.ttf" />
+    <Content Include="Content\fonts\ionicons.woff" />
+    <Content Include="beekitvn-firebase-adminsdk-52ohy-cacfb85a93.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="bundleconfig.json" />
+    <Content Include="Content\css\bootstrap-theme.css.map" />
+    <Content Include="Content\css\bootstrap-theme.min.css.map" />
+    <Content Include="Content\css\bootstrap.css.map" />
+    <Content Include="Content\css\bootstrap.min.css.map" />
+    <Content Include="Content\css\adminlte.css.map" />
+    <Content Include="Content\css\adminlte.min.css.map" />
+    <Content Include="Content\js\plugins\chartjs\Chart.js" />
+    <Content Include="Content\js\plugins\chartjs\Chart.min.js" />
+    <Content Include="Content\js\plugins\datepicker\cultures\bootstrap-datepicker.vi.js" />
+    <Content Include="Content\js\plugins\datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Content\js\plugins\icheck\icheck.js" />
+    <Content Include="Content\js\plugins\icheck\icheck.min.js" />
+    <Content Include="Content\js\plugins\jquery-sparkline\jquery.sparkline.js" />
+    <Content Include="Content\js\plugins\jquery-sparkline\jquery.sparkline.min.js" />
+    <Content Include="Content\js\plugins\jquery-validate\jquery.validate.bootstrap.js" />
+    <Content Include="Content\js\plugins\jquery-validate\jquery.validate.js" />
+    <Content Include="Content\js\plugins\jquery-validate\jquery.validate.min.js" />
+    <Content Include="Content\js\plugins\jquery-validate\jquery.validate.unobtrusive.js" />
+    <Content Include="Content\js\plugins\jquery-validate\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Content\js\plugins\moment\moment-with-locales.js" />
+    <Content Include="Content\js\plugins\moment\moment-with-locales.min.js" />
+    <Content Include="Content\js\plugins\MvcGrid\cultures\mvc-grid.vi.js" />
+    <Content Include="Content\js\plugins\MvcGrid\cultures\mvc-grid.en.js" />
+    <Content Include="Content\js\plugins\MvcTree\mvc-tree.js" />
+    <Content Include="Content\js\init\icheck.js" />
+    <Content Include="Content\js\init\grid.js" />
+    <Content Include="Content\js\init\tree.js" />
+    <Content Include="Content\js\plugins\select2\i18n\af.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ar.js" />
+    <Content Include="Content\js\plugins\select2\i18n\az.js" />
+    <Content Include="Content\js\plugins\select2\i18n\bg.js" />
+    <Content Include="Content\js\plugins\select2\i18n\bn.js" />
+    <Content Include="Content\js\plugins\select2\i18n\bs.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ca.js" />
+    <Content Include="Content\js\plugins\select2\i18n\cs.js" />
+    <Content Include="Content\js\plugins\select2\i18n\da.js" />
+    <Content Include="Content\js\plugins\select2\i18n\de.js" />
+    <Content Include="Content\js\plugins\select2\i18n\dsb.js" />
+    <Content Include="Content\js\plugins\select2\i18n\el.js" />
+    <Content Include="Content\js\plugins\select2\i18n\en.js" />
+    <Content Include="Content\js\plugins\select2\i18n\es.js" />
+    <Content Include="Content\js\plugins\select2\i18n\et.js" />
+    <Content Include="Content\js\plugins\select2\i18n\eu.js" />
+    <Content Include="Content\js\plugins\select2\i18n\fa.js" />
+    <Content Include="Content\js\plugins\select2\i18n\fi.js" />
+    <Content Include="Content\js\plugins\select2\i18n\fr.js" />
+    <Content Include="Content\js\plugins\select2\i18n\gl.js" />
+    <Content Include="Content\js\plugins\select2\i18n\he.js" />
+    <Content Include="Content\js\plugins\select2\i18n\hi.js" />
+    <Content Include="Content\js\plugins\select2\i18n\hr.js" />
+    <Content Include="Content\js\plugins\select2\i18n\hsb.js" />
+    <Content Include="Content\js\plugins\select2\i18n\hu.js" />
+    <Content Include="Content\js\plugins\select2\i18n\hy.js" />
+    <Content Include="Content\js\plugins\select2\i18n\id.js" />
+    <Content Include="Content\js\plugins\select2\i18n\is.js" />
+    <Content Include="Content\js\plugins\select2\i18n\it.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ja.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ka.js" />
+    <Content Include="Content\js\plugins\select2\i18n\km.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ko.js" />
+    <Content Include="Content\js\plugins\select2\i18n\lt.js" />
+    <Content Include="Content\js\plugins\select2\i18n\lv.js" />
+    <Content Include="Content\js\plugins\select2\i18n\mk.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ms.js" />
+    <Content Include="Content\js\plugins\select2\i18n\nb.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ne.js" />
+    <Content Include="Content\js\plugins\select2\i18n\nl.js" />
+    <Content Include="Content\js\plugins\select2\i18n\pl.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ps.js" />
+    <Content Include="Content\js\plugins\select2\i18n\pt-BR.js" />
+    <Content Include="Content\js\plugins\select2\i18n\pt.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ro.js" />
+    <Content Include="Content\js\plugins\select2\i18n\ru.js" />
+    <Content Include="Content\js\plugins\select2\i18n\sk.js" />
+    <Content Include="Content\js\plugins\select2\i18n\sl.js" />
+    <Content Include="Content\js\plugins\select2\i18n\sq.js" />
+    <Content Include="Content\js\plugins\select2\i18n\sr-Cyrl.js" />
+    <Content Include="Content\js\plugins\select2\i18n\sr.js" />
+    <Content Include="Content\js\plugins\select2\i18n\sv.js" />
+    <Content Include="Content\js\plugins\select2\i18n\th.js" />
+    <Content Include="Content\js\plugins\select2\i18n\tk.js" />
+    <Content Include="Content\js\plugins\select2\i18n\tr.js" />
+    <Content Include="Content\js\plugins\select2\i18n\uk.js" />
+    <Content Include="Content\js\plugins\select2\i18n\vi.js" />
+    <Content Include="Content\js\plugins\select2\i18n\zh-CN.js" />
+    <Content Include="Content\js\plugins\select2\i18n\zh-TW.js" />
+    <Content Include="Content\js\plugins\select2\select2.full.js" />
+    <Content Include="Content\js\plugins\select2\select2.full.min.js" />
+    <Content Include="Content\js\plugins\select2\select2.js" />
+    <Content Include="Content\js\plugins\select2\select2.min.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="favicon.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\js\plugins\MvcGrid\mvc-grid.js" />
+    <Content Include="env-tracking-firebase-adminsdk-rgbq9-c4e39873da.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.config" />
+    <Content Include="Views\Shared\MvcGrid\_Pager.cshtml" />
+    <Content Include="Views\Shared\MvcGrid\_Grid.cshtml" />
+    <Content Include="Content\fonts\GridGlyphs.woff" />
+    <Content Include="Views\Error\AccessDenied.cshtml" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
+    <Content Include="Views\Station\Create.cshtml" />
+    <Content Include="Views\Station\Edit.cshtml" />
+    <Content Include="Views\Station\GridSearch.cshtml" />
+    <Content Include="Views\Station\Index.cshtml" />
+    <Content Include="Views\Station\Delete.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Profiles.cshtml" />
+    <Content Include="Views\Account\Registration.cshtml" />
+    <Content Include="Views\Shared\_LayoutPublic.cshtml" />
+    <Content Include="Views\Station\_form.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Sensor\_form.cshtml" />
+    <Content Include="Views\Sensor\Create.cshtml" />
+    <Content Include="Views\Sensor\Delete.cshtml" />
+    <Content Include="Views\Sensor\Edit.cshtml" />
+    <Content Include="Views\Sensor\GridSearch.cshtml" />
+    <Content Include="Views\Sensor\Index.cshtml" />
+    <Content Include="Views\User\_form.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\GridSearch.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Views\ActivityLog\GridSearch.cshtml" />
+    <Content Include="Views\ActivityLog\Index.cshtml" />
+    <Content Include="Views\Role\_form.cshtml" />
+    <Content Include="Views\Role\Create.cshtml" />
+    <Content Include="Views\Role\Delete.cshtml" />
+    <Content Include="Views\Role\Edit.cshtml" />
+    <Content Include="Views\Role\GridSearch.cshtml" />
+    <Content Include="Views\Role\Index.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordForm.cshtml" />
+    <Content Include="Views\Account\_UpdateProfilesForm.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Shared\_GridSearchHeader.cshtml" />
+    <Content Include="Views\Station\Chart.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\Value\Delete.cshtml" />
+    <Content Include="Views\Value\Edit.cshtml" />
+    <Content Include="Views\Value\GridSearch.cshtml" />
+    <Content Include="Views\Value\Index.cshtml" />
+    <Content Include="Views\Value\_form_create.cshtml" />
+    <Content Include="Views\Value\_form_delete.cshtml" />
+    <Content Include="Views\Value\_form_edit.cshtml" />
+    <Content Include="Views\Value\Create.cshtml" />
+    <Content Include="readme.md" />
+    <Content Include="Views\Device\_form.cshtml" />
+    <Content Include="Views\Device\Create.cshtml" />
+    <Content Include="Views\Device\Delete.cshtml" />
+    <Content Include="Views\Device\Edit.cshtml" />
+    <Content Include="Views\Device\GridSearch.cshtml" />
+    <Content Include="Views\Device\Index.cshtml" />
+    <Content Include="Views\Product\_form.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\GridSearch.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Transaction\_form.cshtml" />
+    <Content Include="Views\Transaction\Create.cshtml" />
+    <Content Include="Views\Transaction\Delete.cshtml" />
+    <Content Include="Views\Transaction\GridSearch.cshtml" />
+    <Content Include="Views\Transaction\Index.cshtml" />
+    <Content Include="Views\Transaction\Details.cshtml" />
+    <Content Include="Views\Device\Product.cshtml" />
+    <Content Include="Views\Device\ProductGridSearch.cshtml" />
+    <Content Include="Views\Transaction\Dashboard.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_GlobalResources\Common.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Common.vi.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Common.vi.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\Api\PosController.cs" />
+    <Compile Include="Controllers\Pos\TransactionController.cs" />
+    <Compile Include="Controllers\Pos\ProductController.cs" />
+    <Compile Include="Controllers\Pos\DeviceController.cs" />
+    <Compile Include="Controllers\Rapido\ValueController.cs" />
+    <Compile Include="Controllers\Sys\PatchController.cs" />
+    <Compile Include="Extensions\Alerts\Alert.cs" />
+    <Compile Include="Extensions\Alerts\AlertDefault.cs" />
+    <Compile Include="Extensions\Alerts\AlertsContainer.cs" />
+    <Compile Include="Extensions\Alerts\AlertType.cs" />
+    <Compile Include="Extensions\Helpers\UrlHelperExtension.cs" />
+    <Compile Include="Extensions\Language\LanguageViewEngine.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Account\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Sys\ActivityLogController.cs" />
+    <Compile Include="Controllers\Api\RapidoController.cs" />
+    <Compile Include="Controllers\Rapido\SensorController.cs" />
+    <Compile Include="Controllers\Rapido\StationController.cs" />
+    <Compile Include="Controllers\Account\UserController.cs" />
+    <Compile Include="Controllers\Account\RoleController.cs" />
+    <Compile Include="CustomAuthentication\CustomAuthorizeAttribute.cs" />
+    <Compile Include="CustomAuthentication\CustomMembership.cs" />
+    <Compile Include="CustomAuthentication\CustomMembershipUser.cs" />
+    <Compile Include="CustomAuthentication\CustomPrincipal.cs" />
+    <Compile Include="CustomAuthentication\CustomRole.cs" />
+    <Compile Include="CustomAuthentication\HasPermissionAttribute.cs" />
+    <Compile Include="DAL\DemoContext.cs" />
+    <Compile Include="DAL\DemoInitializer.cs" />
+    <Compile Include="App_GlobalResources\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\MvcTree\MvcTree.cs" />
+    <Compile Include="Extensions\MvcTree\MvcTreeExtensions.cs" />
+    <Compile Include="Extensions\MvcTree\MvcTreeNode.cs" />
+    <Compile Include="Extensions\Resrource\ResourceExtension.cs" />
+    <Compile Include="Models\Pos\Category.cs" />
+    <Compile Include="Models\Pos\DeviceProduct.cs" />
+    <Compile Include="Models\Pos\Transaction.cs" />
+    <Compile Include="Models\Pos\Product.cs" />
+    <Compile Include="Models\Pos\DeviceType.cs" />
+    <Compile Include="Models\Pos\Device.cs" />
+    <Compile Include="Models\Sys\ActivityLog.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Account\Permission.cs" />
+    <Compile Include="Models\Rapido\SampleTime.cs" />
+    <Compile Include="Models\Rapido\Sensor.cs" />
+    <Compile Include="Models\Rapido\Station.cs" />
+    <Compile Include="Models\Account\Role.cs" />
+    <Compile Include="Models\Account\User.cs" />
+    <Compile Include="Models\Rapido\SensorValue.cs" />
+    <Compile Include="Models\Sys\SystemSetting.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared\Actions1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Actions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared\BaseModelTitles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseModelTitles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared\Pages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Pages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ActivityLogViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ChangePasswordViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ChangePasswordViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ChartViews\Titles.Designer.cs" />
+    <Compile Include="Resources\Views\TransactionViews\Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\TransactionViews\Titles.Designer.cs">
+      <DependentUpon>Titles.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\ProductViews\Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\ProductViews\Titles.Designer.cs">
+      <DependentUpon>Titles.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\LoginViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\LoginViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ProfileViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\ProfileViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Errors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Permissions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Permissions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Shared\Validations.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Validations.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\RegistrationViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\RegistrationViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\RoleViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\RoleViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\SampleTimeViews\Titles.Designer.cs" />
+    <Compile Include="Resources\Views\DeviceViews\Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\DeviceViews\Titles.Designer.cs">
+      <DependentUpon>Titles.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\ValueViews\Messages.Designer.cs">
+      <DependentUpon>Messages.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\ValueViews\Titles.Designer.cs">
+      <DependentUpon>Titles.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources\Views\SensorViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\SensorViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\StationViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\StationViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\UserViews\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Views\UserViews\Titles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\CONST.cs" />
+    <Compile Include="Extensions\Bootstrap\BootstrapExtensions.cs" />
+    <Compile Include="Extensions\Sms\FiboSMS.cs" />
+    <Compile Include="Utils\GibberishAES.cs" />
+    <Compile Include="Utils\Helper.cs" />
+    <Compile Include="Extensions\Language\LanguageHelper.cs" />
+    <Compile Include="Extensions\NLog\LoggingExtensions.cs" />
+    <Compile Include="Extensions\Sms\SmsAlert.cs" />
+    <Compile Include="Extensions\Sms\SmsResult.cs" />
+    <Compile Include="ViewModels\Api\Pos\ApiPosTransactionView.cs" />
+    <Compile Include="ViewModels\Api\Pos\ApiPosResult.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoLoginResult.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationDataView.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationDataTime.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationDataValue.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationSensor.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoSensorView.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationView.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoLoginView.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoResultWithData.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoResult.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationPushSensor.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoRegistrationView.cs" />
+    <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationPushView.cs" />
+    <Compile Include="ViewModels\Chart\ChartSearchView.cs" />
+    <Compile Include="ViewModels\Chart\ChartStationView.cs" />
+    <Compile Include="ViewModels\Accounts\ChangePasswordView.cs" />
+    <Compile Include="ViewModels\Sys\CustomSerializeModel.cs" />
+    <Compile Include="ViewModels\Accounts\LoginView.cs" />
+    <Compile Include="ViewModels\Accounts\PermissionView.cs" />
+    <Compile Include="ViewModels\Accounts\ProfileView.cs" />
+    <Compile Include="ViewModels\Accounts\RegistrationView.cs" />
+    <Compile Include="ViewModels\Chart\ChartSensorView.cs" />
+    <Compile Include="ViewModels\Value\SensorValueViewModel.cs" />
+    <Compile Include="ViewModels\Value\StationValueCreateViewModel.cs" />
+    <Compile Include="ViewModels\Value\StationValueEditViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <Content Include="Content\css\AdminLTE.css" />
+    <Content Include="Content\css\AdminLTE.min.css" />
+    <Content Include="Content\css\bootstrap-datepicker3.min.css" />
+    <Content Include="Content\css\bootstrap-select.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\font-awesome.min.css" />
+    <Content Include="Content\css\skins\skin-black-light.css" />
+    <Content Include="Content\css\skins\skin-black-light.min.css" />
+    <Content Include="Content\css\skins\skin-black.css" />
+    <Content Include="Content\css\skins\skin-black.min.css" />
+    <Content Include="Content\css\skins\skin-blue-light.css" />
+    <Content Include="Content\css\skins\skin-blue-light.min.css" />
+    <Content Include="Content\css\skins\skin-blue.css" />
+    <Content Include="Content\css\skins\skin-blue.min.css" />
+    <Content Include="Content\css\skins\skin-green-light.css" />
+    <Content Include="Content\css\skins\skin-green-light.min.css" />
+    <Content Include="Content\css\skins\skin-green.css" />
+    <Content Include="Content\css\skins\skin-green.min.css" />
+    <Content Include="Content\css\skins\skin-purple-light.css" />
+    <Content Include="Content\css\skins\skin-purple-light.min.css" />
+    <Content Include="Content\css\skins\skin-purple.css" />
+    <Content Include="Content\css\skins\skin-purple.min.css" />
+    <Content Include="Content\css\skins\skin-red-light.css" />
+    <Content Include="Content\css\skins\skin-red-light.min.css" />
+    <Content Include="Content\css\skins\skin-red.css" />
+    <Content Include="Content\css\skins\skin-red.min.css" />
+    <Content Include="Content\css\skins\skin-yellow-light.css" />
+    <Content Include="Content\css\skins\skin-yellow-light.min.css" />
+    <Content Include="Content\css\skins\skin-yellow.css" />
+    <Content Include="Content\css\skins\skin-yellow.min.css" />
+    <Content Include="Content\css\skins\_all-skins.css" />
+    <Content Include="Content\css\skins\_all-skins.min.css" />
+    <Content Include="Content\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\fonts\FontAwesome.otf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\js\adminlte.js" />
+    <Content Include="Content\js\init.js" />
+    <Content Include="Content\js\plugins\bootstrap\bootstrap.js" />
+    <Content Include="Content\js\plugins\bootstrap\bootstrap.min.js" />
+    <Content Include="Content\js\plugins\bootstrap-select\bootstrap-select.js" />
+    <Content Include="Content\js\plugins\datepicker\bootstrap-datepicker.js" />
+    <Content Include="Content\js\plugins\datepicker\bootstrap-datepicker.min.js" />
+    <Content Include="Content\js\plugins\fastclick\fastclick.js" />
+    <Content Include="Content\js\plugins\fastclick\fastclick.min.js" />
+    <Content Include="Content\js\plugins\inputmask\jquery.inputmask.bundle.js" />
+    <Content Include="Content\js\plugins\inputmask\jquery.inputmask.bundle.min.js" />
+    <Content Include="Content\js\plugins\jquery\jquery-3.3.1.js" />
+    <Content Include="Content\js\plugins\jquery\jquery-3.3.1.min.js" />
+    <Content Include="Content\js\plugins\moment\moment.js" />
+    <Content Include="Content\js\plugins\moment\moment.min.js" />
+    <Content Include="Content\js\plugins\slimscroll\jquery.slimscroll.js" />
+    <Content Include="Content\js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="Views\web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Error\InternalServerError.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_ControlSidebar.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Sidebar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Sys\ErrorController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\Common.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Common.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="App_GlobalResources\Common.vi.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Common.vi.designer.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="App_GlobalResources\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\BaseModelTitles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BaseModelTitles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared\BaseModelTitles.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\Pages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Pages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared\Pages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ActivityLogViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ActivityLogViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ChangePasswordViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ChangePasswordViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ChangePasswordViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ChangePasswordViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ChartViews\Titles.resx" />
+    <EmbeddedResource Include="Resources\Views\ChartViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\TransactionViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\TransactionViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\TransactionViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\TransactionViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ProductViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ProductViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ProductViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ProductViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\LoginViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\LoginViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\LoginViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\LoginViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ProfileViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ProfileViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ProfileViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ProfileViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Errors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Errors.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\Actions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Actions1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared\Actions.vi.resx" />
+    <EmbeddedResource Include="Resources\Permissions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Permissions.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Permissions.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared\Strings.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\Validations.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Validations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Shared\Validations.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\RegistrationViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\RegistrationViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\RegistrationViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\RegistrationViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\RoleViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\RoleViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\RoleViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\RoleViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\SampleTimeViews\Titles.resx" />
+    <EmbeddedResource Include="Resources\Views\SampleTimeViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\DeviceViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\DeviceViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\DeviceViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\DeviceViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ValueViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ValueViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\ValueViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\ValueViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\SensorViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\SensorViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\SensorViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\SensorViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\StationViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\StationViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\StationViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\StationViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\UserViews\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\UserViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\UserViews\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Views\UserViews\Titles.vi.resx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+    <ItemGroup>
+      <RoslynFiles Include="$(CscToolPath)\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
+    <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
+  </Target>
+</Project>

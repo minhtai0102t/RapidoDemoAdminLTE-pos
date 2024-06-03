@@ -1,0 +1,50 @@
+﻿@model DemoAdminLTE.Models.User
+
+@{
+    Layout = null;
+    string action = ViewContext.RouteData.Values["action"].ToString();
+    bool disabled = (action == "Delete") ? true : false;
+    string submit = (action == "Delete") ? Actions.Delete : Actions.Save;
+    string submitCssClass = (action == "Delete") ? "danger" : "primary";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">@Strings.UserInfo</h3>
+            </div>
+
+            @using (Html.BeginForm(action, "User", FormMethod.Post, new { role = "form" }))
+            {
+                <div class="box-body">
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.Id)
+
+                    @Html.FormEditorFor(model => model.Username, disabled)
+                    @Html.FormEditorFor(model => model.FirstName, disabled)
+                    @Html.FormEditorFor(model => model.LastName, disabled)
+                    @Html.FormEditorFor(model => model.Phone, disabled)
+                    @Html.FormEditorFor(model => model.Email, disabled)
+                    @Html.FormEditorFor(model => model.Password, disabled)
+
+                    @*@Html.FormCheckBoxFor(model => model.IsLockedOut, disabled)*@
+                    @Html.FormCheckBoxFor(model => model.IsApproved, disabled)
+
+                    @*@Html.FormEditorFor(model => model.Comment, disabled)*@
+                     
+                    @Html.FormDropDownList(model=>model.RoleId, "RoleId", disabled, "apply_selectpicker")
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-@submitCssClass"><span class="ion-ios-plus-outline"></span> @submit</button>
+                        <a href="@Url.Action("Index", "User")" class="btn btn-link pull-right"><span class="ion-ios-close-outline"></span> @Actions.Cancel</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

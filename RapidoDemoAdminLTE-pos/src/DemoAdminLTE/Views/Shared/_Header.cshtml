@@ -1,0 +1,122 @@
+﻿@using DemoAdminLTE.CustomAuthentication
+@using DemoAdminLTE.App_GlobalResources
+
+<header class="main-header">
+    @* BEGIN Logo *@
+    <a href="@Url.Action("Index", "Home")" class="logo">
+        @* Mini logo for sidebar 50x50 pixels *@
+        <span class="logo-mini"><b>@Common.AppNameAbb</b>@Common.AdminAbb</span>
+        @* Logo for regular state and mobile devices *@
+        <span class="logo-lg"><b>@Common.AppName</b>@Common.Admin</span>
+    </a>
+    @* END Logo *@
+    @* BEGIN Header *@
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">@Common.ToggleNavigation</span>
+        </a>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                @* BEGIN Language *@
+                <li class="dropdown language-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-language"></i>
+                        <span class="hidden-xs">
+                            &nbsp;
+                            @Strings.Language
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">@Strings.SelectLanguage</li>
+                        <li>
+                            <ul class="menu">
+                                <li class="setLang hide" data-lang="vi">
+                                    <a href="#">
+                                        <div class="pull-left">
+                                            <img src="@Url.Content("~/Content/img/flag/vi.png").AddVersion()" />
+                                        </div>
+                                        <h4>
+                                            @Common.TiengViet
+                                        </h4>
+                                        <p>
+                                            @Common.Vietnamese
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="setLang hide" data-lang="en">
+                                    <a href="#">
+                                        <div class="pull-left">
+                                            <img src="@Url.Content("~/Content/img/flag/en.png").AddVersion()" />
+                                        </div>
+                                        <h4>
+                                            @Common.English
+                                        </h4>
+                                        <p>
+                                            @Common.TiengAnh
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                @* END Language *@
+
+                @* BEGIN User Account Menu *@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    CustomPrincipal user = (CustomPrincipal)User;
+
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="@Url.Content("~/Content/img/user.png").AddVersion()" class="user-image" alt="User Image">
+                        <span class="hidden-xs">
+                            @user.Identity.Name 
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header">
+                            <img src="@Url.Content("~/Content/img/user.png").AddVersion()" class="img-circle" alt="User Image">
+
+                            <p>
+                                @user.FirstName 
+                                @user.LastName
+                                -
+                                @string.Join(", ", user.Role)
+                                <small>
+                                    @user.Phone | @user.Email
+                                    <br />
+                                    @Strings.MemberSince
+                                    @user.CreationDate.ToUniversalTime().Humanize()
+                                </small>
+                            </p>
+                        </li>
+                        @*
+                        <li class="user-body">
+                            <div class="row">
+                                <div class="col-xs-12 text-center">
+                                </div>
+                            </div>
+                        </li>
+                        *@
+                        <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="@Url.Action("Profiles", "Account")" class="btn btn-default btn-flat">@Strings.Profile</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="@Url.Action("Logout", "Account")" class="btn btn-default btn-flat">@Strings.SignOut</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                }
+                @* END User Account Menu *@
+                @* BEGIN Control Sidebar Toggle Button *@
+                <li>
+                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                </li>
+                @* END Control Sidebar Toggle Button *@
+            </ul>
+        </div>
+    </nav>
+</header>

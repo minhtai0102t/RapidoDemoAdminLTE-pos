@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.Role>
+@using DemoAdminLTE.Resources.Views.RoleViews
+
+@{
+    Layout = null;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Id);
+        columns.Add(model => model.RoleName);
+        columns.Add(model => "<ul style=\"margin-bottom:0;padding-left:10px;\">" + string.Join("", model.Permissions.Select(m => "<li>" + m.ToString() + "</li>").ToArray()) + "</ul>").Encoded(false).Titled(Titles.Permissions);
+        columns.Add(model => model.CreationDate).RenderedAs(model => model.CreationDate.ToUniversalTime().Humanize()).Sortable(true);
+
+        columns.Add(model => model.Id == 1 ? "" : "<a href='" + Url.Action("Edit", "Role", new { id = model.Id }) + "' class='label label-warning'><span class='glyphicon glyphicon-pencil'></span> " + Actions.Edit + "</a> " +
+                             "<a href='" + Url.Action("Delete", "Role", new { id = model.Id }) + "' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> " + Actions.Delete + "</a>").Encoded(false).Sortable(false);
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 100;
+    })
+    .AppendCss("table-hover")
+)

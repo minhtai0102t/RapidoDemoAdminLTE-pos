@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "Content/js/plugins/jquery/cultures/globalize.en.min.js",
+    "inputFiles": [
+      "Content/js/plugins/jquery/cultures/globalize.en.js"
+    ]
+  },
+  {
+    "outputFileName": "Content/js/plugins/jquery/cultures/globalize.vi.min.js",
+    "inputFiles": [
+      "Content/js/plugins/jquery/cultures/globalize.vi.js"
+    ]
+  }
+]

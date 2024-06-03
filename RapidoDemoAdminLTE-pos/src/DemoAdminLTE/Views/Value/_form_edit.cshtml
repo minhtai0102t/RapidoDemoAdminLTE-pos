@@ -1,0 +1,46 @@
+﻿@model DemoAdminLTE.ViewModels.StationValueEditViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">@Strings.ValueInfo</h3>
+            </div>
+
+            @using (Html.BeginForm("Edit", "Value", new { id = Model.SampleTimeId }, FormMethod.Post, new { role = "form" }))
+            {
+                <div class="box-body">
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.StationId)
+                    @Html.FormDropDownList(model => model.StationId, "StationId", true, "apply_selectpicker")
+                   
+                    @Html.HiddenFor(model => model.SampleTimeId)
+                    @Html.FormDropDownList(model => model.SampleTimeId, "SampleTimeId", true, "apply_selectpicker")
+
+                    @for (int i = 0; i < Model.Sensors.Count; i++)
+                    {
+                        @Html.HiddenFor(model => model.Sensors[i].SensorName)
+                        @Html.DisplayFor(model => model.Sensors[i].SensorName)
+
+                        @Html.HiddenFor(model => model.Sensors[i].SensorId)
+
+                        @Html.FormEditorFor(model => model.Sensors[i].SensorValue)
+
+                    }
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary"><span class="ion-ios-plus-outline"></span> @Actions.Save</button>
+                        <a href="@Url.Action("Index", "Value", new { stationid = Model.StationId })" class="btn btn-link pull-right"><span class="ion-ios-close-outline"></span> @Actions.Cancel</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

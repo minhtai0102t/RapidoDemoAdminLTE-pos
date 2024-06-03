@@ -1,0 +1,30 @@
+﻿@media (max-width: 768px) {
+    .public .alerts {
+        width: 90%;
+        margin-top: 20px;
+    }
+}
+
+.public .alerts {
+    width: 360px;
+    margin: 20px auto;
+}
+
+.alerts {
+  padding-bottom: 7.5px;
+  padding-top: 7.5px;
+}
+.alerts .alert {
+  align-items: center;
+  text-align: justify;
+  padding: 8px 15px;
+  display: flex;
+  margin: 0;
+}
+.alerts .alert + .alert {
+  margin-top: 5px;
+}
+.alerts .alert span:first-of-type {
+  padding-right: 10px;
+  flex: 1;
+}

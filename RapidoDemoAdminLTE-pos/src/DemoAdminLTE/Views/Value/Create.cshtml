@@ -1,0 +1,19 @@
+﻿@model DemoAdminLTE.ViewModels.StationValueCreateViewModel
+
+@{
+    ViewBag.Title = Pages.ValueCreate;
+}
+
+@Html.Partial("_form_create", Model)
+
+@section ViewSpecificJs {
+    <script>
+
+        $('select.apply_select2').on('select2:select', function (e) {
+            var station_id = e.params.data.id;
+
+            window.location.href = "@Html.Raw(Url.Action("Create", "Value", new { stationid = "Station-Id" }))".replace("Station-Id", station_id);
+        });
+
+    </script>
+}

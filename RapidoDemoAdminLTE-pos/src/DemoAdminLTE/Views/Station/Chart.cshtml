@@ -1,0 +1,176 @@
+﻿@model DemoAdminLTE.ViewModels.ChartSearchView
+@using DemoAdminLTE.ViewModels
+
+@{
+    ViewBag.Title = Pages.StationChart;
+    ChartStationView ChartView = ViewBag.ChartView;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+
+            <div class="box-body">
+                @using (Html.BeginForm("ChartSubmit", "Station", FormMethod.Post, new { role = "form" }))
+                {
+
+                    @Html.HiddenFor(model => model.Id)
+
+                    <div class="col-md-4 no-">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-info">@Html.DisplayNameFor(model => model.TimeFrom)</button>
+                            </div>
+                            @Html.TextBoxFor(model => model.TimeFrom, "{0:dd/MM/yyyy HH:mm:ss}", new { @class = "form-control", type = "datetime" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-info">@Html.DisplayNameFor(model => model.TimeTo)</button>
+                            </div>
+                            @Html.TextBoxFor(model => model.TimeTo, "{0:dd/MM/yyyy HH:mm:ss}", new { @class = "form-control", type = "datetime" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 no-">
+                        <button type="submit" class="btn btn-warning">@Actions.Go</button>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary box-solid">
+
+            <div class="box-header with-border">
+                <h3 class="box-title">@ChartView.Name</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="box-body no-padding">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="no-pad">
+                            <canvas id="lineChart" width="400" height="150"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section ViewSpecificJs {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var config = {
+                type: 'line',
+                data: {
+                    labels: [
+                        @Html.Raw(ChartView.ChartLabel)
+                    ],
+                    datasets: [
+                        @foreach (var s in ChartView.Sensors){
+                            if(s.Id < 1005 || s.Id > 1008) { 
+                            <text>
+                            {
+                                id: @s.Id,
+                                label: '@Html.Raw(s.Name)',
+                                data: [@Html.Raw(s.Data)],
+                                tooltip_label: [@Html.Raw(s.TooltipLabel)],
+                                tooltip_title: [@Html.Raw(s.TooltipTitle)],
+
+                                backgroundColor: @Html.Raw(s.ColorFill),
+                                borderColor: @Html.Raw(s.ColorBorder),
+                                fill: false,
+                                lineTension: 0,
+                                pointHoverRadius: 10,
+                                pointHoverBackgroundColor: @Html.Raw(s.ColorBorder),
+                            },
+                            </text>
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: '@Strings.LineChart'
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].tooltip_label[tooltipItem.index] || '...';
+                                label = data.datasets[tooltipItem.datasetIndex].label + ': ' + label;
+                                return label;
+                            },
+                            title: function (tooltipItems, data) {
+                                var title = data.datasets[tooltipItems[0].datasetIndex].tooltip_title[tooltipItems[0].index] || '...';
+                                return title;
+                            }
+                        }
+                    }
+                }
+            };
+
+            var ctx = document.getElementById("lineChart");
+            var lineChart = new Chart(ctx, config);
+            var lastedSampleTimeId = @ChartView.LastedSampleTimeId;
+
+            function addData(chart, label, values) {
+                //console.log(values);
+                chart.data.datasets.forEach((dataset) => {
+                    var v = values.find(function (x) {
+                        return x.sid === dataset.id;
+                    });
+                    //console.log(v);
+                    if (v && (v.sid < 1005 || v.sid > 1008)) {
+                        dataset.data.push(v.value);
+                        dataset.tooltip_label.push(v.tooltip_label);
+                        dataset.tooltip_title.push(v.tooltip_title);
+                        //console.log('not null');
+                    } else {
+                        dataset.data.push(0);
+                        dataset.tooltip_label.push('error');
+                        dataset.tooltip_title.push('error');
+                        //console.log('null');
+                    }
+                });
+
+                chart.data.labels.push(label);
+                if (chart.data.labels.length > 20) {
+                    chart.data.labels.shift();
+                    chart.data.datasets.forEach((dataset) => {
+                        dataset.data.shift();
+                        dataset.tooltip_label.shift();
+                        dataset.tooltip_title.shift();
+                    });
+                }
+                chart.update();
+            }
+
+            setInterval(function () {
+                $.get("@Html.Raw(Url.Action("getLasted", "Station", new { id = ChartView.Id }))" + "?tid=" + lastedSampleTimeId, function (data) {
+                    if (data.tid > lastedSampleTimeId) {
+                        lastedSampleTimeId = data.tid;
+
+                        var label = moment(data.time).format("HH:mm");
+                        addData(lineChart, label, data.values);
+                    }
+                });
+            }, 5000);
+        });
+    </script>
+}

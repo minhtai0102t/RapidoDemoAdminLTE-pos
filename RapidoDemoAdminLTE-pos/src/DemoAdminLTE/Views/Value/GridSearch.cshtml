@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.SampleTime>
+@using DemoAdminLTE.Resources.Shared
+@using DemoAdminLTE.Models
+
+@{
+    Layout = null;
+    Sensor[] sensors = ViewBag.Sensors;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Id);
+        columns.Add(model => model.Time).RenderedAs(model => model.TimeStringDisplay).Sortable(true).InitialSort(GridSortOrder.Desc);
+
+        //columns.Add(model => model.Station.Name).Titled(Strings.Station);
+        //columns.Add(model => model.SensorValues).Titled(Strings.Sensor);
+        //columns.Add(model => model.SensorValues).Titled(Strings.Value);
+
+        columns.Add(model => model.TdHtmlRawValues).Titled(Html.GridValueHeaderHtml(sensors)).Encoded(false).Sortable(false).Filterable(false);
+
+
+        columns.Add(model => "<a href='" + Url.Action("Edit", "Value", new { id = model.Id }) + "' class='label label-warning'><span class='glyphicon glyphicon-pencil'></span> " + Actions.Edit + "</a> " +
+                                "<a href='" + Url.Action("Delete", "Value", new { id = model.Id }) + "' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> " + Actions.Delete + "</a>").Encoded(false).Sortable(false);
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 100;
+    })
+    .AppendCss("table-hover")
+)

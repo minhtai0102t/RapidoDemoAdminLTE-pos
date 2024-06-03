@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.ActivityLog>
+
+@{
+    Layout = null;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Id).Sortable(true).InitialSort(GridSortOrder.Desc);
+        columns.Add(model => model.CreationDate).RenderedAs(model => model.CreationDate.ToUniversalTime().Humanize()).Sortable(true);
+
+        columns.Add(model => model.Context);
+        columns.Add(model => model.Username).Sortable(false).Filterable(false);
+        columns.Add(model => model.Action);
+        columns.Add(model => model.Message);
+
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 100;
+    })
+    .AppendCss("table-hover")
+)

@@ -1,0 +1,79 @@
+﻿@model DemoAdminLTE.Models.User
+@using DemoAdminLTE.ViewModels
+
+@{
+    ViewBag.Title = Pages.AccountProfiles;
+}
+
+<div class="row">
+    <div class="col-md-3">
+
+        <div class="box box-primary">
+            <div class="box-body box-profile">
+                <img class="profile-user-img img-responsive img-circle" src="@Url.Content("~/Content/img/user.png").AddVersion()" alt="User profile picture">
+
+                <h3 class="profile-username text-center">
+                    @Html.ValueFor(model => model.FullName)
+                </h3>
+
+                <p class="text-muted text-center">
+                    @Strings.MemberSince
+                    @Model.CreationDate.ToUniversalTime().Humanize()
+                </p>
+
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Username)</b>
+                        <a class="pull-right">@Html.ValueFor(model => model.Username)</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Phone)</b>
+                        <a class="pull-right">@Html.ValueFor(model => model.Phone)</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>@Html.DisplayNameFor(model => model.Email)</b>
+                        <a class="pull-right">@Html.ValueFor(model => model.Email)</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">@Strings.AboutMe</h3>
+            </div>
+
+            <div class="box-body">
+                <strong><i class="fa fa-file-text-o margin-r-5"></i> @Strings.Comment</strong>
+                <p>@*@Html.ValueFor(model => model.Comment)*@</p>
+                <strong><i class="fa fa-key margin-r-5"></i> Token</strong>
+                <p>@Html.ValueFor(model => model.Comment)</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#UpdateProfiles" data-toggle="tab">@Strings.UpdateProfiles</a></li>
+                <li><a href="#ChangePassword" data-toggle="tab">@Strings.ChangePassword</a></li>
+            </ul>
+            <div class="tab-content">
+
+                <div class="tab-pane active" id="UpdateProfiles">
+                    @Html.Partial("_UpdateProfilesForm", new ProfileView(Model))
+                </div>
+
+                <div class="tab-pane" id="ChangePassword">
+                    @Html.Partial("_ChangePasswordForm", new ChangePasswordView())
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

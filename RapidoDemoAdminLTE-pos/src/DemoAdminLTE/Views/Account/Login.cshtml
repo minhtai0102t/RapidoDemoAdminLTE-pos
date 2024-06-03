@@ -1,0 +1,71 @@
+﻿@model  DemoAdminLTE.ViewModels.LoginView
+@using DemoAdminLTE.App_GlobalResources
+
+@{
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+    ViewBag.Title = Pages.AccountLogin;
+    ViewBag.Page = "login-page";
+}
+
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"><b>@Common.AppName</b>@Common.Admin</a>
+    </div>
+    <div class="login-box-body">
+        <p class="login-box-msg">@Strings.LoginToStart</p>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger form-group has-feedback" })
+
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Username).ToString()) } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                <span class="ion-person form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", type = "password", placeholder = HttpUtility.HtmlDecode(Html.DisplayNameFor(model => model.Password).ToString()) } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                <span class="ion-ios-keypad form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-7 col-xs-12">
+                    <div class="checkbox icheck">
+                        <label>
+                            @Html.CheckBoxFor(model => model.RememberMe)
+                            @Html.DisplayNameFor(model => model.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">@Actions.Login</button>
+                </div>
+            </div>
+        }
+
+        @*
+        <div class="social-auth-links text-center">
+            <p>- @Accounts.Or -</p>
+            <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                <i class="fa fa-facebook"></i> @Accounts.SigninUsing
+                Facebook
+            </a>
+            <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                <i class="fa fa-google-plus"></i> @Accounts.SigninUsing
+                Google+
+            </a>
+        </div>
+        *@
+
+        <div class="row" style="margin-top:10px; padding-top:10px; border-top:1px solid #d2d6de">
+            <div class="col-xs-6">
+                <a href="#">@Strings.ForgotPassword</a><br>
+            </div>
+            <div class="col-xs-6">
+                <a href="@Url.Action("Registration")" class="pull-right">@Strings.RegisterAccount</a>
+            </div>
+        </div>
+    </div>
+</div>

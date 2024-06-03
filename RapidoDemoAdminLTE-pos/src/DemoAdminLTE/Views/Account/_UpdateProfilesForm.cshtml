@@ -1,0 +1,19 @@
+﻿@model DemoAdminLTE.ViewModels.ProfileView
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("UpdateProfiles", "Account", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+{
+    @Html.FormHorizontalEditorFor(model => model.FirstName)
+    @Html.FormHorizontalEditorFor(model => model.LastName)
+    @Html.FormHorizontalEditorFor(model => model.Email)
+    @Html.FormHorizontalEditorFor(model => model.Phone)
+    @Html.FormHorizontalTextAreaFor(model => model.Comment)
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+            <button type="submit" class="btn btn-warning">@Actions.Save</button>
+        </div>
+    </div>
+}

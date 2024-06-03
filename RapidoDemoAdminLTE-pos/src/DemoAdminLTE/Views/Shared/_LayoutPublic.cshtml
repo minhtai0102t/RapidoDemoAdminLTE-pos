@@ -1,0 +1,76 @@
+﻿@using DemoAdminLTE.Extensions.Alerts
+@using DemoAdminLTE.App_GlobalResources
+
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="@Url.Content("~/favicon.png")" type="image/png" />
+    <title>
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Title))
+        {
+            @ViewBag.Title@: -
+        }
+        @Common.AppName@Common.Admin
+    </title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    @Styles.Render("~/Bundles/css")
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition public @(ViewBag.Page ?? "")">
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <img alt="Brand" src="@Url.Content("~/Content/img/logo.png")" height="20">
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                <div class="navbar-text navbar-right">
+                    <a class="navbar-link setLang hide" href="#" data-lang="vi">
+                        <img src="@Url.Content("~/Content/img/flag/vi.png").AddVersion()" height="18" alt="Tiếng Việt" />
+                        &nbsp;
+                        Tiếng Việt
+                    </a>
+                    <a class="navbar-link setLang hide" href="#" data-lang="en">
+                        <img src="@Url.Content("~/Content/img/flag/en.png").AddVersion()" height="18" alt="English" />
+                        &nbsp;
+                        English
+                    </a>
+                </div>
+            </div>
+        </div>
+</nav>
+
+    <div class="alerts">
+        @foreach (Alert alert in TempData["Alerts"] as AlertsContainer)
+        {
+            <div id="@alert.Id" class="alert alert-@alert.Type.ToString().ToLowerInvariant()" data-timeout="@alert.Timeout">
+                <span>
+                    <span class="@alert.Icon"></span>
+                    @alert.Message
+                </span>
+                <span class="close">×</span>
+            </div>
+        }
+    </div>
+
+    @RenderBody()
+    @Scripts.Render("~/Bundles/js")
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DemoAdminLTE.Models.Station>
+@using DemoAdminLTE.Resources.Views.StationViews
+
+@{
+    Layout = null;
+}
+
+@(Html
+    .Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Id);
+        columns.Add(model => model.Name);
+        columns.Add(model => model.Address);
+        //columns.Add(model => model.Latitude);
+        //columns.Add(model => model.Longitude);
+        columns.Add(model => model.IsActive)
+            .RenderedAs(model => model.IsActive ? "<span class=\"ion ion-checkmark-round text-primary\"></span>" : "<span class=\"ion ion-close-round text-danger\"></span>")
+            .Encoded(false);
+        columns.Add(model => model.IsSmsAlertEnable)
+            .RenderedAs(model => (model.IsSmsAlertEnable ? "<span class=\"ion ion-checkmark-round text-primary\"></span>" : "<span class=\"ion ion-close-round text-danger\"></span>") + " " + model.SmsAlertPhoneNumber)
+            .Encoded(false).Titled("SMS");
+        //columns.Add(model => model.SmsAlertPhoneNumber);
+        columns.Add(model => "<ul style=\"margin-bottom:0;padding-left:10px;\">" + string.Join("", model.Sensors.Select(m => "<li>" + m.Name + "</li>").ToArray()) + "</ul>").Encoded(false).Titled(Titles.Sensors);
+        //columns.Add(model => model.CreationDate).RenderedAs(model => model.CreationDate.ToUniversalTime().Humanize()).Sortable(true);
+
+        columns.Add(model =>    "<a href='" + Url.Action("Chart", "Station", new { id = model.Id }) + "' class='btn btn-success' style='margin-bottom: 3px;'><span class='glyphicon glyphicon-equalizer'></span> " + Actions.Chart + "</a> " +
+                                "<a href='" + Url.Action("Index", "Value", new { stationid = model.Id }) + "' class='btn btn-info' style='margin-bottom: 3px;'><span class='glyphicon glyphicon-list-alt'></span> " + Actions.Data + "</a> " +
+                                "<br />" +
+                                "<a href='" + Url.Action("Edit", "Station", new { id = model.Id }) + "' class='btn btn-warning' style='margin-bottom: 3px;'><span class='glyphicon glyphicon-wrench'></span> " + Actions.Edit + "</a> " +
+                                "<a href='" + Url.Action("Delete", "Station", new { id = model.Id }) + "' class='btn btn-danger' style='margin-bottom: 3px;'><span class='glyphicon glyphicon-trash'></span> " + Actions.Delete + "</a>"
+                    ).Encoded(false).Sortable(false);
+    })
+    .Empty(Strings.NoData)
+    .Filterable()
+    .Sortable()
+    .Pageable(pager =>
+    {
+        pager.PageSizes = new Dictionary<Int32, String> { { 0, Strings.All }, { 20, "20" }, { 50, "50" }, { 100, "100" }, { 500, "500" } };
+        pager.ShowPageSizes = true;
+        //pager.PagesToDisplay = 3;
+        //pager.CurrentPage = 2;
+        pager.RowsPerPage = 25;
+    })
+    .AppendCss("table-hover")
+)
