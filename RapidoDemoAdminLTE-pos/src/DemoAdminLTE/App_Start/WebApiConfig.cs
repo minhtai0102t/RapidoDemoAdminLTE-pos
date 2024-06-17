@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Configuration;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 namespace DemoAdminLTE
@@ -19,6 +20,9 @@ namespace DemoAdminLTE
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { action = "Get", id = RouteParameter.Optional }
             );
+            // Config value
+            AppConfig.apiUrl = ConfigurationManager.AppSettings["ApiUrl"];
+            AppConfig.PageSizeDefaultValue = int.Parse(ConfigurationManager.AppSettings["PageSizeDefaultValue"]);
         }
     }
 }

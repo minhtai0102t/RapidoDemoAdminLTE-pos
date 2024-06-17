@@ -531,12 +531,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Common.vi.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_Start\AppConfig.cs" />
     <Compile Include="Controllers\Api\PosController.cs" />
+    <Compile Include="Controllers\Constants.cs" />
     <Compile Include="Controllers\Pos\TransactionController.cs" />
     <Compile Include="Controllers\Pos\ProductController.cs" />
     <Compile Include="Controllers\Pos\DeviceController.cs" />
     <Compile Include="Controllers\Rapido\ValueController.cs" />
     <Compile Include="Controllers\Sys\PatchController.cs" />
+    <Compile Include="CustomAuthentication\CustomReq.cs" />
+    <Compile Include="CustomAuthentication\CustomRes.cs" />
     <Compile Include="Extensions\Alerts\Alert.cs" />
     <Compile Include="Extensions\Alerts\AlertDefault.cs" />
     <Compile Include="Extensions\Alerts\AlertsContainer.cs" />
@@ -570,6 +574,7 @@
     <Compile Include="Extensions\MvcTree\MvcTreeExtensions.cs" />
     <Compile Include="Extensions\MvcTree\MvcTreeNode.cs" />
     <Compile Include="Extensions\Resrource\ResourceExtension.cs" />
+    <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Models\Pos\Category.cs" />
     <Compile Include="Models\Pos\DeviceProduct.cs" />
     <Compile Include="Models\Pos\Transaction.cs" />

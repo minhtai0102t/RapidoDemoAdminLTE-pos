@@ -1,24 +1,22 @@
-﻿using Newtonsoft.Json;
-using NLog;
-using DemoAdminLTE.CustomAuthentication;
+﻿using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.DAL;
+using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Extensions.Alerts;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Utils;
-using DemoAdminLTE.Extensions;
 using DemoAdminLTE.ViewModels;
+using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Security;
-using DemoAdminLTE.Extensions.Alerts;
 using ChangePasswordViewStrings = DemoAdminLTE.Resources.Views.ChangePasswordViews.Messages;
-using ProfileViewStrings = DemoAdminLTE.Resources.Views.ProfileViews.Messages;
 using LoginViewStrings = DemoAdminLTE.Resources.Views.LoginViews.Messages;
+using ProfileViewStrings = DemoAdminLTE.Resources.Views.ProfileViews.Messages;
 using RegistrationViewStrings = DemoAdminLTE.Resources.Views.RegistrationViews.Messages;
 
 namespace DemoAdminLTE.Controllers
@@ -44,97 +42,39 @@ namespace DemoAdminLTE.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userByPhone = CustomMembership.ValidateUserByPhone(loginView.Username, loginView.Password);
-                var userByEmail = CustomMembership.ValidateUserByEmail(loginView.Username, loginView.Password);
-                var isValidUser = Membership.ValidateUser(loginView.Username, loginView.Password);
-
-                if (userByPhone != null && !isValidUser)
+                using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
                 {
-                    isValidUser = Membership.ValidateUser(userByPhone.Username, loginView.Password);
-                    if (isValidUser)
-                        loginView.Username = userByPhone.Username;
-                }
-
-                if (userByEmail != null && !isValidUser)
-                {
-                    isValidUser = Membership.ValidateUser(userByEmail.Username, loginView.Password);
-                    if (isValidUser)
-                        loginView.Username = userByEmail.Username;
-                }
-
-                if (isValidUser)
-                {
-                    var user = (CustomMembershipUser)Membership.GetUser(loginView.Username, false);
-
-                    if (user != null)
+                    var req = new AccountSignInReq
                     {
-                        if (user.IsApproved && !user.IsLockedOut)
+                        user_name = loginView.Username,
+                        password = loginView.Password
+                    };
+                    var token = apiHelper.Post<string>("api/Accounts/sign-in", req);
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        HttpCookie faCookie = new HttpCookie(CONST.COOKIE_AUTHENTICATION, token);
+                        Response.Cookies.Add(faCookie);
+
+                        Alerts.AddSuccess(LoginViewStrings.LoginSuccess);
+
+                        if (Url.IsLocalUrl(ReturnUrl))
                         {
-                            CustomSerializeModel userModel = new CustomSerializeModel()
-                            {
-                                UserId = user.UserId,
-                                FirstName = user.FirstName,
-                                LastName = user.LastName,
-                                RoleName = user.Role.RoleName,
-                                Phone = user.Phone,
-                                Email = user.Email,
-                                CreationDate = user.CreationDate,
-                                PermissionString = user.Permissions.Select(p => p.ToString()).ToList(),
-                            };
-
-                            string userData = JsonConvert.SerializeObject(userModel);
-                            DateTime issueDate = DateTime.Now;
-                            DateTime expirDate = issueDate.AddMinutes(15);
-                            if (loginView.RememberMe)
-                            {
-                                expirDate = issueDate.AddYears(1);
-                            }
-                            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, loginView.Username, issueDate, expirDate, false, userData);
-
-                            string enTicket = FormsAuthentication.Encrypt(authTicket);
-                            HttpCookie faCookie = new HttpCookie(CONST.COOKIE_AUTHENTICATION, enTicket);
-                            Response.Cookies.Add(faCookie);
-
-                            // update last login date
-                            using (DemoContext dbContext = new DemoContext())
-                            {
-                                var dbUser = dbContext.Users.Find(user.UserId);
-                                if (dbUser != null)
-                                {
-                                    dbUser.LastLoginDate = DateTime.Now;
-                                    dbUser.LastActivityDate = DateTime.Now;
-                                    dbContext.Entry(dbUser).State = EntityState.Modified;
-                                    dbContext.SaveChanges();
-                                }
-                            }
-
-                            Log.ToDatabase(user.UserId, "Login", "User login");
-                            Alerts.AddSuccess(LoginViewStrings.LoginSuccess);
-
-                            if (Url.IsLocalUrl(ReturnUrl))
-                            {
-                                return Redirect(ReturnUrl);
-                            }
-                            else
-                            {
-                                return RedirectToDefault();
-                            }
+                            return Redirect(ReturnUrl);
                         }
                         else
                         {
-                            ModelState.AddModelError("", LoginViewStrings.LoginFailure);
+                            return RedirectToDefault();
                         }
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError("", LoginViewStrings.LoginInvalid);
+                    ModelState.AddModelError("", LoginViewStrings.LoginFailure);
                 }
             }
-
+            else
+            {
+                ModelState.AddModelError("", LoginViewStrings.LoginInvalid);
+            }
             return View(loginView);
         }
-
         [HttpGet]
         public ActionResult Registration()
         {

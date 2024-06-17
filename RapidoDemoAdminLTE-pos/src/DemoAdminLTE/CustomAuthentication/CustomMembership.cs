@@ -9,10 +9,8 @@ namespace DemoAdminLTE.CustomAuthentication
 {
     public class CustomMembership : MembershipProvider
     {
-
-
         /// <summary>  
-        ///   
+        /// 
         /// </summary>  
         /// <param name="username"></param>  
         /// <param name="password"></param>  
@@ -23,43 +21,47 @@ namespace DemoAdminLTE.CustomAuthentication
             {
                 return false;
             }
-
-            using (DemoContext dbContext = new DemoContext())
+            using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
             {
-                var user = (from us in dbContext.Users
-                            where string.Compare(username, us.Username, StringComparison.OrdinalIgnoreCase) == 0
-                            //&& us.IsApproved == true
-                            select us).FirstOrDefault();
-
-                return (user != null && Crypto.VerifyHashedPassword(user.PasswordHash, password)) ? true : false;
+                var req = new UserSearchReq
+                {
+                    keysearch = username
+                };
+                var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+                if (users == null)
+                {
+                    return false;
+                }
+                var user = users.Records.FirstOrDefault();
+                var validateRes = user.user_name.Equals(username) && Crypto.VerifyHashedPassword(user.password, password); // missing password compare here
+                return validateRes;
             }
         }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="phone"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static User ValidateUserByPhone(string phone, string password)
+        public static UserSearchRes ValidateUserByPhone(string phone, string password)
         {
             if (string.IsNullOrEmpty(phone) || string.IsNullOrEmpty(password))
             {
                 return null;
             }
-
-            using (DemoContext dbContext = new DemoContext())
+            using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
             {
-                var user = (from us in dbContext.Users
-                            where string.Compare(phone, us.Phone, StringComparison.OrdinalIgnoreCase) == 0
-                            //&& us.IsApproved == true
-                            select us).FirstOrDefault();
-
-                if (user != null && Crypto.VerifyHashedPassword(user.PasswordHash, password))
+                var req = new UserSearchReq
                 {
-                    return user;
+                    keysearch = phone
+                };
+                var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+                if (users == null)
+                {
+                    return null;
                 }
-                return null;
+                var user = users.Records.FirstOrDefault(c => c.phone.Equals(phone) && Crypto.VerifyHashedPassword(c.password, password));
+                return user;
             }
         }
 
@@ -69,24 +71,26 @@ namespace DemoAdminLTE.CustomAuthentication
         /// <param name="email"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static User ValidateUserByEmail(string email, string password)
+        public static UserSearchRes ValidateUserByEmail(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 return null;
             }
 
-            using (DemoContext dbContext = new DemoContext())
+            using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
             {
-                var user = (from us in dbContext.Users
-                            where string.Compare(email, us.Email, StringComparison.OrdinalIgnoreCase) == 0
-                            //&& us.IsApproved == true
-                            select us).FirstOrDefault();
-                if(user != null && Crypto.VerifyHashedPassword(user.PasswordHash, password))
+                var req = new UserSearchReq
                 {
-                    return user;
+                    keysearch = email
+                };
+                var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+                if (users == null)
+                {
+                    return null;
                 }
-                return null;
+                var user = users.Records.FirstOrDefault(c => c.email.Equals(email) && Crypto.VerifyHashedPassword(c.password, password));
+                return user;
             }
         }
 
