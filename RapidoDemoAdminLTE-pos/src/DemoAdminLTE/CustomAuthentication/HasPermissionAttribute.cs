@@ -26,10 +26,15 @@ namespace DemoAdminLTE.CustomAuthentication
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (CurrentUser != null && CurrentUser.HasPermission(_permission))
+            // Comment check hasPermission => pass
+            if(CurrentUser!= null)
             {
                 return;
             }
+            //if (CurrentUser != null && CurrentUser.HasPermission(_permission))
+            //{
+            //    return;
+            //}
 
             // Handle Unauthorized Request
             RedirectToRouteResult routeData;

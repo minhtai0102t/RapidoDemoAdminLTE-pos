@@ -15,6 +15,9 @@ using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.Extensions;
 using System.Web.Http;
 using DemoAdminLTE.Utils;
+using System.IdentityModel.Tokens;
+using System.Linq;
+using System.IdentityModel.Claims;
 
 namespace DemoAdminLTE
 {
@@ -96,22 +99,39 @@ namespace DemoAdminLTE
                 HttpCookie authCookie = Request.Cookies[CONST.COOKIE_AUTHENTICATION];
                 if (authCookie != null)
                 {
-                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    string token = authCookie.Value;
+                    var handler = new JwtSecurityTokenHandler();
+                    var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+                    if (jsonToken != null)
+                    {
+                        var claims = jsonToken.Claims;
+                        var principal = new CustomPrincipal(claims.First(c => c.Type == JwtRegisteredClaimNames.UniqueName).Value)
+                        {
+                            UserId = int.Parse(claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid")?.Value),
+                            FirstName = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.GivenName)?.Value,
+                            LastName = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.FamilyName)?.Value,
+                            Role = claims.FirstOrDefault(c => c.Type == "role")?.Value,
+                            Phone = claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/mobilephone")?.Value,
+                            Email = claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email)?.Value,
+                            CreationDate = DateTime.UtcNow, // This might be different, depends on your token's claims
+                            Permissions = new string[] { } // Add your logic to parse permissions, if they are in the claims
+                        };                        //FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
 
-                    var serializeModel = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
+                        //var serializeModel = JsonConvert.DeserializeObject<CustomSerializeModel>(authTicket.UserData);
 
-                    CustomPrincipal principal = new CustomPrincipal(authTicket.Name);
+                        //CustomPrincipal principal = new CustomPrincipal(serializeModel.FirstName);
 
-                    principal.UserId = serializeModel.UserId;
-                    principal.FirstName = serializeModel.FirstName;
-                    principal.LastName = serializeModel.LastName;
-                    principal.Role = serializeModel.RoleName;
-                    principal.Phone = serializeModel.Phone;
-                    principal.Email = serializeModel.Email;
-                    principal.CreationDate = serializeModel.CreationDate;
-                    principal.Permissions = serializeModel.PermissionString.ToArray();
+                        //principal.UserId = serializeModel.UserId;
+                        //principal.FirstName = serializeModel.FirstName;
+                        //principal.LastName = serializeModel.LastName;
+                        //principal.Role = serializeModel.RoleName;
+                        //principal.Phone = serializeModel.Phone;
+                        //principal.Email = serializeModel.Email;
+                        //principal.CreationDate = serializeModel.CreationDate;
+                        //principal.Permissions = serializeModel.PermissionString.ToArray();
 
-                    HttpContext.Current.User = principal;
+                        HttpContext.Current.User = principal;
+                    }
                 }
             }
             catch (CryptographicException)

@@ -29,19 +29,6 @@ namespace DemoAdminLTE.Controllers
             }
         }
 
-        //protected override void OnAuthorization(AuthorizationContext context)
-        //{
-        //    //string action = context.RouteData.Values["action"] as string;
-        //    //string controller = context.RouteData.Values["controller"] as string;
-
-        //    //Debug.WriteLine("action     = " + action);
-        //    //Debug.WriteLine("controller = " + controller);
-
-        //    //if (User.Identity.IsAuthenticated && !IsAuthorizedFor(action, controller, area))
-        //    //    context.Result = RedirectToUnauthorized();
-        //    base.OnAuthorization(context);
-        //}
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string cultureOnCookie = GetCultureOnCookie(filterContext.HttpContext.Request);
@@ -124,6 +111,5 @@ namespace DemoAdminLTE.Controllers
         {
             return RedirectToAction("NotFound", "Error");
         }
-
     }
 }

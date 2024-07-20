@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 
 namespace DemoAdminLTE.CustomAuthentication
 {
-    public class CustomPrincipal : IPrincipal
+    public class CustomPrincipal : ClaimsPrincipal
     {
         #region Identity Properties  
 
@@ -42,9 +43,10 @@ namespace DemoAdminLTE.CustomAuthentication
             return false;
         }
 
-        public CustomPrincipal(string username)
+        public CustomPrincipal(string username) : base(new ClaimsIdentity(username))
         {
             Identity = new GenericIdentity(username);
         }
     }
+
 }

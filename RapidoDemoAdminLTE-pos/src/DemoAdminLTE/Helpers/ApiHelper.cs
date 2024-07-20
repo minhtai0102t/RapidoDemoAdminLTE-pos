@@ -8,9 +8,9 @@ namespace DemoAdminLTE
 {
     public class ApiHelper : IDisposable
     {
-        private static readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-        static ApiHelper()
+        public ApiHelper()
         {
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
@@ -19,6 +19,9 @@ namespace DemoAdminLTE
 
         public ApiHelper(string baseAddress)
         {
+            _httpClient = new HttpClient();
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _httpClient.BaseAddress = new Uri(baseAddress);
         }
 
