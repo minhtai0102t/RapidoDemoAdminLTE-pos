@@ -1,18 +1,18 @@
-﻿using NonFactors.Mvc.Grid;
-using DemoAdminLTE.CustomAuthentication;
+﻿using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.DAL;
+using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
+using DemoAdminLTE.Resources.Views.UserViews;
+using NLog;
+using NonFactors.Mvc.Grid;
 using OfficeOpenXml;
 using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Web.Mvc;
-using DemoAdminLTE.Resources.Views.UserViews;
 using System.Web.Helpers;
-using NLog;
-using DemoAdminLTE.Extensions;
-using DemoAdminLTE.Helpers;
+using System.Web.Mvc;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -23,7 +23,7 @@ namespace DemoAdminLTE.Controllers
         private readonly IApiHelper apiHelper;
         public UserController()
         {
-            apiHelper = new ApiHelper();
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
         // GET: Users
         [HasPermission("User/List")]
@@ -34,7 +34,7 @@ namespace DemoAdminLTE.Controllers
             //{
             //    keysearch = username
             //};
-            //var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+            //var users = apiHelper.Post<PagingResponse<UserSearchRes>>("api/Users/Search", jsonContent: req);
             ViewBag.DataTotal = db.Users.Count();
             return View();
         }
@@ -47,7 +47,7 @@ namespace DemoAdminLTE.Controllers
             {
                 keysearch = search
             };
-            var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+            var users = apiHelper.Post<PagingResponse<UserSearchRes>>("api/Users/Search", jsonContent: req);
             return PartialView(users);
         }
 
@@ -56,7 +56,9 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", 2);
+            var role = apiHelper.Get<RoleRes>($"api/roles/2");
+            ViewBag.RoleId = role;
+            //ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", 2);
             return View();
         }
 
@@ -89,34 +91,13 @@ namespace DemoAdminLTE.Controllers
                 }
                 else
                 {
-                    // username duplicate check
-                    User existUser = db.Users.FirstOrDefault(d => d.Username == user.Username);
-                    if (existUser != null) ModelState.AddModelError("Username", Messages.UsernameExisted);
-
-
-                    // username email check
-                    User existUser1 = db.Users.FirstOrDefault(d => d.Email == user.Email);
-                    if (existUser1 != null) ModelState.AddModelError("Email", Messages.EmailExisted);
-
-                    // username phone check
-                    user.Phone = user.Phone.Replace("-", "").Replace(" ", "");
-                    User existUser2 = db.Users.FirstOrDefault(d => d.Phone == user.Phone);
-                    if (existUser2 != null) ModelState.AddModelError("Phone", Messages.PhoneExisted);
-
-                    if (existUser == null && existUser1 == null && existUser2 == null)
-                    {
-                        user.PasswordHash = string.IsNullOrEmpty(user.Password) ? user.PasswordHash : Crypto.HashPassword(user.Password);
-                        user.IsLockedOut = false;
-
-                        db.Users.Add(user);
-                        db.SaveChanges();
-                        Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new user '{0}'", user.Username));
-                        return RedirectToAction("Index");
-                    }
+                    //Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new user '{0}'", user.Username));
+                    var createRes = apiHelper.Post<bool>("api/users/create", user);
+                    return RedirectToAction("Index");
                 }
             }
-
-            ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", user.RoleId);
+            var role = apiHelper.Get<RoleRes>($"api/roles/{user.RoleId}");
+            ViewBag.RoleId = role;
             return View(user);
         }
 
@@ -134,12 +115,12 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToAccessDenied();
             }
 
-            User user = db.Users.Find(id);
+            var user = apiHelper.Get<UserRes>($"api/users/{id}");
             if (user == null)
             {
                 return RedirectToNotFound();
             }
-            ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", user.RoleId);
+            ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", user.role_id);
             return View(user);
         }
 
@@ -162,39 +143,20 @@ namespace DemoAdminLTE.Controllers
 
             if (ModelState.IsValid)
             {
-                // username duplicate check
-                User existUser = db.Users.FirstOrDefault(d => d.Username == user.Username && d.Id != user.Id);
-                if (existUser != null) ModelState.AddModelError("Username", Messages.UsernameExisted);
+                var existUser = new UserUpdateReq();
+                existUser.user_name = user.Username;
+                existUser.first_name = user.FirstName;
+                existUser.last_name = user.LastName;
+                existUser.phone = user.Phone;
+                existUser.email = user.Email;
+                existUser.password = string.IsNullOrEmpty(user.Password) ? existUser.password : Crypto.HashPassword(user.Password);
+                existUser.is_approved = user.IsApproved;
+                //existUser.Comment = user.Comment;
+                existUser.role_id = user.RoleId;
 
-
-                // username email check
-                User existUser1 = db.Users.FirstOrDefault(d => d.Email == user.Email && d.Id != user.Id);
-                if (existUser1 != null) ModelState.AddModelError("Email", Messages.EmailExisted);
-
-                // username phone check
-                user.Phone = user.Phone.Replace("-", "").Replace(" ", "");
-                User existUser2 = db.Users.FirstOrDefault(d => d.Phone == user.Phone && d.Id != user.Id);
-                if (existUser2 != null) ModelState.AddModelError("Phone", Messages.PhoneExisted);
-
-                if (existUser == null && existUser1 == null && existUser2 == null)
-                {
-                    User dbUser = db.Users.FirstOrDefault(d => d.Id == user.Id);
-
-                    dbUser.Username = user.Username;
-                    dbUser.FirstName = user.FirstName;
-                    dbUser.LastName = user.LastName;
-                    dbUser.Phone = user.Phone;
-                    dbUser.Email = user.Email;
-                    dbUser.PasswordHash = string.IsNullOrEmpty(user.Password) ? dbUser.PasswordHash : Crypto.HashPassword(user.Password);
-                    dbUser.IsApproved = user.IsApproved;
-                    dbUser.Comment = user.Comment;
-                    dbUser.RoleId = user.RoleId;
-
-                    db.Entry(dbUser).State = EntityState.Modified;
-                    db.SaveChanges();
-                    Log.ToDatabase(((CustomPrincipal)User).UserId, "Edit", string.Format("Edit user '{0}'", user.Username));
-                    return RedirectToAction("Index");
-                }
+                //Log.ToDatabase(((CustomPrincipal)User).UserId, "Edit", string.Format("Edit user '{0}'", user.Username));
+                var updateRes = apiHelper.Put<bool>("api/users/update", existUser);
+                return RedirectToAction("Index");
             }
 
             ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", user.RoleId);
@@ -210,12 +172,12 @@ namespace DemoAdminLTE.Controllers
             {
                 return RedirectToBadRequest();
             }
-            User user = db.Users.Find(id);
+            var user = apiHelper.Get<UserRes>($"api/users/{id}");
             if (user == null)
             {
                 return RedirectToNotFound();
             }
-            ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", user.RoleId);
+            ViewBag.RoleId = new SelectList(db.Roles, "Id", "RoleName", user.role_id);
             return View(user);
         }
 
@@ -230,16 +192,8 @@ namespace DemoAdminLTE.Controllers
             {
                 return RedirectToBadRequest();
             }
-            User user = db.Users.Find(id);
-            if (user == null)
-            {
-                return RedirectToNotFound();
-            }
-
-            db.Users.Remove(user);
-            db.SaveChanges();
-
-            Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete user '{0}'", user.Username));
+            var deleteRes = apiHelper.Delete<bool>($"api/users/{id}");
+            //Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete user '{0}'", user.Username));
             return RedirectToAction("Index");
         }
 
