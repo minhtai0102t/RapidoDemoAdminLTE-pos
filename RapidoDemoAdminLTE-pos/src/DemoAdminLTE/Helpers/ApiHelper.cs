@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DemoAdminLTE.Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace DemoAdminLTE
 {
-    public class ApiHelper : IDisposable
+    public class ApiHelper : IApiHelper
     {
         private readonly HttpClient _httpClient;
 

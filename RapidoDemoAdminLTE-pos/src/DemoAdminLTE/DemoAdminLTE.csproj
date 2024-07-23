@@ -579,6 +579,7 @@
     <Compile Include="Extensions\MvcTree\MvcTreeNode.cs" />
     <Compile Include="Extensions\Resrource\ResourceExtension.cs" />
     <Compile Include="Helpers\ApiHelper.cs" />
+    <Compile Include="Helpers\IApiHelper.cs" />
     <Compile Include="Models\Pos\Category.cs" />
     <Compile Include="Models\Pos\DeviceProduct.cs" />
     <Compile Include="Models\Pos\Transaction.cs" />

@@ -12,6 +12,7 @@ using DemoAdminLTE.Resources.Views.UserViews;
 using System.Web.Helpers;
 using NLog;
 using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Helpers;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -19,12 +20,21 @@ namespace DemoAdminLTE.Controllers
     {
         private readonly DemoContext db = new DemoContext();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
+        private readonly IApiHelper apiHelper;
+        public UserController()
+        {
+            apiHelper = new ApiHelper();
+        }
         // GET: Users
         [HasPermission("User/List")]
         [HttpGet]
         public ActionResult Index()
         {
+            //var req = new UserSearchReq
+            //{
+            //    keysearch = username
+            //};
+            //var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
             ViewBag.DataTotal = db.Users.Count();
             return View();
         }
@@ -33,21 +43,12 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public PartialViewResult GridSearch(string search)
         {
-            IQueryable<User> model = db.Users;
-
-            if (!string.IsNullOrEmpty(search))
+            var req = new UserSearchReq
             {
-                model = model.Where(o =>
-                    o.Username.Contains(search)
-                       || o.FirstName.Contains(search)
-                       || o.LastName.Contains(search)
-                       || o.Phone.Contains(search)
-                       || o.Email.Contains(search)
-                       || o.Comment.Contains(search)
-                );
-            }
-
-            return PartialView(model);
+                keysearch = search
+            };
+            var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+            return PartialView(users);
         }
 
         // GET: Users/Create
