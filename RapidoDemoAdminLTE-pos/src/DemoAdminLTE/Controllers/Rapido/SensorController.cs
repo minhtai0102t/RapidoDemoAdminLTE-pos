@@ -1,16 +1,18 @@
-﻿using NonFactors.Mvc.Grid;
-using DemoAdminLTE.CustomAuthentication;
-using DemoAdminLTE.DAL;
-using DemoAdminLTE.Models;
-using OfficeOpenXml;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using DemoAdminLTE.CustomAuthentication;
+using DemoAdminLTE.DAL;
+using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Helpers;
+using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Views.SensorViews;
 using NLog;
-using DemoAdminLTE.Extensions;
+using NonFactors.Mvc.Grid;
+using OfficeOpenXml;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -18,13 +20,34 @@ namespace DemoAdminLTE.Controllers
     {
         private readonly DemoContext db = new DemoContext();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly IApiHelper apiHelper;
+        public SensorController()
+        {
+            apiHelper = new ApiHelper();
+        }
 
         // GET: Sensors
         [HasPermission("Sensor/List")]
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.DataTotal = db.Sensors.Count();
+            //ViewBag.DataTotal = db.Sensors.Count();
+            //return View();
+            ViewBag.DataTotal = 0;
+            try
+            {
+                var result = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+
+                if (result != null)
+                {
+                    int count = result.Count();
+                    ViewBag.DataTotal = count;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
             return View();
         }
 
@@ -32,14 +55,40 @@ namespace DemoAdminLTE.Controllers
         [HasPermission("Sensor/List")]
         public PartialViewResult GridSearch(string search)
         {
-            IQueryable<Sensor> model = db.Sensors;
 
-            if (!string.IsNullOrEmpty(search))
+
+            //IQueryable<Sensor> model = db.Sensors;
+
+            //if (!string.IsNullOrEmpty(search))
+            //{
+            //    model = model.Where(o => o.Name.Contains(search));
+            //}
+
+            //return PartialView(model);
+            IEnumerable<Sensor> sensors = Enumerable.Empty<Sensor>();
+
+
+            try
             {
-                model = model.Where(o => o.Name.Contains(search));
+                sensors = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+
+                if (sensors != null)
+                {
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        sensors = sensors.Where(o => o.name.Contains(search, StringComparison.OrdinalIgnoreCase));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
 
-            return PartialView(model);
+
+            // Trả về PartialView với dữ liệu đã lọc
+            return PartialView("_SensorPartial", sensors);
         }
 
         // GET: Sensors/Create
