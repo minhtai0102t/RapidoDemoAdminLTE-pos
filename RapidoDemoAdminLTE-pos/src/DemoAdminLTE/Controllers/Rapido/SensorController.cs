@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using DemoAdminLTE.CustomAuthentication;
@@ -21,11 +20,11 @@ namespace DemoAdminLTE.Controllers
         private readonly DemoContext db = new DemoContext();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private readonly IApiHelper apiHelper;
+
         public SensorController()
         {
-            apiHelper = new ApiHelper();
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
-
         // GET: Sensors
         [HasPermission("Sensor/List")]
         [HttpGet]
@@ -33,7 +32,9 @@ namespace DemoAdminLTE.Controllers
         {
             //ViewBag.DataTotal = db.Sensors.Count();
             //return View();
+
             ViewBag.DataTotal = 0;
+
             try
             {
                 var result = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
@@ -48,6 +49,8 @@ namespace DemoAdminLTE.Controllers
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
+
+
             return View();
         }
 
@@ -65,30 +68,25 @@ namespace DemoAdminLTE.Controllers
             //}
 
             //return PartialView(model);
-            IEnumerable<Sensor> sensors = Enumerable.Empty<Sensor>();
-
-
+            IEnumerable<Sensor> model = Enumerable.Empty<Sensor>();
             try
             {
-                sensors = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+                model = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
 
-                if (sensors != null)
+                if (model != null)
                 {
                     if (!string.IsNullOrEmpty(search))
                     {
-                        sensors = sensors.Where(o => o.name.Contains(search, StringComparison.OrdinalIgnoreCase));
+                        model = model.Where(o => o.name.Contains(search));
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu có
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
 
-
-            // Trả về PartialView với dữ liệu đã lọc
-            return PartialView("_SensorPartial", sensors);
+            return PartialView(model);
         }
 
         // GET: Sensors/Create
@@ -113,14 +111,26 @@ namespace DemoAdminLTE.Controllers
             }
             if (ModelState.IsValid)
             {
-                Sensor existSensor = db.Sensors.FirstOrDefault(d => d.Name == sensor.Name);
-                if (existSensor == null)
+
+                try
                 {
-                    db.Sensors.Add(sensor);
-                    db.SaveChanges();
-                    Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new sensor '{0}'", sensor.Name));
+                    //Sensor existSensor = db.Sensors.FirstOrDefault(d => d.Name == sensor.Name);
+                    //if (existSensor == null)
+                    //{
+                    //    db.Sensors.Add(sensor);
+                    //    db.SaveChanges();
+                    //    Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new sensor '{0}'", sensor.Name));
+                    //    return RedirectToAction("Index");
+                    //}
+                    var result = apiHelper.Post<string>("api/sensor", jsonContent: sensor);
+
                     return RedirectToAction("Index");
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+
                 ModelState.AddModelError("Name", Messages.NameExisted);
             }
 
@@ -136,12 +146,14 @@ namespace DemoAdminLTE.Controllers
             {
                 return RedirectToBadRequest();
             }
-            Sensor sensor = db.Sensors.Find(id);
-            if (sensor == null)
+
+            var api = string.Format("api/sensor/{0}.", id);
+            var result = apiHelper.Get<Sensor>(api);
+            if (result == null)
             {
                 return RedirectToNotFound();
             }
-            return View(sensor);
+            return View(result);
         }
 
         // POST: Sensors/Edit
@@ -159,25 +171,9 @@ namespace DemoAdminLTE.Controllers
 
             if (ModelState.IsValid)
             {
-                Sensor existSensor = db.Sensors.FirstOrDefault(d => d.Name == sensor.Name && d.Id != sensor.Id);
-                if (existSensor == null)
-                {
-                    Sensor dbSensor = db.Sensors.FirstOrDefault(d => d.Id == sensor.Id);
-
-                    dbSensor.Name = sensor.Name;
-                    dbSensor.UpperBound = sensor.UpperBound;
-                    dbSensor.LowerBound = sensor.LowerBound;
-                    dbSensor.DifferBound = sensor.DifferBound;
-                    dbSensor.UnitSymbol = sensor.UnitSymbol;
-                    dbSensor.IsActive = sensor.IsActive;
-                    dbSensor.Params = sensor.Params;
-
-                    db.Entry(dbSensor).State = EntityState.Modified;
-                    db.SaveChanges();
-                    Log.ToDatabase(((CustomPrincipal)User).UserId, "Edit", string.Format("Edit sensor '{0}'", sensor.Name));
-                    return RedirectToAction("Index");
-                }
-                ModelState.AddModelError("Name", Messages.NameExisted);
+                var result = apiHelper.Put<bool>("/api/sensor/update", sensor);
+                //Log.ToDatabase(((CustomPrincipal)User).UserId, "Edit", string.Format("Edit sensor '{0}'", sensor.Name));
+                return RedirectToAction("Index");
             }
 
             return View(sensor);
@@ -192,12 +188,20 @@ namespace DemoAdminLTE.Controllers
             {
                 return RedirectToBadRequest();
             }
-            Sensor sensor = db.Sensors.Find(id);
-            if (sensor == null)
+
+            var api = string.Format("api/sensor/{0}.", id);
+            var result = apiHelper.Get<Sensor>(api);
+            if (result == null)
             {
                 return RedirectToNotFound();
             }
-            return View(sensor);
+            return View(result);
+            //Sensor sensor = db.Sensors.Find(id);
+            //if (sensor == null)
+            //{
+            //    return RedirectToNotFound();
+            //}
+            //return View(sensor);
         }
 
         // GET: Sensors/Edit
@@ -211,23 +215,28 @@ namespace DemoAdminLTE.Controllers
             {
                 return RedirectToBadRequest();
             }
-            Sensor sensor = db.Sensors.Find(id);
+
+            var api = string.Format("api/sensor/{0}.", id);
+            var sensor = apiHelper.Get<Sensor>(api);
             if (sensor == null)
             {
-                return RedirectToBadRequest();
+                return RedirectToNotFound();
             }
 
-            db.Sensors.Remove(sensor);
-            db.SaveChanges();
+            var result = apiHelper.Delete<string>(api);
+            Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete sensor '{0}'", sensor.name));
 
-            Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete sensor '{0}'", sensor.Name));
             return RedirectToAction("Index");
+
         }
 
         [HasPermission("Sensor/List")]
         [HttpGet]
         public FileContentResult Export()
         {
+
+            var sensors = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+
             // Using EPPlus from nuget
             using (ExcelPackage package = new ExcelPackage())
             {
@@ -236,18 +245,18 @@ namespace DemoAdminLTE.Controllers
 
                 package.Workbook.Worksheets.Add("Data");
 
-                IGrid<Sensor> grid = new Grid<Sensor>(db.Sensors.OrderByDescending(o => o.Id));
+                IGrid<Sensor> grid = new Grid<Sensor>(sensors.OrderByDescending(o => o.Id));
                 grid.ViewContext = new ViewContext { HttpContext = HttpContext };
                 grid.Query = Request.QueryString;
 
                 grid.Columns.Add(model => model.Id);
-                grid.Columns.Add(model => model.Name);
-                grid.Columns.Add(model => model.UpperBound);
-                grid.Columns.Add(model => model.LowerBound);
-                grid.Columns.Add(model => model.DifferBound);
-                grid.Columns.Add(model => model.UnitSymbol);
-                grid.Columns.Add(model => model.IsActive);
-                grid.Columns.Add(model => model.Params);
+                grid.Columns.Add(model => model.name);
+                grid.Columns.Add(model => model.upper_bound);
+                grid.Columns.Add(model => model.lower_bound);
+                grid.Columns.Add(model => model.differ_bound);
+                grid.Columns.Add(model => model.unit_symbol);
+                grid.Columns.Add(model => model.is_active);
+                grid.Columns.Add(model => model.param);
 
                 ExcelWorksheet sheet = package.Workbook.Worksheets["Data"];
 

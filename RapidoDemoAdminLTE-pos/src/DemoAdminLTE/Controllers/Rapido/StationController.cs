@@ -1,19 +1,20 @@
-﻿using NonFactors.Mvc.Grid;
-using DemoAdminLTE.CustomAuthentication;
-using DemoAdminLTE.DAL;
-using DemoAdminLTE.Models;
-using OfficeOpenXml;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using DemoAdminLTE.Resources.Views.StationViews;
-using System.Collections.Generic;
-using DemoAdminLTE.ViewModels;
-using DemoAdminLTE.Utils;
-using NLog;
+using DemoAdminLTE.CustomAuthentication;
+using DemoAdminLTE.DAL;
 using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Helpers;
+using DemoAdminLTE.Models;
+using DemoAdminLTE.Resources.Views.StationViews;
+using DemoAdminLTE.Utils;
+using DemoAdminLTE.ViewModels;
+using NLog;
+using NonFactors.Mvc.Grid;
+using OfficeOpenXml;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -21,13 +22,28 @@ namespace DemoAdminLTE.Controllers
     {
         private readonly DemoContext db = new DemoContext();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly IApiHelper apiHelper;
 
+        public StationController()
+        {
+            this.apiHelper = new ApiHelper(AppConfig.apiUrl);
+        }
         // GET: Stations
         [HttpGet]
         [HasPermission("Station/List")]
         public ActionResult Index()
         {
-            ViewBag.DataTotal = db.Stations.Count();
+            ViewBag.DataTotal = 0;
+            try
+            {
+                var result = apiHelper.Get<IEnumerable<Station>>("api/station");
+                ViewBag.DataTotal = result.Count();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
             return View();
         }
 
@@ -35,15 +51,26 @@ namespace DemoAdminLTE.Controllers
         [HasPermission("Station/List")]
         public PartialViewResult GridSearch(string search)
         {
-            IQueryable<Station> model = db.Stations;
-
-            if (!string.IsNullOrEmpty(search))
+            var model = Enumerable.Empty<Station>();
+            try
             {
-                model = model.Where(o =>
-                    o.Name.Contains(search)
-                       || o.Address.Contains(search)
-                       || o.SmsAlertPhoneNumber.Contains(search)
-                );
+                model = apiHelper.Get<IEnumerable<Station>>("api/station");
+
+                if (model != null)
+                {
+                    if (!string.IsNullOrEmpty(search))
+                    {
+                        model = model.Where(o =>
+                            o.Name.Contains(search)
+                               || o.Address.Contains(search)
+                               || o.SmsAlertPhoneNumber.Contains(search)
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
 
             return PartialView(model);
@@ -53,11 +80,14 @@ namespace DemoAdminLTE.Controllers
         [HasPermission("Station/Chart")]
         public JsonResult getLasted(int id, int tid)
         {
-            Station station = db.Stations.Find(id);
-            if (station == null)
+            var api = string.Format("api/station/{0}.", id);
+
+            //Station station = db.Stations.Find(id);
+            var result = apiHelper.Get<Station>(api);
+            if (result == null)
                 return Json("not found", JsonRequestBehavior.AllowGet);
 
-            var sampleTime = station.SampleTimes.OrderBy(o => o.Time).FirstOrDefault(o => o.Id > tid);
+            var sampleTime = result.SampleTimes.OrderBy(o => o.Time).FirstOrDefault(o => o.Id > tid);
             return sampleTime == null ? Json("null", JsonRequestBehavior.AllowGet) : Json(new
             {
                 tid = sampleTime.Id,
@@ -77,13 +107,17 @@ namespace DemoAdminLTE.Controllers
         [HasPermission("Station/Chart")]
         public ActionResult Chart(int? id, long? from, long? to)
         {
+
             if (!id.HasValue)
                 return RedirectToBadRequest();
             DateTime? timeFrom = new DateTime?();
             DateTime? timeTo = new DateTime?();
             timeFrom = !from.HasValue || from.Value <= 0L ? new DateTime?(DateTime.Now.AddDays(-7.0)) : new DateTime?(new DateTime(from.Value));
             timeTo = !to.HasValue || to.Value <= 0L ? new DateTime?(DateTime.Now) : new DateTime?(new DateTime(to.Value));
-            var station = db.Stations.Find(id);
+            var api = string.Format("api/station/{0}.", id);
+
+            var station = apiHelper.Get<Station>(api);
+            //var station = db.Stations.Find(id);
             if (station == null)
                 return RedirectToNotFound();
             if (station.Sensors.Count == 0)
