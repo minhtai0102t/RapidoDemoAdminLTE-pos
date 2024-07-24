@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DemoAdminLTE.Models
 {
@@ -14,5 +15,6 @@ namespace DemoAdminLTE.Models
         public string param { get; set; }
         public DateTime created_date { get; set; }
         public DateTime updated_date { get; set; }
+        public virtual ICollection<Station> Stations { get; set; }
     }
 }

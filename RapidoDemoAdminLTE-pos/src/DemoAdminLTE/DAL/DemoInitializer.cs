@@ -1,8 +1,8 @@
-﻿using DemoAdminLTE.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Helpers;
+using DemoAdminLTE.Models;
 
 namespace DemoAdminLTE.DAL
 {
@@ -100,10 +100,10 @@ namespace DemoAdminLTE.DAL
             // sensors
             var sensors = new List<Sensor>
             {
-                new Sensor { Name = "Nhiệt độ", UpperBound = 50, LowerBound = 10, DifferBound = 5 , UnitSymbol = "°C", Params = "", IsActive = true },
-                new Sensor { Name = "Độ ẩm"   , UpperBound = 90, LowerBound = 30, DifferBound = 10, UnitSymbol = "%" , Params = "", IsActive = true },
-                new Sensor { Name = "Độ mặn"  , UpperBound = 40, LowerBound = 20, DifferBound = 5 , UnitSymbol = "‰" , Params = "", IsActive = true },
-                new Sensor { Name = "Độ pH"   , UpperBound = 9 , LowerBound = 5 , DifferBound = 2 , UnitSymbol = ""  , Params = "", IsActive = true },
+                new Sensor { name = "Nhiệt độ", upper_bound = 50, lower_bound = 10, differ_bound = 5 , unit_symbol = "°C", param = "", is_active = true },
+                new Sensor { name = "Độ ẩm"   , upper_bound = 90, lower_bound = 30, differ_bound = 10, unit_symbol = "%" , param = "", is_active = true },
+                new Sensor { name = "Độ mặn"  , upper_bound = 40, lower_bound = 20, differ_bound = 5 , unit_symbol = "‰" , param = "", is_active = true },
+                new Sensor { name = "Độ pH"   , upper_bound = 9 , lower_bound = 5 , differ_bound = 2 , unit_symbol = ""  , param = "", is_active = true },
             };
             sensors.ForEach(obj => context.Sensors.Add(obj));
             context.SaveChanges();

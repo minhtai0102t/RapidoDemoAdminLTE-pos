@@ -1,23 +1,22 @@
-﻿using FirebaseAdmin;
-using FirebaseAdmin.Messaging;
-using Google.Apis.Auth.OAuth2;
-using NLog;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Helpers;
+using System.Web.Http;
+using System.Web.Security;
 using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.DAL;
 using DemoAdminLTE.Extensions;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using System.Web.Helpers;
-using System.Web.Http;
-using System.Web.Security;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
+using Google.Apis.Auth.OAuth2;
+using NLog;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -70,11 +69,11 @@ namespace DemoAdminLTE.Controllers
                 var sensor2 = db.Sensors.FirstOrDefault(o => o.Id == sensorValue.id);
                 if (sensor2 != null)
                 {
-                    double? nullable = sensor2.UpperBound;
+                    double? nullable = sensor2.upper_bound;
                     double num1 = nullable ?? 0.0;
-                    nullable = sensor2.LowerBound;
+                    nullable = sensor2.lower_bound;
                     double num2 = nullable ?? 0.0;
-                    nullable = sensor2.DifferBound;
+                    nullable = sensor2.differ_bound;
                     double num3 = nullable ?? 0.0;
                     double num4 = num2;
                     if (Math.Abs((num1 + num4) / 2.0 - sensorValue.value) * num3 > 20.0)
@@ -306,7 +305,7 @@ namespace DemoAdminLTE.Controllers
                             address = s.Address,
                             latitude = s.Latitude.ToString(),
                             longitude = s.Longitude.ToString(),
-                            sensors = s.Sensors.Where(ss => ss.IsActive).Select(sss => new ApiRapidoStationSensor { sensor_id = sss.Id, name = sss.Name }).ToList()
+                            sensors = s.Sensors.Where(ss => ss.is_active).Select(sss => new ApiRapidoStationSensor { sensor_id = sss.Id, name = sss.name }).ToList()
                         }).ToList();
 
                         return ApiRapidoResultWithData.ResultSuccess("Get station list successfully", stations);
@@ -406,7 +405,7 @@ namespace DemoAdminLTE.Controllers
                                 sensor_value = s.SensorValues.Select(sv => new ApiRapidoStationDataValue
                                 {
                                     sensor_id = sv.SensorId,
-                                    sensor_name = sv.Sensor.Name,
+                                    sensor_name = sv.Sensor.name,
                                     value = sv.Value
                                 }).ToList()
                             }).ToList();
@@ -475,12 +474,12 @@ namespace DemoAdminLTE.Controllers
                         IList<ApiRapidoSensorView> sensors = dbContext.Sensors.Select(s => new ApiRapidoSensorView
                         {
                             sensor_id = s.Id,
-                            name = s.Name,
-                            is_active = s.IsActive,
-                            upper_bound = s.UpperBound ?? 0,
-                            lower_bound = s.LowerBound ?? 0,
-                            differ_bound = s.DifferBound ?? 0,
-                            unit_symbol = s.UnitSymbol
+                            name = s.name,
+                            is_active = s.is_active,
+                            upper_bound = double.Parse(s.upper_bound.ToString()),
+                            lower_bound = s.lower_bound ?? 0,
+                            differ_bound = s.differ_bound ?? 0,
+                            unit_symbol = s.unit_symbol
                         }).ToList();
 
                         return ApiRapidoResultWithData.ResultSuccess("Get sensor list successfully", sensors);

@@ -1,11 +1,11 @@
-﻿using DemoAdminLTE.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
+using DemoAdminLTE.Models;
 
 namespace DemoAdminLTE.Extensions
 {
@@ -252,7 +252,7 @@ namespace DemoAdminLTE.Extensions
             if (sensors != null)
             {
                 foreach (Sensor sensor in sensors)
-                    str = str + sensor.Name + "</span></th><th><span class=\"mvc-grid-title\">";
+                    str = str + sensor.name + "</span></th><th><span class=\"mvc-grid-title\">";
             }
             return MvcHtmlString.Create(str ?? "");
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using DemoAdminLTE.CustomAuthentication;
@@ -114,10 +113,10 @@ namespace DemoAdminLTE.Controllers
             DateTime? timeTo = new DateTime?();
             timeFrom = !from.HasValue || from.Value <= 0L ? new DateTime?(DateTime.Now.AddDays(-7.0)) : new DateTime?(new DateTime(from.Value));
             timeTo = !to.HasValue || to.Value <= 0L ? new DateTime?(DateTime.Now) : new DateTime?(new DateTime(to.Value));
-            var api = string.Format("api/station/{0}.", id);
 
-            var station = apiHelper.Get<Station>(api);
             //var station = db.Stations.Find(id);
+            var station = apiHelper.Get<Station>("api/stations/" + id);
+
             if (station == null)
                 return RedirectToNotFound();
             if (station.Sensors.Count == 0)
@@ -149,7 +148,7 @@ namespace DemoAdminLTE.Controllers
                         var chartSensorView2 = new ChartSensorView()
                         {
                             Id = sensorValue.Sensor.Id,
-                            Name = sensorValue.Sensor.Name,
+                            Name = sensorValue.Sensor.name,
                             Color = random.Next(0, 200).ToString() + "," + random.Next(0, 200) + "," + random.Next(0, 200)
                         };
                         chartSensorView2.ColorFill = "'rgba(" + chartSensorView2.Color + ",0.7)'";
@@ -233,12 +232,19 @@ namespace DemoAdminLTE.Controllers
         {
             Station station = new Station();
 
-            station.AllSensors = db.Sensors.ToList().Select(o => new SelectListItem
+            var results = apiHelper.Get<IEnumerable<Station>>("/api/stations");
+
+            //station.AllSensors = db.Sensors.ToList().Select(o => new SelectListItem
+            //{
+            //    Text = o.name,
+            //    Value = o.Id.ToString()
+            //});
+
+            station.AllSensors = results.ToList().Select(o => new SelectListItem
             {
                 Text = o.Name,
                 Value = o.Id.ToString()
             });
-
             return View(station);
         }
 
@@ -255,11 +261,13 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToBadRequest();
             if (ModelState.IsValid)
             {
-                if (db.Stations.FirstOrDefault(d => d.Name == station.Name) == null)
+
+                var results = apiHelper.Get<IEnumerable<Station>>("/api/stations");
+                if (results.FirstOrDefault(d => d.Name == station.Name) == null)
                 {
                     station.SmsAlertPhoneNumber = string.IsNullOrEmpty(station.SmsAlertPhoneNumber) ? "" : station.SmsAlertPhoneNumber.Replace("-", "").Replace(" ", "");
-                    db.Stations.Add(station);
-                    db.SaveChanges();
+                    //db.Stations.Add(station);
+                    //db.SaveChanges();
                     station.Sensors = new List<Sensor>();
                     var intSet = new HashSet<int>(station.SelectedSensors ?? new List<int>());
                     foreach (Sensor sensor in db.Sensors)
@@ -267,8 +275,9 @@ namespace DemoAdminLTE.Controllers
                         if (intSet.Contains(sensor.Id))
                             station.Sensors.Add(sensor);
                     }
-                    db.Entry(station).State = EntityState.Modified;
-                    db.SaveChanges();
+                    //db.Entry(station).State = EntityState.Modified;
+                    //db.SaveChanges();
+                    var isCreated = apiHelper.Post<bool>("/api/stations/create", jsonContent: station);
                     Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new station '{0}'", station.Name));
                     return RedirectToAction("Index");
                 }
@@ -276,7 +285,7 @@ namespace DemoAdminLTE.Controllers
             }
             station.AllSensors = db.Sensors.ToList().Select(o => new SelectListItem()
             {
-                Text = o.Name,
+                Text = o.name,
                 Value = o.Id.ToString()
             });
             return View(station);
@@ -289,12 +298,17 @@ namespace DemoAdminLTE.Controllers
         {
             if (!id.HasValue)
                 return RedirectToBadRequest();
-            var station = db.Stations.Find(id);
+            //var station = db.Stations.Find(id);
+
+            var station = apiHelper.Get<Station>("/api/stations/" + id);
+            var sensors = apiHelper.Get<IEnumerable<Sensor>>("/api/sensors/");
+
             if (station == null)
                 return RedirectToNotFound();
-            station.AllSensors = db.Sensors.ToList().Select(o => new SelectListItem()
+
+            station.AllSensors = sensors.ToList().Select(o => new SelectListItem()
             {
-                Text = o.Name,
+                Text = o.name,
                 Value = o.Id.ToString()
             });
             return View(station);
@@ -312,20 +326,21 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToBadRequest();
             if (ModelState.IsValid)
             {
-                if (db.Stations.FirstOrDefault(d => d.Name == station.Name && d.Id != station.Id) == null)
+                var stations = apiHelper.Get<IEnumerable<Station>>("/api/stations");
+                if (stations.FirstOrDefault(d => d.Name == station.Name && d.Id != station.Id) == null)
                 {
-                    var station1 = db.Stations.FirstOrDefault(d => d.Id == station.Id);
+                    var station1 = stations.FirstOrDefault(d => d.Id == station.Id);
                     station.SmsAlertPhoneNumber = string.IsNullOrEmpty(station.SmsAlertPhoneNumber) ? "" : station.SmsAlertPhoneNumber.Replace("-", "").Replace(" ", "");
                     if (TryUpdateModel(station1, new string[8]
                     {
-            "Name",
-            "Address",
-            "Longitude",
-            "Latitude",
-            "IsActive",
-            "IsSmsAlertEnable",
-            "SmsAlertPhoneNumber",
-            "Params"
+                        "Name",
+                        "Address",
+                        "Longitude",
+                        "Latitude",
+                        "IsActive",
+                        "IsSmsAlertEnable",
+                        "SmsAlertPhoneNumber",
+                        "Params"
                     }))
                     {
                         var intSet = new HashSet<int>(station.SelectedSensors ?? new List<int>());
@@ -336,17 +351,20 @@ namespace DemoAdminLTE.Controllers
                             else
                                 station1.Sensors.Add(sensor);
                         }
-                        db.Entry(station1).State = EntityState.Modified;
-                        db.SaveChanges();
+                        var result = apiHelper.Put<bool>("/api/stations/update", station1);
+                        //db.Entry(station1).State = EntityState.Modified;
+                        //db.SaveChanges();
                         Log.ToDatabase(((CustomPrincipal)User).UserId, nameof(Edit), string.Format("Edit station '{0}'", station.Name));
                         return RedirectToAction("Index");
                     }
                 }
                 ModelState.AddModelError("Name", Messages.NameExisted);
             }
-            station.AllSensors = db.Sensors.ToList().Select(o => new SelectListItem()
+            var sensors = apiHelper.Get<IEnumerable<Sensor>>("/api/sensors");
+
+            station.AllSensors = sensors.ToList().Select(o => new SelectListItem()
             {
-                Text = o.Name,
+                Text = o.name,
                 Value = o.Id.ToString()
             });
             return View(station);
@@ -361,12 +379,15 @@ namespace DemoAdminLTE.Controllers
         {
             if (!id.HasValue)
                 return RedirectToBadRequest();
-            var station = db.Stations.Find(id);
+            var station = apiHelper.Get<Station>("api/stations/" + id);
+            //var station = db.Stations.Find(id);
             if (station == null)
                 return RedirectToNotFound();
-            station.AllSensors = db.Sensors.ToList().Select(o => new SelectListItem()
+
+            var sensors = apiHelper.Get<IEnumerable<Sensor>>("api/sensors");
+            station.AllSensors = sensors.ToList().Select(o => new SelectListItem()
             {
-                Text = o.Name,
+                Text = o.name,
                 Value = o.Id.ToString()
             });
             return View(station);
@@ -381,12 +402,13 @@ namespace DemoAdminLTE.Controllers
         {
             if (!id.HasValue)
                 return RedirectToBadRequest();
-            var entity = db.Stations.Find(id);
-            if (entity == null)
+            var entity = apiHelper.Delete<bool>("/api/delete/" + id);
+            //var entity = db.Stations.Find(id);
+            if (entity == false)
                 return RedirectToBadRequest();
-            db.Stations.Remove(entity);
-            db.SaveChanges();
-            Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete station '{0}'", entity.Name));
+            //db.Stations.Remove(entity);
+            //db.SaveChanges();
+            //Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete station '{0}'", entity.));
             return RedirectToAction("Index");
         }
 

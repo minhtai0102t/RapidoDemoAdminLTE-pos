@@ -37,7 +37,7 @@ namespace DemoAdminLTE.Controllers
 
             try
             {
-                var result = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+                var result = apiHelper.Get<IEnumerable<Sensor>>("api/sensors");
 
                 if (result != null)
                 {
@@ -71,7 +71,7 @@ namespace DemoAdminLTE.Controllers
             IEnumerable<Sensor> model = Enumerable.Empty<Sensor>();
             try
             {
-                model = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+                model = apiHelper.Get<IEnumerable<Sensor>>("api/sensors");
 
                 if (model != null)
                 {
@@ -122,7 +122,7 @@ namespace DemoAdminLTE.Controllers
                     //    Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new sensor '{0}'", sensor.Name));
                     //    return RedirectToAction("Index");
                     //}
-                    var result = apiHelper.Post<string>("api/sensor", jsonContent: sensor);
+                    var result = apiHelper.Post<string>("api/sensors", jsonContent: sensor);
 
                     return RedirectToAction("Index");
                 }
@@ -147,8 +147,7 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToBadRequest();
             }
 
-            var api = string.Format("api/sensor/{0}.", id);
-            var result = apiHelper.Get<Sensor>(api);
+            var result = apiHelper.Get<Sensor>("api/sensors/" + id);
             if (result == null)
             {
                 return RedirectToNotFound();
@@ -171,7 +170,7 @@ namespace DemoAdminLTE.Controllers
 
             if (ModelState.IsValid)
             {
-                var result = apiHelper.Put<bool>("/api/sensor/update", sensor);
+                var result = apiHelper.Put<bool>("/api/sensors/update", sensor);
                 //Log.ToDatabase(((CustomPrincipal)User).UserId, "Edit", string.Format("Edit sensor '{0}'", sensor.Name));
                 return RedirectToAction("Index");
             }
@@ -189,8 +188,7 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToBadRequest();
             }
 
-            var api = string.Format("api/sensor/{0}.", id);
-            var result = apiHelper.Get<Sensor>(api);
+            var result = apiHelper.Get<Sensor>("api/sensors/" + id);
             if (result == null)
             {
                 return RedirectToNotFound();
@@ -216,14 +214,13 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToBadRequest();
             }
 
-            var api = string.Format("api/sensor/{0}.", id);
-            var sensor = apiHelper.Get<Sensor>(api);
+            var sensor = apiHelper.Get<Sensor>("api/sensors/" + id);
             if (sensor == null)
             {
                 return RedirectToNotFound();
             }
 
-            var result = apiHelper.Delete<string>(api);
+            var result = apiHelper.Delete<string>("api/sensors/" + id);
             Log.ToDatabase(((CustomPrincipal)User).UserId, "Delete", string.Format("Delete sensor '{0}'", sensor.name));
 
             return RedirectToAction("Index");
@@ -235,7 +232,7 @@ namespace DemoAdminLTE.Controllers
         public FileContentResult Export()
         {
 
-            var sensors = apiHelper.Get<IEnumerable<Sensor>>("api/sensor");
+            var sensors = apiHelper.Get<IEnumerable<Sensor>>("api/sensors");
 
             // Using EPPlus from nuget
             using (ExcelPackage package = new ExcelPackage())

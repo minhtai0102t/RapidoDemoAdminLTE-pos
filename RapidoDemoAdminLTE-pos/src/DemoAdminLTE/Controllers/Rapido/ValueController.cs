@@ -1,18 +1,19 @@
-﻿using DemoAdminLTE.CustomAuthentication;
-using DemoAdminLTE.DAL;
-using DemoAdminLTE.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using NLog;
+using DemoAdminLTE.CustomAuthentication;
+using DemoAdminLTE.DAL;
 using DemoAdminLTE.Extensions;
-using System.Collections.Generic;
+using DemoAdminLTE.Helpers;
+using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Views.StationViews;
 using DemoAdminLTE.ViewModels;
-using System;
-using OfficeOpenXml;
+using NLog;
 using NonFactors.Mvc.Grid;
+using OfficeOpenXml;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -20,8 +21,14 @@ namespace DemoAdminLTE.Controllers
     {
         private readonly DemoContext db = new DemoContext();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly IApiHelper apiHelper;
 
         // GET: Values
+
+        public ValueController()
+        {
+            this.apiHelper = new ApiHelper(AppConfig.apiUrl);
+        }
 
         [HasPermission("Value/List")]
         [HttpGet]
@@ -29,9 +36,11 @@ namespace DemoAdminLTE.Controllers
         {
             Station station;
             if (!stationid.HasValue)
-                station = db.Stations.FirstOrDefault();
+                //station = db.Stations.FirstOrDefault();
+                station = apiHelper.Get<IEnumerable<Station>>("api/stations").FirstOrDefault();
             else
-                station = db.Stations.FirstOrDefault(o => o.Id == stationid);
+                //station = db.Stations.FirstOrDefault(o => o.Id == stationid);
+                station = apiHelper.Get<IEnumerable<Station>>("api/stations").FirstOrDefault(o => o.Id == stationid);
             if (station == null)
                 return RedirectToNotFound();
             if (station.Sensors.Count == 0)
@@ -41,7 +50,7 @@ namespace DemoAdminLTE.Controllers
             }
 
             ViewBag.StationId = station.Id;
-            ViewBag.DataTotal = db.SampleTimes.Where(o => o.StationId == station.Id).Count();
+            //ViewBag.DataTotal = db.SampleTimes.Where(o => o.StationId == station.Id).Count();
             ViewBag.Stations = new SelectList(db.Stations, "Id", "Name", station.Id);
             return View();
         }
@@ -57,7 +66,8 @@ namespace DemoAdminLTE.Controllers
                 // TODO
             }
 
-            var station = db.Stations.FirstOrDefault(o => o.Id == stationid);
+            //var station = db.Stations.FirstOrDefault(o => o.Id == stationid);
+            var station = apiHelper.Get<Station>("api/stations/" + stationid);
             if (station != null)
             {
                 ViewBag.Sensors = station.Sensors.OrderBy(o => o.Id).ToArray();
@@ -70,7 +80,8 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public ActionResult Create(int stationid)
         {
-            Station station = db.Stations.FirstOrDefault(o => o.Id == stationid);
+            var station = apiHelper.Get<Station>("api/stations" + stationid);
+            //Station station = db.Stations.FirstOrDefault(o => o.Id == stationid);
             if (station == null)
                 return RedirectToBadRequest();
             var valueCreateViewModel = new StationValueCreateViewModel();
@@ -82,7 +93,7 @@ namespace DemoAdminLTE.Controllers
                 {
                     SensorId = sensor.Id,
                     SensorValue = 0.0,
-                    SensorName = sensor.Name
+                    SensorName = sensor.name
                 });
 
             ViewBag.StationId = new SelectList(db.Stations, "Id", "Name", valueCreateViewModel.StationId);
@@ -98,7 +109,8 @@ namespace DemoAdminLTE.Controllers
                 return RedirectToBadRequest();
             if (ModelState.IsValid)
             {
-                var station = db.Stations.Find(model.StationId);
+                //var station = db.Stations.Find(model.StationId);
+                var station = apiHelper.Get<Station>("api/stations/" + model.StationId);
                 if (station == null)
                 {
                     ModelState.AddModelError("", "[1001] " + Messages.UnknownError);
@@ -114,28 +126,30 @@ namespace DemoAdminLTE.Controllers
                     ModelState.AddModelError("", "[1003] " + Messages.UnknownError);
                     return View(model);
                 }
-                SampleTime entity = new SampleTime();
-                DateTime? time = model.Time;
-                if (time.HasValue)
-                {
-                    SampleTime sampleTime = entity;
-                    time = model.Time;
-                    DateTime dateTime = time.Value;
-                    sampleTime.Time = dateTime;
-                }
-                entity.StationId = model.StationId;
-                db.SampleTimes.Add(entity);
-                db.SaveChanges();
-                var sensorValueList = new List<SensorValue>();
-                foreach (var sensor in model.Sensors)
-                    sensorValueList.Add(new SensorValue()
-                    {
-                        SensorId = sensor.SensorId,
-                        SampleTimeId = entity.Id,
-                        Value = sensor.SensorValue
-                    });
-                db.SensorValues.AddRange(sensorValueList);
-                db.SaveChanges();
+
+                var result = apiHelper.Post<bool>("api/sensorvalues/create", model);
+                //SampleTime entity = new SampleTime();
+                //DateTime? time = model.Time;
+                //if (time.HasValue)
+                //{
+                //    SampleTime sampleTime = entity;
+                //    time = model.Time;
+                //    DateTime dateTime = time.Value;
+                //    sampleTime.Time = dateTime;
+                //}
+                //entity.StationId = model.StationId;
+                //db.SampleTimes.Add(entity);
+                //db.SaveChanges();
+                //var sensorValueList = new List<SensorValue>();
+                //foreach (var sensor in model.Sensors)
+                //    sensorValueList.Add(new SensorValue()
+                //    {
+                //        SensorId = sensor.SensorId,
+                //        SampleTimeId = entity.Id,
+                //        Value = sensor.SensorValue
+                //    });
+                //db.SensorValues.AddRange(sensorValueList);
+                //db.SaveChanges();
                 return RedirectToAction("Index", new { stationid = model.StationId });
             }
             ViewBag.StationId = new SelectList(db.Stations, "Id", "Name", model.StationId);
@@ -162,7 +176,7 @@ namespace DemoAdminLTE.Controllers
                 {
                     SensorId = sensorValue.SensorId,
                     SensorValue = sensorValue.Value,
-                    SensorName = sensorValue.Sensor.Name
+                    SensorName = sensorValue.Sensor.name
                 });
 
             ViewBag.StationId = new SelectList(db.Stations.Where(o => o.Id == model.StationId), "Id", "Name", model.StationId);
@@ -258,7 +272,7 @@ namespace DemoAdminLTE.Controllers
             var sensors = station.Sensors.Select(o => new
             {
                 id = o.Id,
-                name = o.Name
+                name = o.name
             }).OrderBy(o => o.id).ToArray();
             //ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             // Using EPPlus from nuget
