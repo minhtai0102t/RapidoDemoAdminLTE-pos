@@ -65,4 +65,28 @@ namespace DemoAdminLTE
         public bool is_approved { get; set; }
         public int role_id { get; set; }
     }
+    public class RoleSearchReq
+    {
+        public string keysearch { get; set; }
+        public int page_size { get; set; }
+        public int page_index { get; set; }
+    }
+    public class RoleSearchRes
+    {
+        public int total_record { get; set; }
+        public int role_id { get; set; }
+        public string role_name { get; set; }
+        public int[] permission_ids { get; set; }
+    }
+    public class PermissionRes
+    {
+        public int permission_id { get; set; }
+        public int group { get; set; }
+        public int action { get; set; }
+    }
+    public class RoleCreateReq 
+    {
+        public string role_name { get; set; }
+        public int[] permission_ids { get; set; }
+    }
 }

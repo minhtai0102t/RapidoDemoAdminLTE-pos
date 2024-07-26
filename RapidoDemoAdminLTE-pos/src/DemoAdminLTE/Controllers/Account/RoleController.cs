@@ -1,17 +1,18 @@
 ﻿using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.DAL;
+using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
+using DemoAdminLTE.Resources.Shared;
+using DemoAdminLTE.Resources.Views.RoleViews;
+using DemoAdminLTE.ViewModels;
+using NLog;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using DemoAdminLTE.Resources.Shared;
-using DemoAdminLTE.Resources.Views.RoleViews;
-using System.Collections.Generic;
-using DemoAdminLTE.Extensions;
-using DemoAdminLTE.ViewModels;
-using NLog;
 
 namespace DemoAdminLTE.Controllers
 {
@@ -19,34 +20,34 @@ namespace DemoAdminLTE.Controllers
     {
         private readonly DemoContext db = new DemoContext();
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-
+        private readonly IApiHelper apiHelper;
+        public RoleController()
+        {
+            apiHelper = new ApiHelper();
+        }
         // GET: Roles
         [HttpGet]
-        [HasPermission("Role/List")]
+        [HasPermission("Roles/List")]
         public ActionResult Index()
         {
-            ViewBag.DataTotal = db.Roles.Count();
+            //ViewBag.DataTotal = db.Roles.Count();
             return View();
         }
 
         [HttpGet]
-        [HasPermission("Role/List")]
+        [HasPermission("Roles/List")]
         public PartialViewResult GridSearch(string search)
         {
-            IQueryable<Role> model = db.Roles;
-
-            if (!string.IsNullOrEmpty(search))
+            var req = new RoleSearchReq
             {
-                model = model.Where(o =>
-                    o.RoleName.Contains(search)
-                );
-            }
-
-            return PartialView(model);
+                keysearch = search
+            };
+            var roles = apiHelper.Post<PagingResponse<RoleSearchRes>>("api/roles/search", jsonContent: req);
+            return PartialView(roles);
         }
 
         // GET: Roles/Create
-        [HasPermission("Role/Create")]
+        [HasPermission("Roles/Create")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -60,7 +61,7 @@ namespace DemoAdminLTE.Controllers
         // POST: Roles/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HasPermission("Role/Create")]
+        [HasPermission("Roles/Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "RoleName,TreePermissions")] Role role)
@@ -100,7 +101,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Roles/Edit
-        [HasPermission("Role/Edit")]
+        [HasPermission("Roles/Edit")]
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -128,7 +129,7 @@ namespace DemoAdminLTE.Controllers
         // POST: Roles/Edit
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HasPermission("Role/Edit")]
+        [HasPermission("Roles/Edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,RoleName,TreePermissions")] Role role)
@@ -178,7 +179,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Roles/Edit
-        [HasPermission("Role/Delete")]
+        [HasPermission("Roles/Delete")]
         [HttpGet]
         public ActionResult Delete(int? id)
         {
@@ -202,7 +203,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Roles/Edit
-        [HasPermission("Role/Delete")]
+        [HasPermission("Roles/Delete")]
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -238,17 +239,10 @@ namespace DemoAdminLTE.Controllers
             expectedTree.Nodes.Add(root);
             expectedTree.SelectedIds = new HashSet<int>(SelectedPermissions ?? new List<int>());
 
+            // Read all permission
+            var permissions = apiHelper.Get<IEnumerable<PermissionRes>>("api/permissions");
 
-            IEnumerable<PermissionView> allPermissions = db
-                .Permissions
-                .Select(p => new PermissionView
-                {
-                    Id = p.Id,
-                    Group = p.Group,
-                    Action = p.Action,
-                }); ;
-
-            foreach (IGrouping<String, PermissionView> group in allPermissions.GroupBy(p => p.Group).OrderBy(p => p.Key ?? p.FirstOrDefault().Action))
+            foreach (IGrouping<String, PermissionView> group in permissions.GroupBy(p => p.group).OrderBy(p => p.FirstOrDefault().action))
             {
                 MvcTreeNode groupNode = new MvcTreeNode(group.Key.GetPermissionResource());
                 foreach (PermissionView permission in group.OrderBy(p => p.Action))

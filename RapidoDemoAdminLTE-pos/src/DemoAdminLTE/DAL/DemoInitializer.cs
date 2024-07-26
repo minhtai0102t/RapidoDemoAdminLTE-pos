@@ -107,46 +107,6 @@ namespace DemoAdminLTE.DAL
             };
             sensors.ForEach(obj => context.Sensors.Add(obj));
             context.SaveChanges();
-
-            // device type
-            var deviceTypes = new List<DeviceType> {
-                new DeviceType { Id = 1, Name = "Default", Status = true },
-            };
-            deviceTypes.ForEach(obj => context.DeviceTypes.Add(obj));
-            context.SaveChanges();
-
-            // device
-            var devices = new List<Device>
-            {
-                new Device { Id = 1, Name = "Default", Status = true, DeviceTypeId = 1, Activated = true, HardwareVersion = "1.0.0", SoftwareVersion = "1.0.0", SerialNumber = "123456789" , Latitude = 0, Longitude = 0, Location = "Việt Nam", Online = true, PinCode = "1111", PinCodeGenerationTime = DateTime.Now, Password = "1234" , Description = "" },
-            };
-            devices.ForEach(obj => context.Devices.Add(obj));
-            context.SaveChanges();
-
-            // category
-            var categories = new List<Category>
-            {
-                new Category { Id = 1, Name= "Default", Status = true },
-            };
-            categories.ForEach(obj => context.Categories.Add(obj));
-            context.SaveChanges();
-
-            // product
-            var products = new List<Product>
-            {
-                new Product { Id = 1, Name = "Card", Status = true, Description = "", CategoryId = 1, UnitPrice = 2000, CurrencyUnit = "VND", SKU = "001", UnitType = "cái", LowQuantityThreshold = 10 },
-            };
-            products.ForEach(obj => context.Products.Add(obj));
-            context.SaveChanges();
-
-
-            // device-product
-            var deviceProducts = new List<DeviceProduct>
-            {
-                new DeviceProduct { DeviceId = 1, ProductId = 1, Quantity = 1000 },
-            };
-            deviceProducts.ForEach(obj => context.DeviceProducts.Add(obj));
-            context.SaveChanges();
         }
     }
 }

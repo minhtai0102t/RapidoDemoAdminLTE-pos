@@ -496,27 +496,6 @@
     <Content Include="Views\Value\_form_edit.cshtml" />
     <Content Include="Views\Value\Create.cshtml" />
     <Content Include="readme.md" />
-    <Content Include="Views\Device\_form.cshtml" />
-    <Content Include="Views\Device\Create.cshtml" />
-    <Content Include="Views\Device\Delete.cshtml" />
-    <Content Include="Views\Device\Edit.cshtml" />
-    <Content Include="Views\Device\GridSearch.cshtml" />
-    <Content Include="Views\Device\Index.cshtml" />
-    <Content Include="Views\Product\_form.cshtml" />
-    <Content Include="Views\Product\Create.cshtml" />
-    <Content Include="Views\Product\Delete.cshtml" />
-    <Content Include="Views\Product\Edit.cshtml" />
-    <Content Include="Views\Product\GridSearch.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Transaction\_form.cshtml" />
-    <Content Include="Views\Transaction\Create.cshtml" />
-    <Content Include="Views\Transaction\Delete.cshtml" />
-    <Content Include="Views\Transaction\GridSearch.cshtml" />
-    <Content Include="Views\Transaction\Index.cshtml" />
-    <Content Include="Views\Transaction\Details.cshtml" />
-    <Content Include="Views\Device\Product.cshtml" />
-    <Content Include="Views\Device\ProductGridSearch.cshtml" />
-    <Content Include="Views\Transaction\Dashboard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -536,11 +515,7 @@
       <DependentUpon>Common.vi.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\AppConfig.cs" />
-    <Compile Include="Controllers\Api\PosController.cs" />
     <Compile Include="Controllers\Constants.cs" />
-    <Compile Include="Controllers\Pos\TransactionController.cs" />
-    <Compile Include="Controllers\Pos\ProductController.cs" />
-    <Compile Include="Controllers\Pos\DeviceController.cs" />
     <Compile Include="Controllers\Rapido\ValueController.cs" />
     <Compile Include="Controllers\Sys\PatchController.cs" />
     <Compile Include="CustomAuthentication\CustomReq.cs" />
@@ -580,12 +555,6 @@
     <Compile Include="Extensions\Resrource\ResourceExtension.cs" />
     <Compile Include="Helpers\ApiHelper.cs" />
     <Compile Include="Helpers\IApiHelper.cs" />
-    <Compile Include="Models\Pos\Category.cs" />
-    <Compile Include="Models\Pos\DeviceProduct.cs" />
-    <Compile Include="Models\Pos\Transaction.cs" />
-    <Compile Include="Models\Pos\Product.cs" />
-    <Compile Include="Models\Pos\DeviceType.cs" />
-    <Compile Include="Models\Pos\Device.cs" />
     <Compile Include="Models\Sys\ActivityLog.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Account\Permission.cs" />
@@ -771,8 +740,6 @@
     <Compile Include="Extensions\NLog\LoggingExtensions.cs" />
     <Compile Include="Extensions\Sms\SmsAlert.cs" />
     <Compile Include="Extensions\Sms\SmsResult.cs" />
-    <Compile Include="ViewModels\Api\Pos\ApiPosTransactionView.cs" />
-    <Compile Include="ViewModels\Api\Pos\ApiPosResult.cs" />
     <Compile Include="ViewModels\Api\Rapido\ApiRapidoLoginResult.cs" />
     <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationDataView.cs" />
     <Compile Include="ViewModels\Api\Rapido\ApiRapidoStationDataTime.cs" />

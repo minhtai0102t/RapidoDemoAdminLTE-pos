@@ -18,14 +18,6 @@ namespace DemoAdminLTE.DAL
         public DbSet<SensorValue> SensorValues { get; set; }
         public DbSet<SampleTime> SampleTimes { get; set; }
 
-        /* POS */
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<DeviceType> DeviceTypes { get; set; }
-        public DbSet<Device> Devices { get; set; }
-        public DbSet<DeviceProduct> DeviceProducts { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
-
         /* System */
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

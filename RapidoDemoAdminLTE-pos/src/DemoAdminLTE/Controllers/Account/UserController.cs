@@ -26,7 +26,7 @@ namespace DemoAdminLTE.Controllers
             apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
         // GET: Users
-        [HasPermission("User/List")]
+        [HasPermission("Users/List")]
         [HttpGet]
         public ActionResult Index()
         {
@@ -35,11 +35,11 @@ namespace DemoAdminLTE.Controllers
             //    keysearch = username
             //};
             //var users = apiHelper.Post<PagingResponse<UserSearchRes>>("api/Users/Search", jsonContent: req);
-            ViewBag.DataTotal = db.Users.Count();
+            //ViewBag.DataTotal = db.Users.Count();
             return View();
         }
 
-        [HasPermission("User/List")]
+        [HasPermission("Users/List")]
         [HttpGet]
         public PartialViewResult GridSearch(string search)
         {
@@ -52,7 +52,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Users/Create
-        [HasPermission("User/Create")]
+        [HasPermission("Users/Create")]
         [HttpGet]
         public ActionResult Create()
         {
@@ -65,7 +65,7 @@ namespace DemoAdminLTE.Controllers
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HasPermission("User/Create")]
+        [HasPermission("Users/Create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Username,FirstName,LastName,Phone,Email,Password,IsApproved,Comment,RoleId")] User user)
@@ -102,7 +102,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Users/Edit
-        [HasPermission("User/Edit")]
+        [HasPermission("Users/Edit")]
         [HttpGet]
         public ActionResult Edit(int? id)
         {
@@ -127,7 +127,7 @@ namespace DemoAdminLTE.Controllers
         // POST: Users/Edit
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HasPermission("User/Edit")]
+        [HasPermission("Users/Edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Username,FirstName,LastName,Phone,Email,Password,IsApproved,Comment,RoleId")] User user)
@@ -164,7 +164,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Users/Edit
-        [HasPermission("User/Delete")]
+        [HasPermission("Users/Delete")]
         [HttpGet]
         public ActionResult Delete(int? id)
         {
@@ -182,7 +182,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         // GET: Users/Edit
-        [HasPermission("User/Delete")]
+        [HasPermission("Users/Delete")]
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -197,7 +197,7 @@ namespace DemoAdminLTE.Controllers
             return RedirectToAction("Index");
         }
 
-        [HasPermission("User/List")]
+        [HasPermission("Users/List")]
         [HttpGet]
         public FileContentResult Export()
         {

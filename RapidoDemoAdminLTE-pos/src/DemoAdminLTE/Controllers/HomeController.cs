@@ -6,8 +6,6 @@ namespace DemoAdminLTE.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly DemoContext db = new DemoContext();
-
         //[HttpGet]
         //[HasPermission("Home/Index")]
         //public ActionResult Index()
@@ -19,7 +17,7 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Transaction");
+            return RedirectToAction("Index", "Station");
         }
 
     }
