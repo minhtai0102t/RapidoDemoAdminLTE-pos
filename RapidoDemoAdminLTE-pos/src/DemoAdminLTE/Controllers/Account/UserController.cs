@@ -1,6 +1,5 @@
 ﻿using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.DAL;
-using DemoAdminLTE.Extensions;
 using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Views.UserViews;
@@ -9,7 +8,6 @@ using NonFactors.Mvc.Grid;
 using OfficeOpenXml;
 using System;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Helpers;
 using System.Web.Mvc;
@@ -30,12 +28,9 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            //var req = new UserSearchReq
-            //{
-            //    keysearch = username
-            //};
-            //var users = apiHelper.Post<PagingResponse<UserSearchRes>>("api/Users/Search", jsonContent: req);
-            //ViewBag.DataTotal = db.Users.Count();
+            var req = new UserSearchReq();
+            var users = apiHelper.Post<PagingResponse<UserSearchRes>>("api/Users/Search", jsonContent: req);
+            ViewBag.DataTotal = users.TotalRecord;
             return View();
         }
 

@@ -1,9 +1,11 @@
 ﻿using DemoAdminLTE.Helpers;
+using DemoAdminLTE.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 
 namespace DemoAdminLTE
 {
@@ -16,6 +18,7 @@ namespace DemoAdminLTE
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Response.Cookies.Get(CONST.COOKIE_AUTHENTICATION).ToString());
         }
 
         public ApiHelper(string baseAddress)
@@ -23,7 +26,7 @@ namespace DemoAdminLTE
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.BaseAddress = new Uri(baseAddress);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Response.Cookies.Get(CONST.COOKIE_AUTHENTICATION).ToString()); _httpClient.BaseAddress = new Uri(baseAddress);
         }
 
         public T Get<T>(string endpoint)

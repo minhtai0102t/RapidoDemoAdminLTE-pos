@@ -25,17 +25,17 @@
 
 
             <!-- Home -->
-            @*@if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Home/Index"))
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Home/Index"))
             {
             <li class="@Url.IsLinkActiveController(new List<string>() { "Home" })">
                 <a href="@Url.Action("Index", "Home")"><i class="ion ion-map"></i> <span>@Strings.Map</span></a>
             </li>
-            }*@
+            }
 
 
 
             <!-- Station -->
-            @*@if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Station/List"))
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Station/List"))
             {
             <li class="treeview @Url.IsLinkActiveController(new List<string>() { "Station", "Value" })">
               <a href="#">
@@ -54,17 +54,17 @@
                   </li>
               </ul>
             </li>
-            }*@
+            }
 
 
 
             <!-- Sensor -->
-            @*@if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Sensor/List"))
+            @if (User.Identity.IsAuthenticated && ((CustomPrincipal)User).HasPermission("Sensor/List"))
             {
             <li class="@Url.IsLinkActiveController(new List<string>() { "Sensor" })">
                 <a href="@Url.Action("Index", "Sensor")"><i class="ion ion-thermometer"></i> <span>@Strings.Sensor</span></a>
             </li>
-            }*@
+            }
 
 
 

@@ -5,7 +5,6 @@ using DemoAdminLTE.Extensions.Alerts;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
-using Newtonsoft.Json;
 using NLog;
 using System;
 using System.Data.Entity;
@@ -73,7 +72,8 @@ namespace DemoAdminLTE.Controllers
             {
                 ModelState.AddModelError("", LoginViewStrings.LoginInvalid);
             }
-            return View(loginView);
+            View(loginView);
+            return RedirectToAction("Index", "User");
         }
         [HttpGet]
         public ActionResult Registration()

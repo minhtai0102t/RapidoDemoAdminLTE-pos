@@ -869,8 +869,11 @@
     <EmbeddedResource Include="Resources\Shared\Pages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Pages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\Pages.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\Pages.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Views\ActivityLogViews\Titles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Titles.Designer.cs</LastGenOutput>
@@ -912,7 +915,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\LoginViews\Messages.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\LoginViews\Messages.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Views\LoginViews\Titles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Titles.Designer.cs</LastGenOutput>
@@ -942,12 +947,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Permissions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Permissions.vi.resx" />
+    <EmbeddedResource Include="Resources\Permissions.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shared\Strings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Shared\Strings.vi.resx" />
+    <EmbeddedResource Include="Resources\Shared\Strings.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shared\Validations.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Validations.Designer.cs</LastGenOutput>
@@ -1024,7 +1033,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Titles.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\UserViews\Titles.vi.resx" />
+    <EmbeddedResource Include="Resources\Views\UserViews\Titles.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -17,8 +17,7 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Station");
+            return RedirectToAction("Index", "User");   
         }
-
     }
 }
