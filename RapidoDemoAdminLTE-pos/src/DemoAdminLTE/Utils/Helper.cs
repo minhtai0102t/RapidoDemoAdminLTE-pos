@@ -21,12 +21,12 @@ namespace DemoAdminLTE.Utils
         {
             return (long)(dateTime - new DateTime(1970, 1, 1)).TotalSeconds;
         }
-        public static string ToTdHtmlRawValues(this ICollection<SensorValue> sensorValues)
+        public static string ToTdHtmlRawValues(this ICollection<SensorValues> sensorValues)
         {
             string str = "";
             if (sensorValues != null)
             {
-                foreach (SensorValue sensorValue in (IEnumerable<SensorValue>)sensorValues.OrderBy<SensorValue, int>((Func<SensorValue, int>)(o => o.Sensor.Id)))
+                foreach (SensorValues sensorValue in (IEnumerable<SensorValues>)sensorValues.OrderBy<SensorValues, int>((Func<SensorValues, int>)(o => o.Sensor.Id)))
                     str = str + (object)sensorValue.Value + "</td><td>";
             }
             return str ?? "";

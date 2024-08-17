@@ -10,6 +10,7 @@ using System.Web.Security;
 using DemoAdminLTE.CustomAuthentication;
 using DemoAdminLTE.DAL;
 using DemoAdminLTE.Extensions;
+using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
@@ -30,6 +31,13 @@ namespace DemoAdminLTE.Controllers
         private const string ENV_MESSAGE_TEMP = "Tại trạm {0} có kết quả bất thường. Vui lòng kiểm tra để biết thêm chi tiết. {1}";
         private const string TOPIC_SMS = "sms_alerts";
         private const string SMS_MESSAGE_TEMP = "Tại trạm {0} có kết quả bất thường. {1}";
+        private readonly IApiHelper apiHelper;
+
+        public RapidoController()
+        {
+             apiHelper = new ApiHelper(AppConfig.apiUrl);
+
+        }
 
         // GET/POST: api/rapido/push?station_id=1&sensors[0].id=1&sensors[0].value=3&sensors[1].id=2&sensors[1].value=5
         // content-type: application/json
@@ -51,16 +59,19 @@ namespace DemoAdminLTE.Controllers
             sampleTime.StationId = data.station_id;
             db.SampleTimes.Add(sampleTime);
             db.SaveChanges();
-            var sensorValueList = new List<SensorValue>();
-            foreach (ApiRapidoStationPushSensor sensor in data.Sensors)
-                sensorValueList.Add(new SensorValue()
-                {
-                    SensorId = sensor.id,
-                    SampleTimeId = sampleTime.Id,
-                    Value = sensor.value
-                });
-            db.SensorValues.AddRange(sensorValueList);
-            db.SaveChanges();
+            var sensorValueList = new List<SensorValues>();
+
+
+            //foreach (ApiRapidoStationPushSensor sensor in data.Sensors)
+            //    // TODO :
+            //    sensorValueList.Add(new SensorValues()
+            //    {
+            //        SensorId = sensor.id,
+            //        SampleTimeId = sampleTime.Id,
+            //        Value = sensor.value
+            //    });
+            //db.SensorValues.AddRange(sensorValueList);
+            //db.SaveChanges();
             bool flag = false;
             string rMsg = "";
             foreach (var sensor1 in data.Sensors)
@@ -404,9 +415,10 @@ namespace DemoAdminLTE.Controllers
                                 time = s.EpochTime,
                                 sensor_value = s.SensorValues.Select(sv => new ApiRapidoStationDataValue
                                 {
-                                    sensor_id = sv.SensorId,
-                                    sensor_name = sv.Sensor.name,
-                                    value = sv.Value
+                                    // TODO :
+                                    //sensor_id = sv.SensorId,
+                                    //sensor_name = sv.Sensor.name,
+                                    //value = sv.Value
                                 }).ToList()
                             }).ToList();
 

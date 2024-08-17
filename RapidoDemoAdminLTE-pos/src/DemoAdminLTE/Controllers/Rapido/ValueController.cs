@@ -95,8 +95,11 @@ namespace DemoAdminLTE.Controllers
                     SensorValue = 0.0,
                     SensorName = sensor.name
                 });
+            var stations = apiHelper.Get<List<Station>>("api/stations");
 
-            ViewBag.StationId = new SelectList(db.Stations, "Id", "Name", valueCreateViewModel.StationId);
+            //ViewBag.StationId = new SelectList(db.Stations, "Id", "Name", valueCreateViewModel.StationId);
+            ViewBag.StationId = new SelectList(stations, "Id", "Name", valueCreateViewModel.StationId);
+
             return View(valueCreateViewModel);
         }
 
@@ -140,19 +143,25 @@ namespace DemoAdminLTE.Controllers
                 //entity.StationId = model.StationId;
                 //db.SampleTimes.Add(entity);
                 //db.SaveChanges();
-                //var sensorValueList = new List<SensorValue>();
-                //foreach (var sensor in model.Sensors)
-                //    sensorValueList.Add(new SensorValue()
-                //    {
-                //        SensorId = sensor.SensorId,
-                //        SampleTimeId = entity.Id,
-                //        Value = sensor.SensorValue
-                //    });
+                var sensorValueList = new List<SensorValues>();
+                foreach (var sensor in model.Sensors)
+                    sensorValueList.Add(new SensorValues()
+                    {
+                        // TODO :
+                        //SensorId = sensor.SensorId,
+                        //SampleTimeId = entity.Id,
+                        //Value = sensor.SensorValue
+                    });
                 //db.SensorValues.AddRange(sensorValueList);
                 //db.SaveChanges();
+
+                var results = apiHelper.Post<bool>("api/sensorvalues/create", model);
+
                 return RedirectToAction("Index", new { stationid = model.StationId });
             }
-            ViewBag.StationId = new SelectList(db.Stations, "Id", "Name", model.StationId);
+            var stations = apiHelper.Get<List<Station>>("api/stations");
+
+            ViewBag.StationId = new SelectList(stations, "Id", "Name", model.StationId);
             return View(model);
         }
 
@@ -164,24 +173,36 @@ namespace DemoAdminLTE.Controllers
             if (!id.HasValue)
                 return RedirectToBadRequest();
 
+            var sensorValues = apiHelper.Get<SensorValues>("/api/sensorvalues/" + id);
+
             SampleTime sampleTime = db.SampleTimes.Find(id);
-            if (sampleTime == null)
+            if (sensorValues == null)
                 return RedirectToNotFound();
             var model = new StationValueEditViewModel();
-            model.SampleTimeId = sampleTime.Id;
-            model.StationId = sampleTime.StationId;
+            model.SampleTimeId = sensorValues.value_time_id;
+            model.StationId = sensorValues.station_id;
             model.Sensors = new List<SensorValueViewModel>();
-            foreach (var sensorValue in sampleTime.SensorValues)
+            foreach (var sensorValue in sensorValues.sensor_values)
                 model.Sensors.Add(new SensorValueViewModel()
                 {
-                    SensorId = sensorValue.SensorId,
-                    SensorValue = sensorValue.Value,
-                    SensorName = sensorValue.Sensor.name
+                    // TODO :
+                    SensorId = sensorValue.sensor_id,
+                    SensorValue = sensorValue.value,
+                    SensorName = sensorValue.sensor_name
                 });
 
-            ViewBag.StationId = new SelectList(db.Stations.Where(o => o.Id == model.StationId), "Id", "Name", model.StationId);
-            ViewBag.SampleTimeId = new SelectList(db.SampleTimes.Where(o => o.Id == model.SampleTimeId), "Id", "TimeStringDisplay", model.SampleTimeId);
+            var stations = apiHelper.Get<IEnumerable<Station>>("/api/stations/");
+
+            //ViewBag.StationId = new SelectList(db.Stations.Where(o => o.Id == model.StationId), "Id", "Name", model.StationId);
+            //ViewBag.SampleTimeId = new SelectList(db.SampleTimes.Where(o => o.Id == model.SampleTimeId), "Id", "TimeStringDisplay", model.SampleTimeId);
+
+            ViewBag.StationId = new SelectList(stations.Where(o => o.Id == model.StationId), "Id", "Name", model.StationId);
+            //ViewBag.SampleTimeId = new SelectList(sensorValues.sensor_values.Where(o =>o.va), "Id", "TimeStringDisplay", model.SampleTimeId);
             return View(model);
+
+
+
+
         }
 
 
@@ -199,14 +220,15 @@ namespace DemoAdminLTE.Controllers
             {
                 foreach (var sensor1 in model.Sensors)
                 {
-                    var sensor = sensor1;
-                    var entity = db.SensorValues.FirstOrDefault(d => d.SampleTimeId == model.SampleTimeId && d.SensorId == sensor.SensorId);
-                    if (entity != null)
-                    {
-                        entity.Value = sensor.SensorValue;
-                        db.Entry(entity).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
+                    // TODO :
+                    //var sensor = sensor1;
+                    //var entity = db.SensorValues.FirstOrDefault(d => d.SampleTimeId == model.SampleTimeId && d.SensorId == sensor.SensorId);
+                    //if (entity != null)
+                    //{
+                    //    entity.Value = sensor.SensorValue;
+                    //    db.Entry(entity).State = EntityState.Modified;
+                    //    db.SaveChanges();
+                    //}
                 }
                 Log.ToDatabase(((CustomPrincipal)User).UserId, "Edit", string.Format("Edit Data SampleTimeId='{0}'", model.SampleTimeId));
                 return RedirectToAction("Index", new { stationid = model.StationId });
@@ -293,7 +315,8 @@ namespace DemoAdminLTE.Controllers
 
                 foreach (var s in sensors)
                 {
-                    grid.Columns.Add(model => model.SensorValues.FirstOrDefault(o => o.SensorId == s.id).Value).Titled(s.name);
+                    // TODO :
+                    //grid.Columns.Add(model => model.SensorValues.FirstOrDefault(o => o.SensorId == s.id).Value).Titled(s.name);
                 }
 
                 ExcelWorksheet sheet = package.Workbook.Worksheets["Data"];

@@ -15,7 +15,7 @@ namespace DemoAdminLTE.Models
         public int StationId { get; set; }
         public virtual Station Station { get; set; }
 
-        public virtual ICollection<SensorValue> SensorValues { get; set; }
+        public virtual ICollection<SensorValues> SensorValues { get; set; }
 
         public SampleTime()
         {

@@ -122,7 +122,7 @@ namespace DemoAdminLTE.Controllers
                     //    Log.ToDatabase(((CustomPrincipal)User).UserId, "Create", string.Format("Create new sensor '{0}'", sensor.Name));
                     //    return RedirectToAction("Index");
                     //}
-                    var result = apiHelper.Post<string>("api/sensors", jsonContent: sensor);
+                    var result = apiHelper.Post<string>("api/sensors", sensor);
 
                     return RedirectToAction("Index");
                 }

@@ -93,10 +93,11 @@ namespace DemoAdminLTE.Controllers
                 time = sampleTime.Time,
                 values = sampleTime.SensorValues.Select(v => new
                 {
-                    sid = v.Sensor.Id,
-                    value = v.Value,
-                    tooltip_label = v.Value,
-                    tooltip_title = v.SampleTime.Time.ToString("dd/MM/yyyy HH:mm:ss")
+                    // TODO :
+                    //sid = v.Sensor.Id,
+                    //value = v.Value,
+                    //tooltip_label = v.Value,
+                    //tooltip_title = v.SampleTime.Time.ToString("dd/MM/yyyy HH:mm:ss")
                 })
             }, JsonRequestBehavior.AllowGet);
         }
@@ -141,29 +142,30 @@ namespace DemoAdminLTE.Controllers
                 str = "\"" + sampleTime.Time.ToString("HH:mm") + "\"," + str;
                 foreach (var sensorValue1 in sampleTime.SensorValues)
                 {
-                    var sensorValue = sensorValue1;
-                    var chartSensorView1 = source.FirstOrDefault(x => x.Id == sensorValue.Sensor.Id);
-                    if (chartSensorView1 == null)
-                    {
-                        var chartSensorView2 = new ChartSensorView()
-                        {
-                            Id = sensorValue.Sensor.Id,
-                            Name = sensorValue.Sensor.name,
-                            Color = random.Next(0, 200).ToString() + "," + random.Next(0, 200) + "," + random.Next(0, 200)
-                        };
-                        chartSensorView2.ColorFill = "'rgba(" + chartSensorView2.Color + ",0.7)'";
-                        chartSensorView2.ColorBorder = "'rgba(" + chartSensorView2.Color + ",1.0)'";
-                        chartSensorView2.Data = sensorValue.Value.ToStringEnUs();
-                        chartSensorView2.TooltipLabel = "'" + sensorValue.Value.ToStringEnUs("#.00") + "'";
-                        chartSensorView2.TooltipTitle = "'" + sensorValue.SampleTime.TimeStringDisplay + "'";
-                        source.Add(chartSensorView2);
-                    }
-                    else
-                    {
-                        chartSensorView1.Data = sensorValue.Value.ToStringEnUs() + "," + chartSensorView1.Data;
-                        chartSensorView1.TooltipLabel = "'" + sensorValue.Value.ToStringEnUs("#.00") + "'," + chartSensorView1.TooltipLabel;
-                        chartSensorView1.TooltipTitle = "'" + sensorValue.SampleTime.TimeStringDisplay + "'," + chartSensorView1.TooltipTitle;
-                    }
+                    // TODO :
+                    //var sensorValue = sensorValue1;
+                    //var chartSensorView1 = source.FirstOrDefault(x => x.Id == sensorValue.Sensor.Id);
+                    //if (chartSensorView1 == null)
+                    //{
+                    //    var chartSensorView2 = new ChartSensorView()
+                    //    {
+                    //        Id = sensorValue.Sensor.Id,
+                    //        Name = sensorValue.Sensor.name,
+                    //        Color = random.Next(0, 200).ToString() + "," + random.Next(0, 200) + "," + random.Next(0, 200)
+                    //    };
+                    //    chartSensorView2.ColorFill = "'rgba(" + chartSensorView2.Color + ",0.7)'";
+                    //    chartSensorView2.ColorBorder = "'rgba(" + chartSensorView2.Color + ",1.0)'";
+                    //    chartSensorView2.Data = sensorValue.Value.ToStringEnUs();
+                    //    chartSensorView2.TooltipLabel = "'" + sensorValue.Value.ToStringEnUs("#.00") + "'";
+                    //    chartSensorView2.TooltipTitle = "'" + sensorValue.SampleTime.TimeStringDisplay + "'";
+                    //    source.Add(chartSensorView2);
+                    //}
+                    //else
+                    //{
+                    //    chartSensorView1.Data = sensorValue.Value.ToStringEnUs() + "," + chartSensorView1.Data;
+                    //    chartSensorView1.TooltipLabel = "'" + sensorValue.Value.ToStringEnUs("#.00") + "'," + chartSensorView1.TooltipLabel;
+                    //    chartSensorView1.TooltipTitle = "'" + sensorValue.SampleTime.TimeStringDisplay + "'," + chartSensorView1.TooltipTitle;
+                    //}
                 }
             }
             var chartStationView = new ChartStationView();

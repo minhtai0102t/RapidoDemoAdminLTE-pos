@@ -15,7 +15,7 @@ namespace DemoAdminLTE.DAL
         /* Rapido */
         public DbSet<Station> Stations { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
-        public DbSet<SensorValue> SensorValues { get; set; }
+        public DbSet<SensorValues> SensorValues { get; set; }
         public DbSet<SampleTime> SampleTimes { get; set; }
 
         /* System */
