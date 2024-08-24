@@ -12,13 +12,9 @@ namespace DemoAdminLTE
     public class ApiHelper : IApiHelper
     {
         private readonly HttpClient _httpClient;
-
         public ApiHelper()
         {
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Response.Cookies.Get(CONST.COOKIE_AUTHENTICATION).ToString());
+
         }
 
         public ApiHelper(string baseAddress)
@@ -26,7 +22,7 @@ namespace DemoAdminLTE
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Current.Response.Cookies.Get(CONST.COOKIE_AUTHENTICATION).ToString()); _httpClient.BaseAddress = new Uri(baseAddress);
+            _httpClient.BaseAddress = new Uri(baseAddress);
         }
 
         public T Get<T>(string endpoint)
@@ -49,9 +45,9 @@ namespace DemoAdminLTE
             return SendRequest<T>(HttpMethod.Delete, endpoint);
         }
 
-        public void SetAuthorizationHeader(string token)
+        public void SetAuthorizationHeader(HttpRequestBase request)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request?.Cookies[CONST.COOKIE_AUTHENTICATION]?.Value);
         }
 
         private T SendRequest<T>(HttpMethod method, string endpoint, object jsonContentObj = null)

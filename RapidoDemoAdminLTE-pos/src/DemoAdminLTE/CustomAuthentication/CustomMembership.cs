@@ -1,5 +1,5 @@
 ﻿using DemoAdminLTE.DAL;
-using DemoAdminLTE.Models;
+using DemoAdminLTE.Helpers;
 using System;
 using System.Linq;
 using System.Web.Helpers;
@@ -9,6 +9,11 @@ namespace DemoAdminLTE.CustomAuthentication
 {
     public class CustomMembership : MembershipProvider
     {
+        private static IApiHelper apiHelper;
+        public CustomMembership()
+        {
+            apiHelper = new ApiHelper();
+        }
         /// <summary>  
         /// 
         /// </summary>  
@@ -21,21 +26,18 @@ namespace DemoAdminLTE.CustomAuthentication
             {
                 return false;
             }
-            using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
+            var req = new UserSearchReq
             {
-                var req = new UserSearchReq
-                {
-                    keysearch = username
-                };
-                var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
-                if (users == null)
-                {
-                    return false;
-                }
-                var user = users.Records.FirstOrDefault();
-                var validateRes = user.user_name.Equals(username) && Crypto.VerifyHashedPassword(user.password, password); // missing password compare here
-                return validateRes;
+                keysearch = username
+            };
+            var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+            if (users == null)
+            {
+                return false;
             }
+            var user = users.Records.FirstOrDefault();
+            var validateRes = user.user_name.Equals(username) && Crypto.VerifyHashedPassword(user.password, password); // missing password compare here
+            return validateRes;
         }
         /// <summary>
         /// 
@@ -49,20 +51,17 @@ namespace DemoAdminLTE.CustomAuthentication
             {
                 return null;
             }
-            using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
+            var req = new UserSearchReq
             {
-                var req = new UserSearchReq
-                {
-                    keysearch = phone
-                };
-                var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
-                if (users == null)
-                {
-                    return null;
-                }
-                var user = users.Records.FirstOrDefault(c => c.phone.Equals(phone) && Crypto.VerifyHashedPassword(c.password, password));
-                return user;
+                keysearch = phone
+            };
+            var users = apiHelper.Post<PagingResponse<UserSearchRes>>("/api/Users/Search", jsonContent: req);
+            if (users == null)
+            {
+                return null;
             }
+            var user = users.Records.FirstOrDefault(c => c.phone.Equals(phone) && Crypto.VerifyHashedPassword(c.password, password));
+            return user;
         }
 
         /// <summary>
@@ -78,8 +77,6 @@ namespace DemoAdminLTE.CustomAuthentication
                 return null;
             }
 
-            using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
-            {
                 var req = new UserSearchReq
                 {
                     keysearch = email
@@ -91,7 +88,6 @@ namespace DemoAdminLTE.CustomAuthentication
                 }
                 var user = users.Records.FirstOrDefault(c => c.email.Equals(email) && Crypto.VerifyHashedPassword(c.password, password));
                 return user;
-            }
         }
 
         /// <summary>  

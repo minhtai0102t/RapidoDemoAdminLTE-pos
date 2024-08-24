@@ -3,6 +3,7 @@ using DemoAdminLTE.DAL;
 using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Views.UserViews;
+using DemoAdminLTE.Utils;
 using NLog;
 using NonFactors.Mvc.Grid;
 using OfficeOpenXml;
@@ -28,6 +29,7 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            apiHelper.SetAuthorizationHeader(Request);
             var req = new UserSearchReq();
             var users = apiHelper.Post<PagingResponse<UserSearchRes>>("api/Users/Search", jsonContent: req);
             ViewBag.DataTotal = users.TotalRecord;

@@ -25,7 +25,7 @@ namespace DemoAdminLTE.Controllers
 
         public StationController()
         {
-            this.apiHelper = new ApiHelper(AppConfig.apiUrl);
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
         // GET: Stations
         [HttpGet]

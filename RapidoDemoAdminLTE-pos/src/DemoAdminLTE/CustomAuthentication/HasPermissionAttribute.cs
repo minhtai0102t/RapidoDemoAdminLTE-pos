@@ -8,7 +8,6 @@ namespace DemoAdminLTE.CustomAuthentication
     public class HasPermissionAttribute : ActionFilterAttribute
     {
         private readonly string _permission;
-
         public HasPermissionAttribute(string permission)
         {
             _permission = permission;
@@ -27,14 +26,14 @@ namespace DemoAdminLTE.CustomAuthentication
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             // Comment check hasPermission => pass
-            if(CurrentUser!= null)
-            {
-                return;
-            }
-            //if (CurrentUser != null && CurrentUser.HasPermission(_permission))
+            //if(CurrentUser!= null)
             //{
             //    return;
             //}
+            if (CurrentUser != null && CurrentUser.HasPermission(_permission))
+            {
+                return;
+            }
 
             // Handle Unauthorized Request
             RedirectToRouteResult routeData;

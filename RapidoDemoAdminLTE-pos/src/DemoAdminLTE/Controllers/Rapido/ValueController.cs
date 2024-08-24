@@ -10,6 +10,7 @@ using DemoAdminLTE.Extensions;
 using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Views.StationViews;
+using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
 using NLog;
 using NonFactors.Mvc.Grid;
@@ -27,7 +28,7 @@ namespace DemoAdminLTE.Controllers
 
         public ValueController()
         {
-            this.apiHelper = new ApiHelper(AppConfig.apiUrl);
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
 
         [HasPermission("Value/List")]

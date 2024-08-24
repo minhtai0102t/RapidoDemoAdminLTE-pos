@@ -11,6 +11,6 @@ namespace DemoAdminLTE.Utils
         public const string FAILURE = "failure";
 
         public const string COOKIE_LANGUAGE_NAME = "DemoAdminLTELanguage";
-        public const string COOKIE_AUTHENTICATION = "CookieDemo";
+        public const string COOKIE_AUTHENTICATION = "BearerCookie";
     }
 }

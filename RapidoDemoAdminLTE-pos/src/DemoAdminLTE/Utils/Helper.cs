@@ -26,8 +26,8 @@ namespace DemoAdminLTE.Utils
             string str = "";
             if (sensorValues != null)
             {
-                foreach (SensorValues sensorValue in (IEnumerable<SensorValues>)sensorValues.OrderBy<SensorValues, int>((Func<SensorValues, int>)(o => o.Sensor.Id)))
-                    str = str + (object)sensorValue.Value + "</td><td>";
+                foreach (SensorValues sensorValue in (IEnumerable<SensorValues>)sensorValues.OrderBy<SensorValues, int>((Func<SensorValues, int>)(o => o.station_id)))
+                    str = str + (object)sensorValue.sensor_values + "</td><td>";
             }
             return str ?? "";
         }

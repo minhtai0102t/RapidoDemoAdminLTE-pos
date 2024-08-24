@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -15,7 +17,7 @@ namespace DemoAdminLTE.CustomAuthentication
         public string Email { get; set; }
         public string Role { get; set; }
 
-        public string[] Permissions { get; set; }
+        public IEnumerable<PermissionRes> Permissions { get; set; }
         public string Phone { get; set; }
         public DateTime CreationDate { get; set; }
         #endregion
@@ -36,7 +38,7 @@ namespace DemoAdminLTE.CustomAuthentication
 
         public bool HasPermission(string permission)
         {
-            if (Permissions.Any(r => permission.Contains(r)))
+            if (Permissions.Any(r => permission.Contains(r.action) && permission.Contains(r.group)))
             {
                 return true;
             }

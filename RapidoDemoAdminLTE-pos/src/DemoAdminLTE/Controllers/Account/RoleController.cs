@@ -5,6 +5,7 @@ using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Shared;
 using DemoAdminLTE.Resources.Views.RoleViews;
+using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
 using NLog;
 using System;
@@ -23,7 +24,7 @@ namespace DemoAdminLTE.Controllers
         private readonly IApiHelper apiHelper;
         public RoleController()
         {
-            apiHelper = new ApiHelper();
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
         // GET: Roles
         [HttpGet]

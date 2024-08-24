@@ -21,7 +21,7 @@ using NLog;
 
 namespace DemoAdminLTE.Controllers
 {
-    public class RapidoController : ApiController
+    public class RapidoController : BaseController
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -35,8 +35,7 @@ namespace DemoAdminLTE.Controllers
 
         public RapidoController()
         {
-             apiHelper = new ApiHelper(AppConfig.apiUrl);
-
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
         }
 
         // GET/POST: api/rapido/push?station_id=1&sensors[0].id=1&sensors[0].value=3&sensors[1].id=2&sensors[1].value=5
@@ -150,11 +149,11 @@ namespace DemoAdminLTE.Controllers
                     return ApiRapidoResult.ResultBadRequest("username is already exists");
                 }
 
-                string userNameByPhone = CustomMembership.GetUserNameByPhonenumber(data.Phone);
-                if (!string.IsNullOrEmpty(userNameByPhone))
-                {
-                    return ApiRapidoResult.ResultBadRequest("phone number is already exists");
-                }
+                //string userNameByPhone = CustomMembership.GetUserNameByPhonenumber(data.Phone);
+                //if (!string.IsNullOrEmpty(userNameByPhone))
+                //{
+                //    return ApiRapidoResult.ResultBadRequest("phone number is already exists");
+                //}
 
                 string userName = Membership.GetUserNameByEmail(data.Email);
                 if (!string.IsNullOrEmpty(userName))

@@ -81,8 +81,8 @@ namespace DemoAdminLTE
     public class PermissionRes
     {
         public int permission_id { get; set; }
-        public int group { get; set; }
-        public int action { get; set; }
+        public string group { get; set; }
+        public string action { get; set; }
     }
     public class RoleCreateReq 
     {

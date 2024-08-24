@@ -2,6 +2,7 @@
 using DemoAdminLTE.DAL;
 using DemoAdminLTE.Extensions;
 using DemoAdminLTE.Extensions.Alerts;
+using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
@@ -24,6 +25,12 @@ namespace DemoAdminLTE.Controllers
     public class AccountController : BaseController
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly IApiHelper apiHelper;
+
+        public AccountController()
+        {
+            apiHelper = new ApiHelper(AppConfig.apiUrl);
+        }
 
         [HttpGet]
         public ActionResult Login(string ReturnUrl = "")
@@ -41,32 +48,29 @@ namespace DemoAdminLTE.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var apiHelper = new ApiHelper(AppConfig.apiUrl))
+                var req = new AccountSignInReq
                 {
-                    var req = new AccountSignInReq
-                    {
-                        user_name = loginView.Username,
-                        password = loginView.Password
-                    };
-                    var token = apiHelper.Post<string>("api/Accounts/sign-in", req);
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        HttpCookie faCookie = new HttpCookie(CONST.COOKIE_AUTHENTICATION, token);
-                        Response.Cookies.Add(faCookie);
+                    user_name = loginView.Username,
+                    password = loginView.Password
+                };
+                var token = apiHelper.Post<string>("api/Accounts/sign-in", req);
+                if (!string.IsNullOrEmpty(token))
+                {
+                    HttpCookie faCookie = new HttpCookie(CONST.COOKIE_AUTHENTICATION, token);
+                    Response.Cookies.Add(faCookie);
 
-                        Alerts.AddSuccess(LoginViewStrings.LoginSuccess);
+                    Alerts.AddSuccess(LoginViewStrings.LoginSuccess);
 
-                        if (Url.IsLocalUrl(ReturnUrl))
-                        {
-                            return Redirect(ReturnUrl);
-                        }
-                        else
-                        {
-                            return RedirectToDefault();
-                        }
+                    if (Url.IsLocalUrl(ReturnUrl))
+                    {
+                        return RedirectToAction("Index", "User");
                     }
-                    ModelState.AddModelError("", LoginViewStrings.LoginFailure);
+                    else
+                    {
+                        return RedirectToDefault();
+                    }
                 }
+                ModelState.AddModelError("", LoginViewStrings.LoginFailure);
             }
             else
             {
@@ -95,12 +99,12 @@ namespace DemoAdminLTE.Controllers
                 }
 
                 registrationView.Phone = registrationView.Phone.Replace("-", "").Replace(" ", "");
-                string userNameByPhone = CustomMembership.GetUserNameByPhonenumber(registrationView.Phone);
-                if (!string.IsNullOrEmpty(userNameByPhone))
-                {
-                    ModelState.AddModelError("Phone", RegistrationViewStrings.PhoneExisted);
-                    return View(registrationView);
-                }
+                //string userNameByPhone = CustomMembership.GetUserNameByPhonenumber(registrationView.Phone);
+                //if (!string.IsNullOrEmpty(userNameByPhone))
+                //{
+                //    ModelState.AddModelError("Phone", RegistrationViewStrings.PhoneExisted);
+                //    return View(registrationView);
+                //}
 
                 string userName = Membership.GetUserNameByEmail(registrationView.Email);
                 if (!string.IsNullOrEmpty(userName))
