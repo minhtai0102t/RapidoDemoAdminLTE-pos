@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DemoAdminLTE
+﻿namespace DemoAdminLTE
 {
-    public class UserSearchReq 
+    public class UserSearchReq
     {
         public string keysearch { get; set; }
         public int page_size { get; set; } = AppConfig.PageSizeDefaultValue;
@@ -14,6 +9,15 @@ namespace DemoAdminLTE
     public class AccountSignInReq
     {
         public string user_name { get; set; }
+        public string password { get; set; }
+    }
+    public class AccountSignUpReq
+    {
+        public string user_name { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string phone { get; set; }
+        public string email { get; set; }
         public string password { get; set; }
     }
 }

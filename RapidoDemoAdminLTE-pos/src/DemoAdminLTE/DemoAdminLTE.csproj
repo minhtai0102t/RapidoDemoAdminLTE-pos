@@ -537,8 +537,6 @@
     <Compile Include="Controllers\Account\UserController.cs" />
     <Compile Include="Controllers\Account\RoleController.cs" />
     <Compile Include="CustomAuthentication\CustomAuthorizeAttribute.cs" />
-    <Compile Include="CustomAuthentication\CustomMembership.cs" />
-    <Compile Include="CustomAuthentication\CustomMembershipUser.cs" />
     <Compile Include="CustomAuthentication\CustomPrincipal.cs" />
     <Compile Include="CustomAuthentication\CustomRole.cs" />
     <Compile Include="CustomAuthentication\HasPermissionAttribute.cs" />

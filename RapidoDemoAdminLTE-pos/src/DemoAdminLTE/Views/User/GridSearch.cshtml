@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DemoAdminLTE.Models.User>
+﻿@model DemoAdminLTE.PagingResponse<UserSearchRes>
 @using DemoAdminLTE.Resources.Views.UserViews
 
 @{
@@ -41,6 +41,6 @@
         //pager.PagesToDisplay = 3;
         //pager.CurrentPage = 2;
         pager.RowsPerPage = 100;
-    })
+})
     .AppendCss("table-hover")
 )

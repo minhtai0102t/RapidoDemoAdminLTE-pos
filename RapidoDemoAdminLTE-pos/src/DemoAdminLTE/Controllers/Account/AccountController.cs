@@ -3,7 +3,6 @@ using DemoAdminLTE.DAL;
 using DemoAdminLTE.Extensions;
 using DemoAdminLTE.Extensions.Alerts;
 using DemoAdminLTE.Helpers;
-using DemoAdminLTE.Models;
 using DemoAdminLTE.Utils;
 using DemoAdminLTE.ViewModels;
 using NLog;
@@ -44,7 +43,7 @@ namespace DemoAdminLTE.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginView loginView, string ReturnUrl = "")
+        public ActionResult Login(ViewModels.LoginView loginView, string ReturnUrl = "")
         {
             if (ModelState.IsValid)
             {
@@ -91,66 +90,29 @@ namespace DemoAdminLTE.Controllers
             if (ModelState.IsValid)
             {
                 // Email Verification  
-                MembershipUser membershipUser = Membership.GetUser(registrationView.Username);
-                if (membershipUser != null)
-                {
-                    ModelState.AddModelError("Username", RegistrationViewStrings.UsernameExisted);
-                    return View(registrationView);
-                }
-
                 registrationView.Phone = registrationView.Phone.Replace("-", "").Replace(" ", "");
-                //string userNameByPhone = CustomMembership.GetUserNameByPhonenumber(registrationView.Phone);
-                //if (!string.IsNullOrEmpty(userNameByPhone))
-                //{
-                //    ModelState.AddModelError("Phone", RegistrationViewStrings.PhoneExisted);
-                //    return View(registrationView);
-                //}
-
-                string userName = Membership.GetUserNameByEmail(registrationView.Email);
-                if (!string.IsNullOrEmpty(userName))
-                {
-                    ModelState.AddModelError("Email", RegistrationViewStrings.EmailExisted);
-                    return View(registrationView);
-                }
 
                 if (!registrationView.AgreeTheTerms)
                 {
                     ModelState.AddModelError("AgreeTheTerms", RegistrationViewStrings.MustAgreeTheTerms);
                     return View(registrationView);
                 }
-
-                //Save User Data   
-                using (DemoContext dbContext = new DemoContext())
+                var req = new AccountSignUpReq
                 {
-                    var defaultRole = dbContext.Roles.FirstOrDefault(o => o.RoleName == "User");
-                    var defaultRoleId = defaultRole != null ? defaultRole.Id : 2;
-
-                    var user = new User()
-                    {
-                        Username = registrationView.Username,
-                        FirstName = registrationView.FirstName,
-                        LastName = registrationView.LastName,
-                        Phone = registrationView.Phone,
-                        Email = registrationView.Email,
-                        PasswordHash = Crypto.HashPassword(registrationView.Password),
-                        ActivationCode = Guid.NewGuid(),
-                        IsApproved = false,
-                        RoleId = defaultRoleId
-                    };
-
-                    dbContext.Users.Add(user);
-                    dbContext.SaveChanges();
-
-                    //Verification Email  
-                    //VerificationEmail(registrationView.Email, registrationView.ActivationCode.ToString());
-
-                    Log.ToDatabase(user.Id, "Registration", "New Registration");
-
+                    email = registrationView.Email,
+                    first_name = registrationView.FirstName,
+                    last_name = registrationView.LastName,
+                    password = registrationView.Password,
+                    phone = registrationView.Phone,
+                    user_name = registrationView.Username
+                };
+                var regisRes = apiHelper.Post<bool>("api/accounts/sign-up", req);
+                if (regisRes)
+                {
                     Alerts.AddSuccess(RegistrationViewStrings.RegistrationSuccessTitle, ALERTS.ALALWAYS_SHOW);
                     Alerts.AddInfo(RegistrationViewStrings.RegistrationSuccess, ALERTS.ALALWAYS_SHOW);
-
-                    return RedirectToAction("Login");
                 }
+                return RedirectToAction("Login");
             }
 
             return View(registrationView);
