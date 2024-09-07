@@ -3,7 +3,6 @@ using DemoAdminLTE.DAL;
 using DemoAdminLTE.Helpers;
 using DemoAdminLTE.Models;
 using DemoAdminLTE.Resources.Views.UserViews;
-using DemoAdminLTE.Utils;
 using NLog;
 using NonFactors.Mvc.Grid;
 using OfficeOpenXml;
@@ -18,11 +17,12 @@ namespace DemoAdminLTE.Controllers
     public class UserController : BaseController
     {
         private readonly DemoContext db = new DemoContext();
-        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();    
         private readonly IApiHelper apiHelper;
         public UserController()
         {
             apiHelper = new ApiHelper(AppConfig.apiUrl);
+            apiHelper.SetAuthorizationHeader(Request);
         }
         // GET: Users
         [HasPermission("Users/List")]
@@ -40,6 +40,7 @@ namespace DemoAdminLTE.Controllers
         [HttpGet]
         public PartialViewResult GridSearch(string search)
         {
+            apiHelper.SetAuthorizationHeader(Request);
             var req = new UserSearchReq
             {
                 keysearch = search

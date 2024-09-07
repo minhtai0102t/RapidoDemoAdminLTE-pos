@@ -11,7 +11,7 @@ namespace DemoAdminLTE
 {
     public class ApiHelper : IApiHelper
     {
-        private readonly HttpClient _httpClient;
+        private static HttpClient _httpClient;
         public ApiHelper()
         {
 

@@ -600,26 +600,6 @@
       <DependentUpon>Titles.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Views\ChartViews\Titles.Designer.cs" />
-    <Compile Include="Resources\Views\TransactionViews\Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Views\TransactionViews\Titles.Designer.cs">
-      <DependentUpon>Titles.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Views\ProductViews\Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Views\ProductViews\Titles.Designer.cs">
-      <DependentUpon>Titles.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Resources\Views\LoginViews\Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -681,16 +661,6 @@
       <DependentUpon>Titles.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Views\SampleTimeViews\Titles.Designer.cs" />
-    <Compile Include="Resources\Views\DeviceViews\Messages.Designer.cs">
-      <DependentUpon>Messages.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Views\DeviceViews\Titles.Designer.cs">
-      <DependentUpon>Titles.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Resources\Views\ValueViews\Messages.Designer.cs">
       <DependentUpon>Messages.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -891,26 +861,6 @@
     <EmbeddedResource Include="Resources\Views\ChangePasswordViews\Titles.vi.resx" />
     <EmbeddedResource Include="Resources\Views\ChartViews\Titles.resx" />
     <EmbeddedResource Include="Resources\Views\ChartViews\Titles.vi.resx" />
-    <EmbeddedResource Include="Resources\Views\TransactionViews\Messages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\TransactionViews\Messages.vi.resx" />
-    <EmbeddedResource Include="Resources\Views\TransactionViews\Titles.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\TransactionViews\Titles.vi.resx" />
-    <EmbeddedResource Include="Resources\Views\ProductViews\Messages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\ProductViews\Messages.vi.resx" />
-    <EmbeddedResource Include="Resources\Views\ProductViews\Titles.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\ProductViews\Titles.vi.resx" />
     <EmbeddedResource Include="Resources\Views\LoginViews\Messages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
@@ -984,16 +934,6 @@
     <EmbeddedResource Include="Resources\Views\RoleViews\Titles.vi.resx" />
     <EmbeddedResource Include="Resources\Views\SampleTimeViews\Titles.resx" />
     <EmbeddedResource Include="Resources\Views\SampleTimeViews\Titles.vi.resx" />
-    <EmbeddedResource Include="Resources\Views\DeviceViews\Messages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\DeviceViews\Messages.vi.resx" />
-    <EmbeddedResource Include="Resources\Views\DeviceViews\Titles.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Views\DeviceViews\Titles.vi.resx" />
     <EmbeddedResource Include="Resources\Views\ValueViews\Messages.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
